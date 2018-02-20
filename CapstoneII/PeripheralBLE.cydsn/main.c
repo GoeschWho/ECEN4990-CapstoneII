@@ -13,6 +13,7 @@
 
 void StackEventHandler( uint32 eventCode, void *eventParam );
 void BLE_Connect();
+void BLE_Stay_Connected();
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL 0x40030008
@@ -25,12 +26,14 @@ int main()
 
     CyBle_Start( StackEventHandler );
     
-    BLE_Connect();
+    //BLE_Connect();
     
     for(;;)
     {
         /* Place your application code here */
         CyBle_ProcessEvents();
+        
+        BLE_Stay_Connected();
     }
 }
 
@@ -80,6 +83,32 @@ void BLE_Connect() {
         LED_BLUE_Write(1);
     }
     CyBle_ProcessEvents();
+    }
+    
+}
+
+void BLE_Stay_Connected() {
+   
+    CYBLE_API_RESULT_T advertise_result;
+    CYBLE_STATE_T ble_state;
+    
+    CyBle_ProcessEvents();
+
+    while(1) {
+        ble_state = CyBle_GetState();
+        if (ble_state == CYBLE_STATE_CONNECTED ) {
+            LED_BLUE_Write(0);
+            LED_GREEN_Write(1);
+        }
+        else {
+            LED_BLUE_Write(1);
+            advertise_result = CyBle_GappStartAdvertisement( CYBLE_ADVERTISING_FAST );
+            CyBle_ProcessEvents();
+            if (advertise_result == CYBLE_ERROR_OK ) {
+                LED_GREEN_Write(0);   
+            }
+        }
+        CyBle_ProcessEvents();
     }
     
 }

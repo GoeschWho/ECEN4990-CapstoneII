@@ -173,8 +173,8 @@
 #define CYBLE_BONDING_REQUIREMENT                   (0x00u)
 
 /* Tx Power Level */
-#define CYBLE_TX_POWER_LEVEL_ADV                    (CYBLE_LL_PWR_LVL_3_DBM)
-#define CYBLE_TX_POWER_LEVEL_CONN                   (CYBLE_LL_PWR_LVL_3_DBM)
+#define CYBLE_TX_POWER_LEVEL_ADV                    (CYBLE_LL_PWR_LVL_NEG_12_DBM)
+#define CYBLE_TX_POWER_LEVEL_CONN                   (CYBLE_LL_PWR_LVL_NEG_12_DBM)
 
 #define CYBLE_ADV_PKT_INDEX_FLAGS   (0x00u)
 #define CYBLE_ADV_PKT_INDEX_LOCAL_NAME   (0x03u)
