@@ -22,10 +22,11 @@ int main()
 {
      CyGlobalIntEnable;   /* Enable global interrupts */
     
-    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-
-    CyBle_Start( StackEventHandler );
+    /*  LCD SETUP   */
     
+
+    /*  BLE SETUP   */
+    CyBle_Start( StackEventHandler );
     //BLE_Connect();
     
     for(;;)
@@ -33,7 +34,7 @@ int main()
         /* Place your application code here */
         CyBle_ProcessEvents();
         
-        BLE_Stay_Connected();
+        //BLE_Stay_Connected();
     }
 }
 

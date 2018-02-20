@@ -37,7 +37,9 @@
       <Folder BuildType="STRICT" Path="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn">
         <Files Root="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn">
           <File BuildType="BUILD" Toolchain="">main.c</File>
+          <File BuildType="BUILD" Toolchain="">RA8875.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
+          <File BuildType="BUILD" Toolchain="">RA8875.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\Generated_Source\PSoC4">
@@ -115,6 +117,44 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_SPI_UART.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_SPI_UART.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_SPI.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_BOOT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_SPI_BOOT.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_PINS.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_SPI_UART_PVT.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_PVT.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_BOOT.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_SCBCLK.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_SCBCLK.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_sclk_m.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_sclk_m.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_sclk_m_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_sclk_m_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_miso_m.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_miso_m.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_miso_m_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_miso_m_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_mosi_m.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_mosi_m.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_mosi_m_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_mosi_m_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_ss0_m.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_ss0_m.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_ss0_m_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCDSPI_ss0_m_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\rst0_m.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\rst0_m.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\rst0_m_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\rst0_m_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCD_init.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCD_init.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCD_init_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LCD_init_PM.c</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\Export\ARM_GCC_Generic\BLE_v3_30">
