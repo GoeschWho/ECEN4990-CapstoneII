@@ -200,11 +200,10 @@ void LCDTouchscreenDemo() {
     yScale = 1024.0F/height();
     
     touchRead(&tx, &ty);
-//    tx = 0x0000;
-//    ty = 0x0000;
+
     
     //------ Wait for touch ------//
-    CyDelay(10);
+    //CyDelay(10);
     while ( waiting )  {
         if (!LCD_int_Read()) {
             //LED_BLUE_Write(0);
@@ -213,7 +212,21 @@ void LCDTouchscreenDemo() {
                 touchRead(&tx, &ty);                
                 fillCircle((uint16_t)(tx/xScale), (uint16_t)(ty/yScale), 4, RA8875_WHITE);
             }
+//            else {
+//                /* Clear TP INT Status */
+//                //writeReg(RA8875_INTC2, RA8875_INTC2_TP);
+//                touchRead(&tx, &ty);
+//                CyDelay(1);
+//                //tx = 0x0000;
+//                //ty = 0x0000;
+//            }
         }
+//        else {
+//            touchRead(&tx, &ty);
+//            CyDelay(1);
+//            //tx = 0x0000;
+//            //ty = 0x0000;
+//        }
     }
 }
 

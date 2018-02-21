@@ -55,7 +55,6 @@
 <v>CapstoneII\PeripheralBLE\Generated_Source\PSoC4</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
-<v>CapstoneII</v>
 <v>CapstoneII\CentralBLE</v>
 <v>CapstoneII\CentralBLE\TopDesign</v>
 <v>CapstoneII\CentralBLE\CentralBLE.cydwr</v>
@@ -102,6 +101,7 @@
 <v>CapstoneII\CentralBLE\Generated_Source\PSoC4\LCDSPI_sclk_m</v>
 <v>CapstoneII\CentralBLE\Generated_Source\PSoC4\LCDSPI_ss0_m</v>
 <v>CapstoneII\CentralBLE\Generated_Source\PSoC4\LED_BLUE</v>
+<v>CapstoneII\CentralBLE\Generated_Source\PSoC4\LED_GREEN</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
@@ -372,7 +372,9 @@
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
 <OpenDocs>
-<name v=".\CentralBLE.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\CentralBLE.cydsn\main.c" />
+<name v=".\CentralBLE.cydsn\RA8875.c" />
+<name v=".\CentralBLE.cydsn\Generated_Source\PSoC4\LCDSPI_SPI_UART.c" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -380,7 +382,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1382, 682" SelectedTabbedMdiWindow="b468c316-fcb8-4ee6-a143-de1bfb81ea0a"><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\TopDesign\TopDesign.cysch" Guid="b468c316-fcb8-4ee6-a143-de1bfb81ea0a" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="653, 666" SelectedTabbedMdiWindow="0be8c2c8-f99a-4790-abfa-ad21e40a3f45"><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\main.c" Guid="0be8c2c8-f99a-4790-abfa-ad21e40a3f45" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\RA8875.c" Guid="84d7ed3f-b152-4674-9268-64f2203d826c" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\Generated_Source\PSoC4\LCDSPI_SPI_UART.c" Guid="60084817-f430-4e9b-8ac6-df6c0b741236" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

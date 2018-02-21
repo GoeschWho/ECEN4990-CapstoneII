@@ -38,8 +38,8 @@
 #define LCDSPI_SPI_BITS_ORDER             (1u)
 #define LCDSPI_SPI_TRANSFER_SEPARATION    (1u)
 #define LCDSPI_SPI_NUMBER_OF_SS_LINES     (1u)
-#define LCDSPI_SPI_RX_BUFFER_SIZE         (8u)
-#define LCDSPI_SPI_TX_BUFFER_SIZE         (8u)
+#define LCDSPI_SPI_RX_BUFFER_SIZE         (16u)
+#define LCDSPI_SPI_TX_BUFFER_SIZE         (16u)
 
 #define LCDSPI_SPI_INTERRUPT_MODE         (1u)
 
@@ -49,7 +49,7 @@
 #define LCDSPI_SPI_RX_TRIGGER_LEVEL       (7u)
 #define LCDSPI_SPI_TX_TRIGGER_LEVEL       (0u)
 
-#define LCDSPI_SPI_BYTE_MODE_ENABLE       (0u)
+#define LCDSPI_SPI_BYTE_MODE_ENABLE       (1u)
 #define LCDSPI_SPI_FREE_RUN_SCLK_ENABLE   (0u)
 #define LCDSPI_SPI_SS0_POLARITY           (0u)
 #define LCDSPI_SPI_SS1_POLARITY           (0u)

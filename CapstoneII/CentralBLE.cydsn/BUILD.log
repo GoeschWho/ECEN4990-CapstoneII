@@ -1,4 +1,4 @@
---------------- Build Started: 02/20/2018 23:22:38 Project: CentralBLE, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+--------------- Build Started: 02/21/2018 09:56:26 Project: CentralBLE, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
 The code generation step is up to date.
 arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/main.lst -g -D DEBUG -Wall -ffunction-sections -ffat-lto-objects -O0 -c main.c -o .\CortexM0\ARM_GCC_541\Debug\main.o
 main.c: In function 'LCDInitDemo':
@@ -19,6 +19,6 @@ arm-none-eabi-ar.exe: creating .\CortexM0\ARM_GCC_541\Debug\CentralBLE.a
 arm-none-eabi-gcc.exe -Wl,--start-group -o "C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\CortexM0\ARM_GCC_541\Debug\CentralBLE.elf" .\CortexM0\ARM_GCC_541\Debug\main.o .\CortexM0\ARM_GCC_541\Debug\RA8875.o .\CortexM0\ARM_GCC_541\Debug\cyfitter_cfg.o .\CortexM0\ARM_GCC_541\Debug\cymetadata.o .\CortexM0\ARM_GCC_541\Debug\Cm0Start.o .\CortexM0\ARM_GCC_541\Debug\CentralBLE.a "C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\BLE_v3_30\Library\gccCyBLEStack_BLE_SOC_CENTRAL.a" "C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM0\ARM_GCC_541\Debug\CyComponentLibrary.a" -mcpu=cortex-m0 -mthumb -L Generated_Source\PSoC4 -Wl,-Map,.\CortexM0\ARM_GCC_541\Debug/CentralBLE.map -T Generated_Source\PSoC4\cm0gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -O0 -ffat-lto-objects -Wl,--end-group
 cyelftool.exe -C "C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\CortexM0\ARM_GCC_541\Debug\CentralBLE.elf" --flash_row_size 256 --flash_size 262144 --flash_offset 0x00000000
 cyelftool.exe -S "C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\CortexM0\ARM_GCC_541\Debug\CentralBLE.elf"
-Flash used: 89714 of 262144 bytes (34.2 %).
+Flash used: 89762 of 262144 bytes (34.2 %).
 SRAM used: 12568 of 32768 bytes (38.4 %). Stack: 2048 bytes. Heap: 128 bytes.
---------------- Build Succeeded: 02/20/2018 23:22:39 ---------------
+--------------- Build Succeeded: 02/21/2018 09:56:27 ---------------
