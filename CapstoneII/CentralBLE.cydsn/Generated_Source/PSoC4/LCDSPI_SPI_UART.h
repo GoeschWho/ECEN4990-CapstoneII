@@ -41,7 +41,7 @@
 #define LCDSPI_SPI_RX_BUFFER_SIZE         (8u)
 #define LCDSPI_SPI_TX_BUFFER_SIZE         (8u)
 
-#define LCDSPI_SPI_INTERRUPT_MODE         (0u)
+#define LCDSPI_SPI_INTERRUPT_MODE         (1u)
 
 #define LCDSPI_SPI_INTR_RX_MASK           (0x0u)
 #define LCDSPI_SPI_INTR_TX_MASK           (0x0u)

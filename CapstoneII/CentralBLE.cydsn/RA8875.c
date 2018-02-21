@@ -1277,12 +1277,12 @@ uint8_t  readReg(uint8_t reg)
 /**************************************************************************/
 void  writeData(uint8_t d) 
 {
-    LCDSPI_Start();
+    //LCDSPI_Start();
     CyDelay(1); // testing
     LCDSPI_SpiUartWriteTxData(RA8875_DATAWRITE);
     LCDSPI_SpiUartWriteTxData(d);
     CyDelay(1); // testing
-    LCDSPI_Stop();
+    //LCDSPI_Stop();
 }
 
 /**************************************************************************/
@@ -1297,8 +1297,10 @@ uint8_t  readData(void)
    
 //  digitalWrite(_cs, LOW);
 //    spi_begin();
-    LCDSPI_Start();
+    //LCDSPI_Start();
     CyDelay(1);
+    
+    LCDSPI_ClearMasterInterruptSource(LCDSPI_INTR_MASTER_SPI_DONE); // testing
     
 //  SPI.transfer(RA8875_DATAREAD);
     LCDSPI_SpiUartWriteTxData(RA8875_DATAREAD);
@@ -1306,13 +1308,19 @@ uint8_t  readData(void)
     LCDSPI_SpiUartWriteTxData(0);
 //  uint8_t x = SPI.transfer(0x0);
     
+    while(0u == (LCDSPI_GetMasterInterruptSource() & LCDSPI_INTR_MASTER_SPI_DONE)) //testing
+    {
+        /* Wait while Master completes transaction */
+    }
+    
 //    y = LCDSPI_SpiUartGetRxBufferSize();
-    x = LCDSPI_SpiUartReadRxData() & 0x000F;
+    //x = LCDSPI_SpiUartReadRxData() & 0x000F;
+    x = LCDSPI_SpiUartReadRxData();
     
 //    spi_end();
 //  digitalWrite(_cs, HIGH);
     CyDelay(1);
-    LCDSPI_Stop();
+    //LCDSPI_Stop();
     
     // testing
 //    LCDSPI_Start();
@@ -1332,13 +1340,13 @@ uint8_t  readData(void)
 /**************************************************************************/
 void  writeCommand(uint8_t d) 
 {
-    LCDSPI_Start(); 
+    //LCDSPI_Start(); 
     CyDelay(1); // testing
     LCDSPI_SpiUartWriteTxData(RA8875_CMDWRITE);
     
     LCDSPI_SpiUartWriteTxData(d);
     CyDelay(1); // testing
-    LCDSPI_Stop();
+    //LCDSPI_Stop();
 }
 
 /**************************************************************************/
@@ -1350,7 +1358,7 @@ uint8_t  readStatus(void)
 {
 //  digitalWrite(_cs, LOW);
 //    spi_begin();
-    LCDSPI_Start();
+    //LCDSPI_Start();
     CyDelay(1);
 //  SPI.transfer(RA8875_CMDREAD);
     LCDSPI_SpiUartWriteTxData(RA8875_CMDREAD);
@@ -1360,7 +1368,7 @@ uint8_t  readStatus(void)
 //
 //  digitalWrite(_cs, HIGH);
     CyDelay(1); // testing
-    LCDSPI_Stop();
+    //LCDSPI_Stop();
     
     return x;
 }

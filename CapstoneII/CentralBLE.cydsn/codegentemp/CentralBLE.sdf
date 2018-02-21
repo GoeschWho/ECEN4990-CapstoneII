@@ -1,6 +1,6 @@
 (DELAYFILE
  (SDFVERSION "IEEE 1497 4.0")
- (DATE "2018-02-20T22:03:44Z")
+ (DATE "2018-02-21T05:10:05Z")
  (DESIGN "CentralBLE")
  (VENDOR "Cypress Semiconductor")
  (PROGRAM "PSoC Creator")
@@ -13,6 +13,8 @@
   (DELAY
    (ABSOLUTE
     (INTERCONNECT ClockBlock.hfclk \\BLE_1\:bless_isr\\.clock (0.000:0.000:0.000))
+    (INTERCONNECT ClockBlock.hfclk \\LCDSPI\:SCB_IRQ\\.clock (0.000:0.000:0.000))
+    (INTERCONNECT \\LCDSPI\:SCB\\.interrupt \\LCDSPI\:SCB_IRQ\\.interrupt (0.000:0.000:0.000))
     (INTERCONNECT \\BLE_1\:cy_m0s8_ble\\.interrupt \\BLE_1\:bless_isr\\.interrupt (1.000:1.000:1.000))
     (INTERCONNECT ClockBlock.ff_div_1 \\LCDSPI\:SCB\\.clock (0.000:0.000:0.000))
     (INTERCONNECT \\LCDSPI\:miso_m\(0\)\\.fb \\LCDSPI\:SCB\\.miso_m (0.000:0.000:0.000))
@@ -32,7 +34,7 @@
     (INTERCONNECT \\LCDSPI\:ss0_m\(0\)\\.pad_out \\LCDSPI\:ss0_m\(0\)_PAD\\ (0.000:0.000:0.000))
     (INTERCONNECT \\LCDSPI\:ss0_m\(0\)_PAD\\ \\LCDSPI\:ss0_m\(0\)\\.pad_in (0.000:0.000:0.000))
     (INTERCONNECT rst0_m\(0\)_PAD rst0_m\(0\).pad_in (0.000:0.000:0.000))
-    (INTERCONNECT LCD_init\(0\)_PAD LCD_init\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT LCD_int\(0\)_PAD LCD_int\(0\).pad_in (0.000:0.000:0.000))
    )
   )
  )

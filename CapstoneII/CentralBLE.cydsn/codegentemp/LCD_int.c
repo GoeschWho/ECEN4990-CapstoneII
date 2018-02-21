@@ -1,5 +1,5 @@
 /*******************************************************************************
-* File Name: LCD_init.c  
+* File Name: LCD_int.c  
 * Version 2.20
 *
 * Description:
@@ -13,35 +13,35 @@
 *******************************************************************************/
 
 #include "cytypes.h"
-#include "LCD_init.h"
+#include "LCD_int.h"
 
 
-#if defined(LCD_init__PC)
-    #define LCD_init_SetP4PinDriveMode(shift, mode)  \
+#if defined(LCD_int__PC)
+    #define LCD_int_SetP4PinDriveMode(shift, mode)  \
     do { \
-        LCD_init_PC =   (LCD_init_PC & \
-                                (uint32)(~(uint32)(LCD_init_DRIVE_MODE_IND_MASK << \
-                                (LCD_init_DRIVE_MODE_BITS * (shift))))) | \
+        LCD_int_PC =   (LCD_int_PC & \
+                                (uint32)(~(uint32)(LCD_int_DRIVE_MODE_IND_MASK << \
+                                (LCD_int_DRIVE_MODE_BITS * (shift))))) | \
                                 (uint32)((uint32)(mode) << \
-                                (LCD_init_DRIVE_MODE_BITS * (shift))); \
+                                (LCD_int_DRIVE_MODE_BITS * (shift))); \
     } while (0)
 #else
     #if (CY_PSOC4_4200L)
-        #define LCD_init_SetP4PinDriveMode(shift, mode)  \
+        #define LCD_int_SetP4PinDriveMode(shift, mode)  \
         do { \
-            LCD_init_USBIO_CTRL_REG = (LCD_init_USBIO_CTRL_REG & \
-                                    (uint32)(~(uint32)(LCD_init_DRIVE_MODE_IND_MASK << \
-                                    (LCD_init_DRIVE_MODE_BITS * (shift))))) | \
+            LCD_int_USBIO_CTRL_REG = (LCD_int_USBIO_CTRL_REG & \
+                                    (uint32)(~(uint32)(LCD_int_DRIVE_MODE_IND_MASK << \
+                                    (LCD_int_DRIVE_MODE_BITS * (shift))))) | \
                                     (uint32)((uint32)(mode) << \
-                                    (LCD_init_DRIVE_MODE_BITS * (shift))); \
+                                    (LCD_int_DRIVE_MODE_BITS * (shift))); \
         } while (0)
     #endif
 #endif
   
 
-#if defined(LCD_init__PC) || (CY_PSOC4_4200L) 
+#if defined(LCD_int__PC) || (CY_PSOC4_4200L) 
     /*******************************************************************************
-    * Function Name: LCD_init_SetDriveMode
+    * Function Name: LCD_int_SetDriveMode
     ****************************************************************************//**
     *
     * \brief Sets the drive mode for each of the Pins component's pins.
@@ -67,17 +67,17 @@
     *  APIs (primary method) or disable interrupts around this function.
     *
     * \funcusage
-    *  \snippet LCD_init_SUT.c usage_LCD_init_SetDriveMode
+    *  \snippet LCD_int_SUT.c usage_LCD_int_SetDriveMode
     *******************************************************************************/
-    void LCD_init_SetDriveMode(uint8 mode)
+    void LCD_int_SetDriveMode(uint8 mode)
     {
-		LCD_init_SetP4PinDriveMode(LCD_init__0__SHIFT, mode);
+		LCD_int_SetP4PinDriveMode(LCD_int__0__SHIFT, mode);
     }
 #endif
 
 
 /*******************************************************************************
-* Function Name: LCD_init_Write
+* Function Name: LCD_int_Write
 ****************************************************************************//**
 *
 * \brief Writes the value to the physical port (data output register), masking
@@ -106,18 +106,18 @@
 *  this function.
 *
 * \funcusage
-*  \snippet LCD_init_SUT.c usage_LCD_init_Write
+*  \snippet LCD_int_SUT.c usage_LCD_int_Write
 *******************************************************************************/
-void LCD_init_Write(uint8 value)
+void LCD_int_Write(uint8 value)
 {
-    uint8 drVal = (uint8)(LCD_init_DR & (uint8)(~LCD_init_MASK));
-    drVal = (drVal | ((uint8)(value << LCD_init_SHIFT) & LCD_init_MASK));
-    LCD_init_DR = (uint32)drVal;
+    uint8 drVal = (uint8)(LCD_int_DR & (uint8)(~LCD_int_MASK));
+    drVal = (drVal | ((uint8)(value << LCD_int_SHIFT) & LCD_int_MASK));
+    LCD_int_DR = (uint32)drVal;
 }
 
 
 /*******************************************************************************
-* Function Name: LCD_init_Read
+* Function Name: LCD_int_Read
 ****************************************************************************//**
 *
 * \brief Reads the associated physical port (pin status register) and masks 
@@ -131,16 +131,16 @@ void LCD_init_Write(uint8 value)
 *  The current value for the pins in the component as a right justified number.
 *
 * \funcusage
-*  \snippet LCD_init_SUT.c usage_LCD_init_Read  
+*  \snippet LCD_int_SUT.c usage_LCD_int_Read  
 *******************************************************************************/
-uint8 LCD_init_Read(void)
+uint8 LCD_int_Read(void)
 {
-    return (uint8)((LCD_init_PS & LCD_init_MASK) >> LCD_init_SHIFT);
+    return (uint8)((LCD_int_PS & LCD_int_MASK) >> LCD_int_SHIFT);
 }
 
 
 /*******************************************************************************
-* Function Name: LCD_init_ReadDataReg
+* Function Name: LCD_int_ReadDataReg
 ****************************************************************************//**
 *
 * \brief Reads the associated physical port's data output register and masks 
@@ -149,8 +149,8 @@ uint8 LCD_init_Read(void)
 *
 * The data output register controls the signal applied to the physical pin in 
 * conjunction with the drive mode parameter. This is not the same as the 
-* preferred LCD_init_Read() API because the 
-* LCD_init_ReadDataReg() reads the data register instead of the status 
+* preferred LCD_int_Read() API because the 
+* LCD_int_ReadDataReg() reads the data register instead of the status 
 * register. For output pins this is a useful function to determine the value 
 * just written to the pin.
 *
@@ -159,16 +159,16 @@ uint8 LCD_init_Read(void)
 *  justified number for the component instance.
 *
 * \funcusage
-*  \snippet LCD_init_SUT.c usage_LCD_init_ReadDataReg 
+*  \snippet LCD_int_SUT.c usage_LCD_int_ReadDataReg 
 *******************************************************************************/
-uint8 LCD_init_ReadDataReg(void)
+uint8 LCD_int_ReadDataReg(void)
 {
-    return (uint8)((LCD_init_DR & LCD_init_MASK) >> LCD_init_SHIFT);
+    return (uint8)((LCD_int_DR & LCD_int_MASK) >> LCD_int_SHIFT);
 }
 
 
 /*******************************************************************************
-* Function Name: LCD_init_SetInterruptMode
+* Function Name: LCD_int_SetInterruptMode
 ****************************************************************************//**
 *
 * \brief Configures the interrupt mode for each of the Pins component's
@@ -181,12 +181,12 @@ uint8 LCD_init_ReadDataReg(void)
 * \param position
 *  The pin position as listed in the Pins component. You may OR these to be 
 *  able to configure the interrupt mode of multiple pins within a Pins 
-*  component. Or you may use LCD_init_INTR_ALL to configure the
+*  component. Or you may use LCD_int_INTR_ALL to configure the
 *  interrupt mode of all the pins in the Pins component.       
-*  - LCD_init_0_INTR       (First pin in the list)
-*  - LCD_init_1_INTR       (Second pin in the list)
+*  - LCD_int_0_INTR       (First pin in the list)
+*  - LCD_int_1_INTR       (Second pin in the list)
 *  - ...
-*  - LCD_init_INTR_ALL     (All pins in Pins component)
+*  - LCD_int_INTR_ALL     (All pins in Pins component)
 *
 * \param mode
 *  Interrupt mode for the selected pins. Valid options are documented in
@@ -202,19 +202,19 @@ uint8 LCD_init_ReadDataReg(void)
 *  port.
 *
 * \funcusage
-*  \snippet LCD_init_SUT.c usage_LCD_init_SetInterruptMode
+*  \snippet LCD_int_SUT.c usage_LCD_int_SetInterruptMode
 *******************************************************************************/
-void LCD_init_SetInterruptMode(uint16 position, uint16 mode)
+void LCD_int_SetInterruptMode(uint16 position, uint16 mode)
 {
     uint32 intrCfg;
     
-    intrCfg =  LCD_init_INTCFG & (uint32)(~(uint32)position);
-    LCD_init_INTCFG = intrCfg | ((uint32)position & (uint32)mode);
+    intrCfg =  LCD_int_INTCFG & (uint32)(~(uint32)position);
+    LCD_int_INTCFG = intrCfg | ((uint32)position & (uint32)mode);
 }
 
 
 /*******************************************************************************
-* Function Name: LCD_init_ClearInterrupt
+* Function Name: LCD_int_ClearInterrupt
 ****************************************************************************//**
 *
 * \brief Clears any active interrupts attached with the component and returns 
@@ -231,13 +231,13 @@ void LCD_init_SetInterruptMode(uint16 position, uint16 mode)
 *  those associated with the Pins component.
 *
 * \funcusage
-*  \snippet LCD_init_SUT.c usage_LCD_init_ClearInterrupt
+*  \snippet LCD_int_SUT.c usage_LCD_int_ClearInterrupt
 *******************************************************************************/
-uint8 LCD_init_ClearInterrupt(void)
+uint8 LCD_int_ClearInterrupt(void)
 {
-	uint8 maskedStatus = (uint8)(LCD_init_INTSTAT & LCD_init_MASK);
-	LCD_init_INTSTAT = maskedStatus;
-    return maskedStatus >> LCD_init_SHIFT;
+	uint8 maskedStatus = (uint8)(LCD_int_INTSTAT & LCD_int_MASK);
+	LCD_int_INTSTAT = maskedStatus;
+    return maskedStatus >> LCD_int_SHIFT;
 }
 
 

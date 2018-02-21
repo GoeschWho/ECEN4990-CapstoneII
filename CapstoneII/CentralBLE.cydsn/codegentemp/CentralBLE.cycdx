@@ -1395,19 +1395,20 @@
   </block>
   <block name="cy_lfclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="LCDSPI" BASE="0x0" SIZE="0x0" desc="Serial Communication Block" visible="true" hidden="false">
-    <block name="sclk_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="clock_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="miso_m_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="mosi_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="sclk_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="miso_m_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="clock_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="select_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="SCBCLK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="rx_wake_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="rx_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="cts_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="ss0_m" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="SCB_IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="Device_VM4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="SCB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ss0_m" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="sclk_m" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="mosi_m" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -1742,7 +1743,7 @@
     </register>
   </block>
   <block name="rst0_m" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="LCD_init" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LCD_int" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="SW_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="PWR_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="R_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />

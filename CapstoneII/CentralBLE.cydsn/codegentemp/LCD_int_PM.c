@@ -1,5 +1,5 @@
 /*******************************************************************************
-* File Name: LCD_init.c  
+* File Name: LCD_int.c  
 * Version 2.20
 *
 * Description:
@@ -15,13 +15,13 @@
 *******************************************************************************/
 
 #include "cytypes.h"
-#include "LCD_init.h"
+#include "LCD_int.h"
 
-static LCD_init_BACKUP_STRUCT  LCD_init_backup = {0u, 0u, 0u};
+static LCD_int_BACKUP_STRUCT  LCD_int_backup = {0u, 0u, 0u};
 
 
 /*******************************************************************************
-* Function Name: LCD_init_Sleep
+* Function Name: LCD_int_Sleep
 ****************************************************************************//**
 *
 * \brief Stores the pin configuration and prepares the pin for entering chip 
@@ -39,30 +39,30 @@ static LCD_init_BACKUP_STRUCT  LCD_init_backup = {0u, 0u, 0u};
 *  deep-sleep/hibernate modes.
 *
 * \funcusage
-*  \snippet LCD_init_SUT.c usage_LCD_init_Sleep_Wakeup
+*  \snippet LCD_int_SUT.c usage_LCD_int_Sleep_Wakeup
 *******************************************************************************/
-void LCD_init_Sleep(void)
+void LCD_int_Sleep(void)
 {
-    #if defined(LCD_init__PC)
-        LCD_init_backup.pcState = LCD_init_PC;
+    #if defined(LCD_int__PC)
+        LCD_int_backup.pcState = LCD_int_PC;
     #else
         #if (CY_PSOC4_4200L)
             /* Save the regulator state and put the PHY into suspend mode */
-            LCD_init_backup.usbState = LCD_init_CR1_REG;
-            LCD_init_USB_POWER_REG |= LCD_init_USBIO_ENTER_SLEEP;
-            LCD_init_CR1_REG &= LCD_init_USBIO_CR1_OFF;
+            LCD_int_backup.usbState = LCD_int_CR1_REG;
+            LCD_int_USB_POWER_REG |= LCD_int_USBIO_ENTER_SLEEP;
+            LCD_int_CR1_REG &= LCD_int_USBIO_CR1_OFF;
         #endif
     #endif
-    #if defined(CYIPBLOCK_m0s8ioss_VERSION) && defined(LCD_init__SIO)
-        LCD_init_backup.sioState = LCD_init_SIO_REG;
+    #if defined(CYIPBLOCK_m0s8ioss_VERSION) && defined(LCD_int__SIO)
+        LCD_int_backup.sioState = LCD_int_SIO_REG;
         /* SIO requires unregulated output buffer and single ended input buffer */
-        LCD_init_SIO_REG &= (uint32)(~LCD_init_SIO_LPM_MASK);
+        LCD_int_SIO_REG &= (uint32)(~LCD_int_SIO_LPM_MASK);
     #endif  
 }
 
 
 /*******************************************************************************
-* Function Name: LCD_init_Wakeup
+* Function Name: LCD_int_Wakeup
 ****************************************************************************//**
 *
 * \brief Restores the pin configuration that was saved during Pin_Sleep(). This 
@@ -77,22 +77,22 @@ void LCD_init_Sleep(void)
 *  None
 *  
 * \funcusage
-*  Refer to LCD_init_Sleep() for an example usage.
+*  Refer to LCD_int_Sleep() for an example usage.
 *******************************************************************************/
-void LCD_init_Wakeup(void)
+void LCD_int_Wakeup(void)
 {
-    #if defined(LCD_init__PC)
-        LCD_init_PC = LCD_init_backup.pcState;
+    #if defined(LCD_int__PC)
+        LCD_int_PC = LCD_int_backup.pcState;
     #else
         #if (CY_PSOC4_4200L)
             /* Restore the regulator state and come out of suspend mode */
-            LCD_init_USB_POWER_REG &= LCD_init_USBIO_EXIT_SLEEP_PH1;
-            LCD_init_CR1_REG = LCD_init_backup.usbState;
-            LCD_init_USB_POWER_REG &= LCD_init_USBIO_EXIT_SLEEP_PH2;
+            LCD_int_USB_POWER_REG &= LCD_int_USBIO_EXIT_SLEEP_PH1;
+            LCD_int_CR1_REG = LCD_int_backup.usbState;
+            LCD_int_USB_POWER_REG &= LCD_int_USBIO_EXIT_SLEEP_PH2;
         #endif
     #endif
-    #if defined(CYIPBLOCK_m0s8ioss_VERSION) && defined(LCD_init__SIO)
-        LCD_init_SIO_REG = LCD_init_backup.sioState;
+    #if defined(CYIPBLOCK_m0s8ioss_VERSION) && defined(LCD_int__SIO)
+        LCD_int_SIO_REG = LCD_int_backup.sioState;
     #endif
 }
 

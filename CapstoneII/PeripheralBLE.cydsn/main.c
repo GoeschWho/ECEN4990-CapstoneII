@@ -12,8 +12,8 @@
 #include <project.h>
 
 void StackEventHandler( uint32 eventCode, void *eventParam );
-void BLE_Connect();
-void BLE_Stay_Connected();
+void BLEConnect();
+void BLEStayConnected();
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL 0x40030008
@@ -21,20 +21,17 @@ void BLE_Stay_Connected();
 int main()
 {
      CyGlobalIntEnable;   /* Enable global interrupts */
-    
-    /*  LCD SETUP   */
-    
 
     /*  BLE SETUP   */
     CyBle_Start( StackEventHandler );
-    //BLE_Connect();
+    //BLEConnect();
     
     for(;;)
     {
         /* Place your application code here */
         CyBle_ProcessEvents();
         
-        //BLE_Stay_Connected();
+        //BLEStayConnected();
     }
 }
 
@@ -62,7 +59,7 @@ void StackEventHandler( uint32 eventCode, void *eventParam )
     }
 }   
 
-void BLE_Connect() {
+void BLEConnect() {
    
     CYBLE_API_RESULT_T advertise_result;
     CYBLE_STATE_T ble_state;
@@ -88,7 +85,7 @@ void BLE_Connect() {
     
 }
 
-void BLE_Stay_Connected() {
+void BLEStayConnected() {
    
     CYBLE_API_RESULT_T advertise_result;
     CYBLE_STATE_T ble_state;

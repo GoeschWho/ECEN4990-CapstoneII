@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 1
 
 
    1              		.syntax unified
@@ -31,15 +31,21 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
   28              		.size	LCDSPI_IntrTxMask, 2
   29              	LCDSPI_IntrTxMask:
   30 0002 0000     		.space	2
-  31              		.section	.text.LCDSPI_Init,"ax",%progbits
+  31              		.global	LCDSPI_customIntrHandler
   32              		.align	2
-  33              		.global	LCDSPI_Init
-  34              		.code	16
-  35              		.thumb_func
-  36              		.type	LCDSPI_Init, %function
-  37              	LCDSPI_Init:
-  38              	.LFB2:
-  39              		.file 1 "Generated_Source\\PSoC4\\LCDSPI.c"
+  33              		.type	LCDSPI_customIntrHandler, %object
+  34              		.size	LCDSPI_customIntrHandler, 4
+  35              	LCDSPI_customIntrHandler:
+  36 0004 00000000 		.space	4
+  37              		.section	.text.LCDSPI_Init,"ax",%progbits
+  38              		.align	2
+  39              		.global	LCDSPI_Init
+  40              		.code	16
+  41              		.thumb_func
+  42              		.type	LCDSPI_Init, %function
+  43              	LCDSPI_Init:
+  44              	.LFB2:
+  45              		.file 1 "Generated_Source\\PSoC4\\LCDSPI.c"
    1:Generated_Source\PSoC4/LCDSPI.c **** /***************************************************************************//**
    2:Generated_Source\PSoC4/LCDSPI.c **** * \file LCDSPI.c
    3:Generated_Source\PSoC4/LCDSPI.c **** * \version 4.0
@@ -52,15 +58,15 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
   10:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************
   11:Generated_Source\PSoC4/LCDSPI.c **** * \copyright
   12:Generated_Source\PSoC4/LCDSPI.c **** * Copyright 2013-2017, Cypress Semiconductor Corporation.  All rights reserved.
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 2
+
+
   13:Generated_Source\PSoC4/LCDSPI.c **** * You may use this file only in accordance with the license, terms, conditions,
   14:Generated_Source\PSoC4/LCDSPI.c **** * disclaimers, and limitations in the end user license agreement accompanying
   15:Generated_Source\PSoC4/LCDSPI.c **** * the software package with which this file was provided.
   16:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
   17:Generated_Source\PSoC4/LCDSPI.c **** 
   18:Generated_Source\PSoC4/LCDSPI.c **** #include "LCDSPI_PVT.h"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 2
-
-
   19:Generated_Source\PSoC4/LCDSPI.c **** 
   20:Generated_Source\PSoC4/LCDSPI.c **** #if (LCDSPI_SCB_MODE_I2C_INC)
   21:Generated_Source\PSoC4/LCDSPI.c ****     #include "LCDSPI_I2C_PVT.h"
@@ -112,15 +118,15 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
   67:Generated_Source\PSoC4/LCDSPI.c **** * \addtogroup group_general
   68:Generated_Source\PSoC4/LCDSPI.c **** * \{
   69:Generated_Source\PSoC4/LCDSPI.c **** */
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 3
+
+
   70:Generated_Source\PSoC4/LCDSPI.c **** 
   71:Generated_Source\PSoC4/LCDSPI.c **** /** LCDSPI_initVar indicates whether the LCDSPI 
   72:Generated_Source\PSoC4/LCDSPI.c **** *  component has been initialized. The variable is initialized to 0 
   73:Generated_Source\PSoC4/LCDSPI.c **** *  and set to 1 the first time SCB_Start() is called. This allows 
   74:Generated_Source\PSoC4/LCDSPI.c **** *  the component to restart without reinitialization after the first 
   75:Generated_Source\PSoC4/LCDSPI.c **** *  call to the LCDSPI_Start() routine.
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 3
-
-
   76:Generated_Source\PSoC4/LCDSPI.c **** *
   77:Generated_Source\PSoC4/LCDSPI.c **** *  If re-initialization of the component is required, then the 
   78:Generated_Source\PSoC4/LCDSPI.c **** *  LCDSPI_Init() function can be called before the 
@@ -170,19 +176,19 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  122:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
  123:Generated_Source\PSoC4/LCDSPI.c **** void LCDSPI_Init(void)
  124:Generated_Source\PSoC4/LCDSPI.c **** {
-  40              		.loc 1 124 0
-  41              		.cfi_startproc
-  42              		@ args = 0, pretend = 0, frame = 0
-  43              		@ frame_needed = 1, uses_anonymous_args = 0
-  44 0000 80B5     		push	{r7, lr}
-  45              		.cfi_def_cfa_offset 8
-  46              		.cfi_offset 7, -8
-  47              		.cfi_offset 14, -4
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 4
+  46              		.loc 1 124 0
+  47              		.cfi_startproc
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 4
 
 
-  48 0002 00AF     		add	r7, sp, #0
-  49              		.cfi_def_cfa_register 7
+  48              		@ args = 0, pretend = 0, frame = 0
+  49              		@ frame_needed = 1, uses_anonymous_args = 0
+  50 0000 80B5     		push	{r7, lr}
+  51              		.cfi_def_cfa_offset 8
+  52              		.cfi_offset 7, -8
+  53              		.cfi_offset 14, -4
+  54 0002 00AF     		add	r7, sp, #0
+  55              		.cfi_def_cfa_register 7
  125:Generated_Source\PSoC4/LCDSPI.c **** #if (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG)
  126:Generated_Source\PSoC4/LCDSPI.c ****     if (LCDSPI_SCB_MODE_UNCONFIG_RUNTM_CFG)
  127:Generated_Source\PSoC4/LCDSPI.c ****     {
@@ -198,8 +204,8 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  137:Generated_Source\PSoC4/LCDSPI.c **** 
  138:Generated_Source\PSoC4/LCDSPI.c **** #elif (LCDSPI_SCB_MODE_SPI_CONST_CFG)
  139:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_SpiInit();
-  50              		.loc 1 139 0
-  51 0004 FFF7FEFF 		bl	LCDSPI_SpiInit
+  56              		.loc 1 139 0
+  57 0004 FFF7FEFF 		bl	LCDSPI_SpiInit
  140:Generated_Source\PSoC4/LCDSPI.c **** 
  141:Generated_Source\PSoC4/LCDSPI.c **** #elif (LCDSPI_SCB_MODE_UART_CONST_CFG)
  142:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_UartInit();
@@ -209,22 +215,22 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  146:Generated_Source\PSoC4/LCDSPI.c **** 
  147:Generated_Source\PSoC4/LCDSPI.c **** #endif /* (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG) */
  148:Generated_Source\PSoC4/LCDSPI.c **** }
-  52              		.loc 1 148 0
-  53 0008 C046     		nop
-  54 000a BD46     		mov	sp, r7
-  55              		@ sp needed
-  56 000c 80BD     		pop	{r7, pc}
-  57              		.cfi_endproc
-  58              	.LFE2:
-  59              		.size	LCDSPI_Init, .-LCDSPI_Init
-  60 000e C046     		.section	.text.LCDSPI_Enable,"ax",%progbits
-  61              		.align	2
-  62              		.global	LCDSPI_Enable
-  63              		.code	16
-  64              		.thumb_func
-  65              		.type	LCDSPI_Enable, %function
-  66              	LCDSPI_Enable:
-  67              	.LFB3:
+  58              		.loc 1 148 0
+  59 0008 C046     		nop
+  60 000a BD46     		mov	sp, r7
+  61              		@ sp needed
+  62 000c 80BD     		pop	{r7, pc}
+  63              		.cfi_endproc
+  64              	.LFE2:
+  65              		.size	LCDSPI_Init, .-LCDSPI_Init
+  66 000e C046     		.section	.text.LCDSPI_Enable,"ax",%progbits
+  67              		.align	2
+  68              		.global	LCDSPI_Enable
+  69              		.code	16
+  70              		.thumb_func
+  71              		.type	LCDSPI_Enable, %function
+  72              	LCDSPI_Enable:
+  73              	.LFB3:
  149:Generated_Source\PSoC4/LCDSPI.c **** 
  150:Generated_Source\PSoC4/LCDSPI.c **** 
  151:Generated_Source\PSoC4/LCDSPI.c **** /*******************************************************************************
@@ -232,15 +238,15 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  153:Generated_Source\PSoC4/LCDSPI.c **** ****************************************************************************//**
  154:Generated_Source\PSoC4/LCDSPI.c **** *
  155:Generated_Source\PSoC4/LCDSPI.c **** *  Enables LCDSPI component operation: activates the hardware and 
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 5
+
+
  156:Generated_Source\PSoC4/LCDSPI.c **** *  internal interrupt. It also restores TX interrupt sources disabled after the 
  157:Generated_Source\PSoC4/LCDSPI.c **** *  LCDSPI_Stop() function was called (note that level-triggered TX 
  158:Generated_Source\PSoC4/LCDSPI.c **** *  interrupt sources remain disabled to not cause code lock-up).
  159:Generated_Source\PSoC4/LCDSPI.c **** *  For I2C and EZI2C modes the interrupt is internal and mandatory for 
  160:Generated_Source\PSoC4/LCDSPI.c **** *  operation. For SPI and UART modes the interrupt can be configured as none, 
  161:Generated_Source\PSoC4/LCDSPI.c **** *  internal or external.
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 5
-
-
  162:Generated_Source\PSoC4/LCDSPI.c **** *  The LCDSPI configuration should be not changed when the component
  163:Generated_Source\PSoC4/LCDSPI.c **** *  is enabled. Any configuration changes should be made after disabling the 
  164:Generated_Source\PSoC4/LCDSPI.c **** *  component.
@@ -252,16 +258,16 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  170:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
  171:Generated_Source\PSoC4/LCDSPI.c **** void LCDSPI_Enable(void)
  172:Generated_Source\PSoC4/LCDSPI.c **** {
-  68              		.loc 1 172 0
-  69              		.cfi_startproc
-  70              		@ args = 0, pretend = 0, frame = 0
-  71              		@ frame_needed = 1, uses_anonymous_args = 0
-  72 0000 80B5     		push	{r7, lr}
-  73              		.cfi_def_cfa_offset 8
-  74              		.cfi_offset 7, -8
-  75              		.cfi_offset 14, -4
-  76 0002 00AF     		add	r7, sp, #0
-  77              		.cfi_def_cfa_register 7
+  74              		.loc 1 172 0
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 0
+  77              		@ frame_needed = 1, uses_anonymous_args = 0
+  78 0000 80B5     		push	{r7, lr}
+  79              		.cfi_def_cfa_offset 8
+  80              		.cfi_offset 7, -8
+  81              		.cfi_offset 14, -4
+  82 0002 00AF     		add	r7, sp, #0
+  83              		.cfi_def_cfa_register 7
  173:Generated_Source\PSoC4/LCDSPI.c **** #if (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG)
  174:Generated_Source\PSoC4/LCDSPI.c ****     /* Enable SCB block, only if it is already configured */
  175:Generated_Source\PSoC4/LCDSPI.c ****     if (!LCDSPI_SCB_MODE_UNCONFIG_RUNTM_CFG)
@@ -275,48 +281,48 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  183:Generated_Source\PSoC4/LCDSPI.c ****     }
  184:Generated_Source\PSoC4/LCDSPI.c **** #else
  185:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_CTRL_REG |= LCDSPI_CTRL_ENABLED;
-  78              		.loc 1 185 0
-  79 0004 064B     		ldr	r3, .L3
-  80 0006 064A     		ldr	r2, .L3
-  81 0008 1268     		ldr	r2, [r2]
-  82 000a 8021     		movs	r1, #128
-  83 000c 0906     		lsls	r1, r1, #24
-  84 000e 0A43     		orrs	r2, r1
-  85 0010 1A60     		str	r2, [r3]
+  84              		.loc 1 185 0
+  85 0004 064B     		ldr	r3, .L3
+  86 0006 064A     		ldr	r2, .L3
+  87 0008 1268     		ldr	r2, [r2]
+  88 000a 8021     		movs	r1, #128
+  89 000c 0906     		lsls	r1, r1, #24
+  90 000e 0A43     		orrs	r2, r1
+  91 0010 1A60     		str	r2, [r3]
  186:Generated_Source\PSoC4/LCDSPI.c **** 
  187:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_ScbEnableIntr();
-  86              		.loc 1 187 0
-  87 0012 FFF7FEFF 		bl	LCDSPI_ScbEnableIntr
+  92              		.loc 1 187 0
+  93 0012 FFF7FEFF 		bl	LCDSPI_ScbEnableIntr
  188:Generated_Source\PSoC4/LCDSPI.c **** 
  189:Generated_Source\PSoC4/LCDSPI.c ****     /* Call PostEnable function specific to current operation mode */
  190:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_ScbModePostEnable();
-  88              		.loc 1 190 0
-  89 0016 FFF7FEFF 		bl	LCDSPI_ScbModePostEnable
+  94              		.loc 1 190 0
+  95 0016 FFF7FEFF 		bl	LCDSPI_ScbModePostEnable
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 6
+
+
  191:Generated_Source\PSoC4/LCDSPI.c **** #endif /* (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG) */
  192:Generated_Source\PSoC4/LCDSPI.c **** }
-  90              		.loc 1 192 0
-  91 001a C046     		nop
-  92 001c BD46     		mov	sp, r7
-  93              		@ sp needed
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 6
-
-
-  94 001e 80BD     		pop	{r7, pc}
-  95              	.L4:
-  96              		.align	2
-  97              	.L3:
-  98 0020 00002440 		.word	1076101120
-  99              		.cfi_endproc
- 100              	.LFE3:
- 101              		.size	LCDSPI_Enable, .-LCDSPI_Enable
- 102              		.section	.text.LCDSPI_Start,"ax",%progbits
- 103              		.align	2
- 104              		.global	LCDSPI_Start
- 105              		.code	16
- 106              		.thumb_func
- 107              		.type	LCDSPI_Start, %function
- 108              	LCDSPI_Start:
- 109              	.LFB4:
+  96              		.loc 1 192 0
+  97 001a C046     		nop
+  98 001c BD46     		mov	sp, r7
+  99              		@ sp needed
+ 100 001e 80BD     		pop	{r7, pc}
+ 101              	.L4:
+ 102              		.align	2
+ 103              	.L3:
+ 104 0020 00002440 		.word	1076101120
+ 105              		.cfi_endproc
+ 106              	.LFE3:
+ 107              		.size	LCDSPI_Enable, .-LCDSPI_Enable
+ 108              		.section	.text.LCDSPI_Start,"ax",%progbits
+ 109              		.align	2
+ 110              		.global	LCDSPI_Start
+ 111              		.code	16
+ 112              		.thumb_func
+ 113              		.type	LCDSPI_Start, %function
+ 114              	LCDSPI_Start:
+ 115              	.LFB4:
  193:Generated_Source\PSoC4/LCDSPI.c **** 
  194:Generated_Source\PSoC4/LCDSPI.c **** 
  195:Generated_Source\PSoC4/LCDSPI.c **** /*******************************************************************************
@@ -336,61 +342,61 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  209:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
  210:Generated_Source\PSoC4/LCDSPI.c **** void LCDSPI_Start(void)
  211:Generated_Source\PSoC4/LCDSPI.c **** {
- 110              		.loc 1 211 0
- 111              		.cfi_startproc
- 112              		@ args = 0, pretend = 0, frame = 0
- 113              		@ frame_needed = 1, uses_anonymous_args = 0
- 114 0000 80B5     		push	{r7, lr}
- 115              		.cfi_def_cfa_offset 8
- 116              		.cfi_offset 7, -8
- 117              		.cfi_offset 14, -4
- 118 0002 00AF     		add	r7, sp, #0
- 119              		.cfi_def_cfa_register 7
+ 116              		.loc 1 211 0
+ 117              		.cfi_startproc
+ 118              		@ args = 0, pretend = 0, frame = 0
+ 119              		@ frame_needed = 1, uses_anonymous_args = 0
+ 120 0000 80B5     		push	{r7, lr}
+ 121              		.cfi_def_cfa_offset 8
+ 122              		.cfi_offset 7, -8
+ 123              		.cfi_offset 14, -4
+ 124 0002 00AF     		add	r7, sp, #0
+ 125              		.cfi_def_cfa_register 7
  212:Generated_Source\PSoC4/LCDSPI.c ****     if (0u == LCDSPI_initVar)
- 120              		.loc 1 212 0
- 121 0004 064B     		ldr	r3, .L7
- 122 0006 1B78     		ldrb	r3, [r3]
- 123 0008 002B     		cmp	r3, #0
- 124 000a 04D1     		bne	.L6
+ 126              		.loc 1 212 0
+ 127 0004 064B     		ldr	r3, .L7
+ 128 0006 1B78     		ldrb	r3, [r3]
+ 129 0008 002B     		cmp	r3, #0
+ 130 000a 04D1     		bne	.L6
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 7
+
+
  213:Generated_Source\PSoC4/LCDSPI.c ****     {
  214:Generated_Source\PSoC4/LCDSPI.c ****         LCDSPI_Init();
- 125              		.loc 1 214 0
- 126 000c FFF7FEFF 		bl	LCDSPI_Init
+ 131              		.loc 1 214 0
+ 132 000c FFF7FEFF 		bl	LCDSPI_Init
  215:Generated_Source\PSoC4/LCDSPI.c ****         LCDSPI_initVar = 1u; /* Component was initialized */
- 127              		.loc 1 215 0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 7
-
-
- 128 0010 034B     		ldr	r3, .L7
- 129 0012 0122     		movs	r2, #1
- 130 0014 1A70     		strb	r2, [r3]
- 131              	.L6:
+ 133              		.loc 1 215 0
+ 134 0010 034B     		ldr	r3, .L7
+ 135 0012 0122     		movs	r2, #1
+ 136 0014 1A70     		strb	r2, [r3]
+ 137              	.L6:
  216:Generated_Source\PSoC4/LCDSPI.c ****     }
  217:Generated_Source\PSoC4/LCDSPI.c **** 
  218:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_Enable();
- 132              		.loc 1 218 0
- 133 0016 FFF7FEFF 		bl	LCDSPI_Enable
+ 138              		.loc 1 218 0
+ 139 0016 FFF7FEFF 		bl	LCDSPI_Enable
  219:Generated_Source\PSoC4/LCDSPI.c **** }
- 134              		.loc 1 219 0
- 135 001a C046     		nop
- 136 001c BD46     		mov	sp, r7
- 137              		@ sp needed
- 138 001e 80BD     		pop	{r7, pc}
- 139              	.L8:
- 140              		.align	2
- 141              	.L7:
- 142 0020 00000000 		.word	LCDSPI_initVar
- 143              		.cfi_endproc
- 144              	.LFE4:
- 145              		.size	LCDSPI_Start, .-LCDSPI_Start
- 146              		.section	.text.LCDSPI_Stop,"ax",%progbits
- 147              		.align	2
- 148              		.global	LCDSPI_Stop
- 149              		.code	16
- 150              		.thumb_func
- 151              		.type	LCDSPI_Stop, %function
- 152              	LCDSPI_Stop:
- 153              	.LFB5:
+ 140              		.loc 1 219 0
+ 141 001a C046     		nop
+ 142 001c BD46     		mov	sp, r7
+ 143              		@ sp needed
+ 144 001e 80BD     		pop	{r7, pc}
+ 145              	.L8:
+ 146              		.align	2
+ 147              	.L7:
+ 148 0020 00000000 		.word	LCDSPI_initVar
+ 149              		.cfi_endproc
+ 150              	.LFE4:
+ 151              		.size	LCDSPI_Start, .-LCDSPI_Start
+ 152              		.section	.text.LCDSPI_Stop,"ax",%progbits
+ 153              		.align	2
+ 154              		.global	LCDSPI_Stop
+ 155              		.code	16
+ 156              		.thumb_func
+ 157              		.type	LCDSPI_Stop, %function
+ 158              	LCDSPI_Stop:
+ 159              	.LFB5:
  220:Generated_Source\PSoC4/LCDSPI.c **** 
  221:Generated_Source\PSoC4/LCDSPI.c **** 
  222:Generated_Source\PSoC4/LCDSPI.c **** /*******************************************************************************
@@ -412,37 +418,40 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  238:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
  239:Generated_Source\PSoC4/LCDSPI.c **** void LCDSPI_Stop(void)
  240:Generated_Source\PSoC4/LCDSPI.c **** {
- 154              		.loc 1 240 0
- 155              		.cfi_startproc
- 156              		@ args = 0, pretend = 0, frame = 0
- 157              		@ frame_needed = 1, uses_anonymous_args = 0
- 158 0000 80B5     		push	{r7, lr}
- 159              		.cfi_def_cfa_offset 8
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 8
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 8
 
 
- 160              		.cfi_offset 7, -8
- 161              		.cfi_offset 14, -4
- 162 0002 00AF     		add	r7, sp, #0
- 163              		.cfi_def_cfa_register 7
+ 160              		.loc 1 240 0
+ 161              		.cfi_startproc
+ 162              		@ args = 0, pretend = 0, frame = 0
+ 163              		@ frame_needed = 1, uses_anonymous_args = 0
+ 164 0000 80B5     		push	{r7, lr}
+ 165              		.cfi_def_cfa_offset 8
+ 166              		.cfi_offset 7, -8
+ 167              		.cfi_offset 14, -4
+ 168 0002 00AF     		add	r7, sp, #0
+ 169              		.cfi_def_cfa_register 7
  241:Generated_Source\PSoC4/LCDSPI.c **** #if (LCDSPI_SCB_IRQ_INTERNAL)
  242:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_DisableInt();
+ 170              		.loc 1 242 0
+ 171 0004 0920     		movs	r0, #9
+ 172 0006 FFF7FEFF 		bl	CyIntDisable
  243:Generated_Source\PSoC4/LCDSPI.c **** #endif /* (LCDSPI_SCB_IRQ_INTERNAL) */
  244:Generated_Source\PSoC4/LCDSPI.c **** 
  245:Generated_Source\PSoC4/LCDSPI.c ****     /* Call Stop function specific to current operation mode */
  246:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_ScbModeStop();
- 164              		.loc 1 246 0
- 165 0004 FFF7FEFF 		bl	LCDSPI_ScbModeStop
+ 173              		.loc 1 246 0
+ 174 000a FFF7FEFF 		bl	LCDSPI_ScbModeStop
  247:Generated_Source\PSoC4/LCDSPI.c **** 
  248:Generated_Source\PSoC4/LCDSPI.c ****     /* Disable SCB IP */
  249:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_CTRL_REG &= (uint32) ~LCDSPI_CTRL_ENABLED;
- 166              		.loc 1 249 0
- 167 0008 054B     		ldr	r3, .L10
- 168 000a 054A     		ldr	r2, .L10
- 169 000c 1268     		ldr	r2, [r2]
- 170 000e 5200     		lsls	r2, r2, #1
- 171 0010 5208     		lsrs	r2, r2, #1
- 172 0012 1A60     		str	r2, [r3]
+ 175              		.loc 1 249 0
+ 176 000e 074B     		ldr	r3, .L10
+ 177 0010 064A     		ldr	r2, .L10
+ 178 0012 1268     		ldr	r2, [r2]
+ 179 0014 5200     		lsls	r2, r2, #1
+ 180 0016 5208     		lsrs	r2, r2, #1
+ 181 0018 1A60     		str	r2, [r3]
  250:Generated_Source\PSoC4/LCDSPI.c **** 
  251:Generated_Source\PSoC4/LCDSPI.c ****     /* Disable all TX interrupt sources so as not to cause an unexpected
  252:Generated_Source\PSoC4/LCDSPI.c ****     * interrupt trigger after the component will be enabled because the 
@@ -453,39 +462,42 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  257:Generated_Source\PSoC4/LCDSPI.c ****     * is disabled.
  258:Generated_Source\PSoC4/LCDSPI.c ****     */
  259:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_SetTxInterruptMode(LCDSPI_NO_INTR_SOURCES);
- 173              		.loc 1 259 0
- 174 0014 034B     		ldr	r3, .L10+4
- 175 0016 0022     		movs	r2, #0
- 176 0018 1A60     		str	r2, [r3]
+ 182              		.loc 1 259 0
+ 183 001a 054B     		ldr	r3, .L10+4
+ 184 001c 0022     		movs	r2, #0
+ 185 001e 1A60     		str	r2, [r3]
  260:Generated_Source\PSoC4/LCDSPI.c **** 
  261:Generated_Source\PSoC4/LCDSPI.c **** #if (LCDSPI_SCB_IRQ_INTERNAL)
  262:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_ClearPendingInt();
+ 186              		.loc 1 262 0
+ 187 0020 0920     		movs	r0, #9
+ 188 0022 FFF7FEFF 		bl	CyIntClearPending
  263:Generated_Source\PSoC4/LCDSPI.c **** #endif /* (LCDSPI_SCB_IRQ_INTERNAL) */
  264:Generated_Source\PSoC4/LCDSPI.c **** }
- 177              		.loc 1 264 0
- 178 001a C046     		nop
- 179 001c BD46     		mov	sp, r7
- 180              		@ sp needed
- 181 001e 80BD     		pop	{r7, pc}
- 182              	.L11:
- 183              		.align	2
- 184              	.L10:
- 185 0020 00002440 		.word	1076101120
- 186 0024 880F2440 		.word	1076105096
- 187              		.cfi_endproc
- 188              	.LFE5:
- 189              		.size	LCDSPI_Stop, .-LCDSPI_Stop
- 190              		.section	.text.LCDSPI_SetRxFifoLevel,"ax",%progbits
- 191              		.align	2
- 192              		.global	LCDSPI_SetRxFifoLevel
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 9
+ 189              		.loc 1 264 0
+ 190 0026 C046     		nop
+ 191 0028 BD46     		mov	sp, r7
+ 192              		@ sp needed
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 9
 
 
- 193              		.code	16
- 194              		.thumb_func
- 195              		.type	LCDSPI_SetRxFifoLevel, %function
- 196              	LCDSPI_SetRxFifoLevel:
- 197              	.LFB6:
+ 193 002a 80BD     		pop	{r7, pc}
+ 194              	.L11:
+ 195              		.align	2
+ 196              	.L10:
+ 197 002c 00002440 		.word	1076101120
+ 198 0030 880F2440 		.word	1076105096
+ 199              		.cfi_endproc
+ 200              	.LFE5:
+ 201              		.size	LCDSPI_Stop, .-LCDSPI_Stop
+ 202              		.section	.text.LCDSPI_SetRxFifoLevel,"ax",%progbits
+ 203              		.align	2
+ 204              		.global	LCDSPI_SetRxFifoLevel
+ 205              		.code	16
+ 206              		.thumb_func
+ 207              		.type	LCDSPI_SetRxFifoLevel, %function
+ 208              	LCDSPI_SetRxFifoLevel:
+ 209              	.LFB6:
  265:Generated_Source\PSoC4/LCDSPI.c **** 
  266:Generated_Source\PSoC4/LCDSPI.c **** 
  267:Generated_Source\PSoC4/LCDSPI.c **** /*******************************************************************************
@@ -502,72 +514,72 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  278:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
  279:Generated_Source\PSoC4/LCDSPI.c **** void LCDSPI_SetRxFifoLevel(uint32 level)
  280:Generated_Source\PSoC4/LCDSPI.c **** {
- 198              		.loc 1 280 0
- 199              		.cfi_startproc
- 200              		@ args = 0, pretend = 0, frame = 16
- 201              		@ frame_needed = 1, uses_anonymous_args = 0
- 202 0000 80B5     		push	{r7, lr}
- 203              		.cfi_def_cfa_offset 8
- 204              		.cfi_offset 7, -8
- 205              		.cfi_offset 14, -4
- 206 0002 84B0     		sub	sp, sp, #16
- 207              		.cfi_def_cfa_offset 24
- 208 0004 00AF     		add	r7, sp, #0
- 209              		.cfi_def_cfa_register 7
- 210 0006 7860     		str	r0, [r7, #4]
+ 210              		.loc 1 280 0
+ 211              		.cfi_startproc
+ 212              		@ args = 0, pretend = 0, frame = 16
+ 213              		@ frame_needed = 1, uses_anonymous_args = 0
+ 214 0000 80B5     		push	{r7, lr}
+ 215              		.cfi_def_cfa_offset 8
+ 216              		.cfi_offset 7, -8
+ 217              		.cfi_offset 14, -4
+ 218 0002 84B0     		sub	sp, sp, #16
+ 219              		.cfi_def_cfa_offset 24
+ 220 0004 00AF     		add	r7, sp, #0
+ 221              		.cfi_def_cfa_register 7
+ 222 0006 7860     		str	r0, [r7, #4]
  281:Generated_Source\PSoC4/LCDSPI.c ****     uint32 rxFifoCtrl;
  282:Generated_Source\PSoC4/LCDSPI.c **** 
  283:Generated_Source\PSoC4/LCDSPI.c ****     rxFifoCtrl = LCDSPI_RX_FIFO_CTRL_REG;
- 211              		.loc 1 283 0
- 212 0008 094B     		ldr	r3, .L13
- 213 000a 1B68     		ldr	r3, [r3]
- 214 000c FB60     		str	r3, [r7, #12]
+ 223              		.loc 1 283 0
+ 224 0008 094B     		ldr	r3, .L13
+ 225 000a 1B68     		ldr	r3, [r3]
+ 226 000c FB60     		str	r3, [r7, #12]
  284:Generated_Source\PSoC4/LCDSPI.c **** 
  285:Generated_Source\PSoC4/LCDSPI.c ****     rxFifoCtrl &= ((uint32) ~LCDSPI_RX_FIFO_CTRL_TRIGGER_LEVEL_MASK); /* Clear level mask bits */
- 215              		.loc 1 285 0
- 216 000e FB68     		ldr	r3, [r7, #12]
- 217 0010 0F22     		movs	r2, #15
- 218 0012 9343     		bics	r3, r2
- 219 0014 FB60     		str	r3, [r7, #12]
+ 227              		.loc 1 285 0
+ 228 000e FB68     		ldr	r3, [r7, #12]
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 10
+
+
+ 229 0010 0F22     		movs	r2, #15
+ 230 0012 9343     		bics	r3, r2
+ 231 0014 FB60     		str	r3, [r7, #12]
  286:Generated_Source\PSoC4/LCDSPI.c ****     rxFifoCtrl |= ((uint32) (LCDSPI_RX_FIFO_CTRL_TRIGGER_LEVEL_MASK & level));
- 220              		.loc 1 286 0
- 221 0016 7B68     		ldr	r3, [r7, #4]
- 222 0018 0F22     		movs	r2, #15
- 223 001a 1340     		ands	r3, r2
- 224 001c FA68     		ldr	r2, [r7, #12]
- 225 001e 1343     		orrs	r3, r2
- 226 0020 FB60     		str	r3, [r7, #12]
+ 232              		.loc 1 286 0
+ 233 0016 7B68     		ldr	r3, [r7, #4]
+ 234 0018 0F22     		movs	r2, #15
+ 235 001a 1340     		ands	r3, r2
+ 236 001c FA68     		ldr	r2, [r7, #12]
+ 237 001e 1343     		orrs	r3, r2
+ 238 0020 FB60     		str	r3, [r7, #12]
  287:Generated_Source\PSoC4/LCDSPI.c **** 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 10
-
-
  288:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_RX_FIFO_CTRL_REG = rxFifoCtrl;
- 227              		.loc 1 288 0
- 228 0022 034B     		ldr	r3, .L13
- 229 0024 FA68     		ldr	r2, [r7, #12]
- 230 0026 1A60     		str	r2, [r3]
+ 239              		.loc 1 288 0
+ 240 0022 034B     		ldr	r3, .L13
+ 241 0024 FA68     		ldr	r2, [r7, #12]
+ 242 0026 1A60     		str	r2, [r3]
  289:Generated_Source\PSoC4/LCDSPI.c **** }
- 231              		.loc 1 289 0
- 232 0028 C046     		nop
- 233 002a BD46     		mov	sp, r7
- 234 002c 04B0     		add	sp, sp, #16
- 235              		@ sp needed
- 236 002e 80BD     		pop	{r7, pc}
- 237              	.L14:
- 238              		.align	2
- 239              	.L13:
- 240 0030 04032440 		.word	1076101892
- 241              		.cfi_endproc
- 242              	.LFE6:
- 243              		.size	LCDSPI_SetRxFifoLevel, .-LCDSPI_SetRxFifoLevel
- 244              		.section	.text.LCDSPI_SetTxFifoLevel,"ax",%progbits
- 245              		.align	2
- 246              		.global	LCDSPI_SetTxFifoLevel
- 247              		.code	16
- 248              		.thumb_func
- 249              		.type	LCDSPI_SetTxFifoLevel, %function
- 250              	LCDSPI_SetTxFifoLevel:
- 251              	.LFB7:
+ 243              		.loc 1 289 0
+ 244 0028 C046     		nop
+ 245 002a BD46     		mov	sp, r7
+ 246 002c 04B0     		add	sp, sp, #16
+ 247              		@ sp needed
+ 248 002e 80BD     		pop	{r7, pc}
+ 249              	.L14:
+ 250              		.align	2
+ 251              	.L13:
+ 252 0030 04032440 		.word	1076101892
+ 253              		.cfi_endproc
+ 254              	.LFE6:
+ 255              		.size	LCDSPI_SetRxFifoLevel, .-LCDSPI_SetRxFifoLevel
+ 256              		.section	.text.LCDSPI_SetTxFifoLevel,"ax",%progbits
+ 257              		.align	2
+ 258              		.global	LCDSPI_SetTxFifoLevel
+ 259              		.code	16
+ 260              		.thumb_func
+ 261              		.type	LCDSPI_SetTxFifoLevel, %function
+ 262              	LCDSPI_SetTxFifoLevel:
+ 263              	.LFB7:
  290:Generated_Source\PSoC4/LCDSPI.c **** 
  291:Generated_Source\PSoC4/LCDSPI.c **** 
  292:Generated_Source\PSoC4/LCDSPI.c **** /*******************************************************************************
@@ -584,71 +596,75 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  303:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
  304:Generated_Source\PSoC4/LCDSPI.c **** void LCDSPI_SetTxFifoLevel(uint32 level)
  305:Generated_Source\PSoC4/LCDSPI.c **** {
- 252              		.loc 1 305 0
- 253              		.cfi_startproc
- 254              		@ args = 0, pretend = 0, frame = 16
- 255              		@ frame_needed = 1, uses_anonymous_args = 0
- 256 0000 80B5     		push	{r7, lr}
- 257              		.cfi_def_cfa_offset 8
- 258              		.cfi_offset 7, -8
- 259              		.cfi_offset 14, -4
- 260 0002 84B0     		sub	sp, sp, #16
- 261              		.cfi_def_cfa_offset 24
- 262 0004 00AF     		add	r7, sp, #0
- 263              		.cfi_def_cfa_register 7
- 264 0006 7860     		str	r0, [r7, #4]
+ 264              		.loc 1 305 0
+ 265              		.cfi_startproc
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 11
+
+
+ 266              		@ args = 0, pretend = 0, frame = 16
+ 267              		@ frame_needed = 1, uses_anonymous_args = 0
+ 268 0000 80B5     		push	{r7, lr}
+ 269              		.cfi_def_cfa_offset 8
+ 270              		.cfi_offset 7, -8
+ 271              		.cfi_offset 14, -4
+ 272 0002 84B0     		sub	sp, sp, #16
+ 273              		.cfi_def_cfa_offset 24
+ 274 0004 00AF     		add	r7, sp, #0
+ 275              		.cfi_def_cfa_register 7
+ 276 0006 7860     		str	r0, [r7, #4]
  306:Generated_Source\PSoC4/LCDSPI.c ****     uint32 txFifoCtrl;
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 11
-
-
  307:Generated_Source\PSoC4/LCDSPI.c **** 
  308:Generated_Source\PSoC4/LCDSPI.c ****     txFifoCtrl = LCDSPI_TX_FIFO_CTRL_REG;
- 265              		.loc 1 308 0
- 266 0008 094B     		ldr	r3, .L16
- 267 000a 1B68     		ldr	r3, [r3]
- 268 000c FB60     		str	r3, [r7, #12]
+ 277              		.loc 1 308 0
+ 278 0008 094B     		ldr	r3, .L16
+ 279 000a 1B68     		ldr	r3, [r3]
+ 280 000c FB60     		str	r3, [r7, #12]
  309:Generated_Source\PSoC4/LCDSPI.c **** 
  310:Generated_Source\PSoC4/LCDSPI.c ****     txFifoCtrl &= ((uint32) ~LCDSPI_TX_FIFO_CTRL_TRIGGER_LEVEL_MASK); /* Clear level mask bits */
- 269              		.loc 1 310 0
- 270 000e FB68     		ldr	r3, [r7, #12]
- 271 0010 0F22     		movs	r2, #15
- 272 0012 9343     		bics	r3, r2
- 273 0014 FB60     		str	r3, [r7, #12]
+ 281              		.loc 1 310 0
+ 282 000e FB68     		ldr	r3, [r7, #12]
+ 283 0010 0F22     		movs	r2, #15
+ 284 0012 9343     		bics	r3, r2
+ 285 0014 FB60     		str	r3, [r7, #12]
  311:Generated_Source\PSoC4/LCDSPI.c ****     txFifoCtrl |= ((uint32) (LCDSPI_TX_FIFO_CTRL_TRIGGER_LEVEL_MASK & level));
- 274              		.loc 1 311 0
- 275 0016 7B68     		ldr	r3, [r7, #4]
- 276 0018 0F22     		movs	r2, #15
- 277 001a 1340     		ands	r3, r2
- 278 001c FA68     		ldr	r2, [r7, #12]
- 279 001e 1343     		orrs	r3, r2
- 280 0020 FB60     		str	r3, [r7, #12]
+ 286              		.loc 1 311 0
+ 287 0016 7B68     		ldr	r3, [r7, #4]
+ 288 0018 0F22     		movs	r2, #15
+ 289 001a 1340     		ands	r3, r2
+ 290 001c FA68     		ldr	r2, [r7, #12]
+ 291 001e 1343     		orrs	r3, r2
+ 292 0020 FB60     		str	r3, [r7, #12]
  312:Generated_Source\PSoC4/LCDSPI.c **** 
  313:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_TX_FIFO_CTRL_REG = txFifoCtrl;
- 281              		.loc 1 313 0
- 282 0022 034B     		ldr	r3, .L16
- 283 0024 FA68     		ldr	r2, [r7, #12]
- 284 0026 1A60     		str	r2, [r3]
+ 293              		.loc 1 313 0
+ 294 0022 034B     		ldr	r3, .L16
+ 295 0024 FA68     		ldr	r2, [r7, #12]
+ 296 0026 1A60     		str	r2, [r3]
  314:Generated_Source\PSoC4/LCDSPI.c **** }
- 285              		.loc 1 314 0
- 286 0028 C046     		nop
- 287 002a BD46     		mov	sp, r7
- 288 002c 04B0     		add	sp, sp, #16
- 289              		@ sp needed
- 290 002e 80BD     		pop	{r7, pc}
- 291              	.L17:
- 292              		.align	2
- 293              	.L16:
- 294 0030 04022440 		.word	1076101636
- 295              		.cfi_endproc
- 296              	.LFE7:
- 297              		.size	LCDSPI_SetTxFifoLevel, .-LCDSPI_SetTxFifoLevel
- 298              		.section	.text.LCDSPI_ScbEnableIntr,"ax",%progbits
- 299              		.align	2
- 300              		.code	16
- 301              		.thumb_func
- 302              		.type	LCDSPI_ScbEnableIntr, %function
- 303              	LCDSPI_ScbEnableIntr:
- 304              	.LFB8:
+ 297              		.loc 1 314 0
+ 298 0028 C046     		nop
+ 299 002a BD46     		mov	sp, r7
+ 300 002c 04B0     		add	sp, sp, #16
+ 301              		@ sp needed
+ 302 002e 80BD     		pop	{r7, pc}
+ 303              	.L17:
+ 304              		.align	2
+ 305              	.L16:
+ 306 0030 04022440 		.word	1076101636
+ 307              		.cfi_endproc
+ 308              	.LFE7:
+ 309              		.size	LCDSPI_SetTxFifoLevel, .-LCDSPI_SetTxFifoLevel
+ 310              		.section	.text.LCDSPI_SetCustomInterruptHandler,"ax",%progbits
+ 311              		.align	2
+ 312              		.global	LCDSPI_SetCustomInterruptHandler
+ 313              		.code	16
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 12
+
+
+ 314              		.thumb_func
+ 315              		.type	LCDSPI_SetCustomInterruptHandler, %function
+ 316              	LCDSPI_SetCustomInterruptHandler:
+ 317              	.LFB8:
  315:Generated_Source\PSoC4/LCDSPI.c **** 
  316:Generated_Source\PSoC4/LCDSPI.c **** 
  317:Generated_Source\PSoC4/LCDSPI.c **** #if (LCDSPI_SCB_IRQ_INTERNAL)
@@ -658,9 +674,6 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  321:Generated_Source\PSoC4/LCDSPI.c ****     *
  322:Generated_Source\PSoC4/LCDSPI.c ****     *  Registers a function to be called by the internal interrupt handler.
  323:Generated_Source\PSoC4/LCDSPI.c ****     *  First the function that is registered is called, then the internal interrupt
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 12
-
-
  324:Generated_Source\PSoC4/LCDSPI.c ****     *  handler performs any operation such as software buffer management functions
  325:Generated_Source\PSoC4/LCDSPI.c ****     *  before the interrupt returns.  It is the user's responsibility not to break
  326:Generated_Source\PSoC4/LCDSPI.c ****     *  the software buffer operations. Only one custom handler is supported, which
@@ -674,8 +687,25 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  334:Generated_Source\PSoC4/LCDSPI.c ****     *******************************************************************************/
  335:Generated_Source\PSoC4/LCDSPI.c ****     void LCDSPI_SetCustomInterruptHandler(void (*func)(void))
  336:Generated_Source\PSoC4/LCDSPI.c ****     {
+ 318              		.loc 1 336 0
+ 319              		.cfi_startproc
+ 320              		@ args = 0, pretend = 0, frame = 8
+ 321              		@ frame_needed = 1, uses_anonymous_args = 0
+ 322 0000 80B5     		push	{r7, lr}
+ 323              		.cfi_def_cfa_offset 8
+ 324              		.cfi_offset 7, -8
+ 325              		.cfi_offset 14, -4
+ 326 0002 82B0     		sub	sp, sp, #8
+ 327              		.cfi_def_cfa_offset 16
+ 328 0004 00AF     		add	r7, sp, #0
+ 329              		.cfi_def_cfa_register 7
+ 330 0006 7860     		str	r0, [r7, #4]
  337:Generated_Source\PSoC4/LCDSPI.c ****     #if !defined (CY_REMOVE_LCDSPI_CUSTOM_INTR_HANDLER)
  338:Generated_Source\PSoC4/LCDSPI.c ****         LCDSPI_customIntrHandler = func; /* Register interrupt handler */
+ 331              		.loc 1 338 0
+ 332 0008 034B     		ldr	r3, .L19
+ 333 000a 7A68     		ldr	r2, [r7, #4]
+ 334 000c 1A60     		str	r2, [r3]
  339:Generated_Source\PSoC4/LCDSPI.c ****     #else
  340:Generated_Source\PSoC4/LCDSPI.c ****         if (NULL != func)
  341:Generated_Source\PSoC4/LCDSPI.c ****         {
@@ -683,6 +713,29 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  343:Generated_Source\PSoC4/LCDSPI.c ****         }
  344:Generated_Source\PSoC4/LCDSPI.c ****     #endif /* !defined (CY_REMOVE_LCDSPI_CUSTOM_INTR_HANDLER) */
  345:Generated_Source\PSoC4/LCDSPI.c ****     }
+ 335              		.loc 1 345 0
+ 336 000e C046     		nop
+ 337 0010 BD46     		mov	sp, r7
+ 338 0012 02B0     		add	sp, sp, #8
+ 339              		@ sp needed
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 13
+
+
+ 340 0014 80BD     		pop	{r7, pc}
+ 341              	.L20:
+ 342 0016 C046     		.align	2
+ 343              	.L19:
+ 344 0018 00000000 		.word	LCDSPI_customIntrHandler
+ 345              		.cfi_endproc
+ 346              	.LFE8:
+ 347              		.size	LCDSPI_SetCustomInterruptHandler, .-LCDSPI_SetCustomInterruptHandler
+ 348              		.section	.text.LCDSPI_ScbEnableIntr,"ax",%progbits
+ 349              		.align	2
+ 350              		.code	16
+ 351              		.thumb_func
+ 352              		.type	LCDSPI_ScbEnableIntr, %function
+ 353              	LCDSPI_ScbEnableIntr:
+ 354              	.LFB9:
  346:Generated_Source\PSoC4/LCDSPI.c **** #endif /* (LCDSPI_SCB_IRQ_INTERNAL) */
  347:Generated_Source\PSoC4/LCDSPI.c **** 
  348:Generated_Source\PSoC4/LCDSPI.c **** 
@@ -695,16 +748,16 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  355:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
  356:Generated_Source\PSoC4/LCDSPI.c **** static void LCDSPI_ScbEnableIntr(void)
  357:Generated_Source\PSoC4/LCDSPI.c **** {
- 305              		.loc 1 357 0
- 306              		.cfi_startproc
- 307              		@ args = 0, pretend = 0, frame = 0
- 308              		@ frame_needed = 1, uses_anonymous_args = 0
- 309 0000 80B5     		push	{r7, lr}
- 310              		.cfi_def_cfa_offset 8
- 311              		.cfi_offset 7, -8
- 312              		.cfi_offset 14, -4
- 313 0002 00AF     		add	r7, sp, #0
- 314              		.cfi_def_cfa_register 7
+ 355              		.loc 1 357 0
+ 356              		.cfi_startproc
+ 357              		@ args = 0, pretend = 0, frame = 0
+ 358              		@ frame_needed = 1, uses_anonymous_args = 0
+ 359 0000 80B5     		push	{r7, lr}
+ 360              		.cfi_def_cfa_offset 8
+ 361              		.cfi_offset 7, -8
+ 362              		.cfi_offset 14, -4
+ 363 0002 00AF     		add	r7, sp, #0
+ 364              		.cfi_def_cfa_register 7
  358:Generated_Source\PSoC4/LCDSPI.c **** #if (LCDSPI_SCB_IRQ_INTERNAL)
  359:Generated_Source\PSoC4/LCDSPI.c ****     /* Enable interrupt in NVIC */
  360:Generated_Source\PSoC4/LCDSPI.c ****     #if (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG)
@@ -715,28 +768,31 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  365:Generated_Source\PSoC4/LCDSPI.c **** 
  366:Generated_Source\PSoC4/LCDSPI.c ****     #else
  367:Generated_Source\PSoC4/LCDSPI.c ****         LCDSPI_EnableInt();
+ 365              		.loc 1 367 0
+ 366 0004 0920     		movs	r0, #9
+ 367 0006 FFF7FEFF 		bl	CyIntEnable
  368:Generated_Source\PSoC4/LCDSPI.c **** 
  369:Generated_Source\PSoC4/LCDSPI.c ****     #endif /* (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG) */
  370:Generated_Source\PSoC4/LCDSPI.c **** #endif /* (LCDSPI_SCB_IRQ_INTERNAL) */
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 13
-
-
  371:Generated_Source\PSoC4/LCDSPI.c **** }
- 315              		.loc 1 371 0
- 316 0004 C046     		nop
- 317 0006 BD46     		mov	sp, r7
- 318              		@ sp needed
- 319 0008 80BD     		pop	{r7, pc}
- 320              		.cfi_endproc
- 321              	.LFE8:
- 322              		.size	LCDSPI_ScbEnableIntr, .-LCDSPI_ScbEnableIntr
- 323 000a C046     		.section	.text.LCDSPI_ScbModePostEnable,"ax",%progbits
- 324              		.align	2
- 325              		.code	16
- 326              		.thumb_func
- 327              		.type	LCDSPI_ScbModePostEnable, %function
- 328              	LCDSPI_ScbModePostEnable:
- 329              	.LFB9:
+ 368              		.loc 1 371 0
+ 369 000a C046     		nop
+ 370 000c BD46     		mov	sp, r7
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 14
+
+
+ 371              		@ sp needed
+ 372 000e 80BD     		pop	{r7, pc}
+ 373              		.cfi_endproc
+ 374              	.LFE9:
+ 375              		.size	LCDSPI_ScbEnableIntr, .-LCDSPI_ScbEnableIntr
+ 376              		.section	.text.LCDSPI_ScbModePostEnable,"ax",%progbits
+ 377              		.align	2
+ 378              		.code	16
+ 379              		.thumb_func
+ 380              		.type	LCDSPI_ScbModePostEnable, %function
+ 381              	LCDSPI_ScbModePostEnable:
+ 382              	.LFB10:
  372:Generated_Source\PSoC4/LCDSPI.c **** 
  373:Generated_Source\PSoC4/LCDSPI.c **** 
  374:Generated_Source\PSoC4/LCDSPI.c **** /*******************************************************************************
@@ -748,16 +804,16 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  380:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
  381:Generated_Source\PSoC4/LCDSPI.c **** static void LCDSPI_ScbModePostEnable(void)
  382:Generated_Source\PSoC4/LCDSPI.c **** {
- 330              		.loc 1 382 0
- 331              		.cfi_startproc
- 332              		@ args = 0, pretend = 0, frame = 0
- 333              		@ frame_needed = 1, uses_anonymous_args = 0
- 334 0000 80B5     		push	{r7, lr}
- 335              		.cfi_def_cfa_offset 8
- 336              		.cfi_offset 7, -8
- 337              		.cfi_offset 14, -4
- 338 0002 00AF     		add	r7, sp, #0
- 339              		.cfi_def_cfa_register 7
+ 383              		.loc 1 382 0
+ 384              		.cfi_startproc
+ 385              		@ args = 0, pretend = 0, frame = 0
+ 386              		@ frame_needed = 1, uses_anonymous_args = 0
+ 387 0000 80B5     		push	{r7, lr}
+ 388              		.cfi_def_cfa_offset 8
+ 389              		.cfi_offset 7, -8
+ 390              		.cfi_offset 14, -4
+ 391 0002 00AF     		add	r7, sp, #0
+ 392              		.cfi_def_cfa_register 7
  383:Generated_Source\PSoC4/LCDSPI.c **** #if (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG)
  384:Generated_Source\PSoC4/LCDSPI.c **** #if (!LCDSPI_CY_SCBIP_V1)
  385:Generated_Source\PSoC4/LCDSPI.c ****     if (LCDSPI_SCB_MODE_SPI_RUNTM_CFG)
@@ -776,34 +832,34 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  398:Generated_Source\PSoC4/LCDSPI.c **** 
  399:Generated_Source\PSoC4/LCDSPI.c **** #elif (LCDSPI_SCB_MODE_SPI_CONST_CFG)
  400:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_SpiPostEnable();
- 340              		.loc 1 400 0
- 341 0004 FFF7FEFF 		bl	LCDSPI_SpiPostEnable
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 14
-
-
+ 393              		.loc 1 400 0
+ 394 0004 FFF7FEFF 		bl	LCDSPI_SpiPostEnable
  401:Generated_Source\PSoC4/LCDSPI.c **** 
  402:Generated_Source\PSoC4/LCDSPI.c **** #elif (LCDSPI_SCB_MODE_UART_CONST_CFG)
  403:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_UartPostEnable();
  404:Generated_Source\PSoC4/LCDSPI.c **** 
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 15
+
+
  405:Generated_Source\PSoC4/LCDSPI.c **** #else
  406:Generated_Source\PSoC4/LCDSPI.c ****     /* Unknown mode: do nothing */
  407:Generated_Source\PSoC4/LCDSPI.c **** #endif /* (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG) */
  408:Generated_Source\PSoC4/LCDSPI.c **** }
- 342              		.loc 1 408 0
- 343 0008 C046     		nop
- 344 000a BD46     		mov	sp, r7
- 345              		@ sp needed
- 346 000c 80BD     		pop	{r7, pc}
- 347              		.cfi_endproc
- 348              	.LFE9:
- 349              		.size	LCDSPI_ScbModePostEnable, .-LCDSPI_ScbModePostEnable
- 350 000e C046     		.section	.text.LCDSPI_ScbModeStop,"ax",%progbits
- 351              		.align	2
- 352              		.code	16
- 353              		.thumb_func
- 354              		.type	LCDSPI_ScbModeStop, %function
- 355              	LCDSPI_ScbModeStop:
- 356              	.LFB10:
+ 395              		.loc 1 408 0
+ 396 0008 C046     		nop
+ 397 000a BD46     		mov	sp, r7
+ 398              		@ sp needed
+ 399 000c 80BD     		pop	{r7, pc}
+ 400              		.cfi_endproc
+ 401              	.LFE10:
+ 402              		.size	LCDSPI_ScbModePostEnable, .-LCDSPI_ScbModePostEnable
+ 403 000e C046     		.section	.text.LCDSPI_ScbModeStop,"ax",%progbits
+ 404              		.align	2
+ 405              		.code	16
+ 406              		.thumb_func
+ 407              		.type	LCDSPI_ScbModeStop, %function
+ 408              	LCDSPI_ScbModeStop:
+ 409              	.LFB11:
  409:Generated_Source\PSoC4/LCDSPI.c **** 
  410:Generated_Source\PSoC4/LCDSPI.c **** 
  411:Generated_Source\PSoC4/LCDSPI.c **** /*******************************************************************************
@@ -815,16 +871,16 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  417:Generated_Source\PSoC4/LCDSPI.c **** *******************************************************************************/
  418:Generated_Source\PSoC4/LCDSPI.c **** static void LCDSPI_ScbModeStop(void)
  419:Generated_Source\PSoC4/LCDSPI.c **** {
- 357              		.loc 1 419 0
- 358              		.cfi_startproc
- 359              		@ args = 0, pretend = 0, frame = 0
- 360              		@ frame_needed = 1, uses_anonymous_args = 0
- 361 0000 80B5     		push	{r7, lr}
- 362              		.cfi_def_cfa_offset 8
- 363              		.cfi_offset 7, -8
- 364              		.cfi_offset 14, -4
- 365 0002 00AF     		add	r7, sp, #0
- 366              		.cfi_def_cfa_register 7
+ 410              		.loc 1 419 0
+ 411              		.cfi_startproc
+ 412              		@ args = 0, pretend = 0, frame = 0
+ 413              		@ frame_needed = 1, uses_anonymous_args = 0
+ 414 0000 80B5     		push	{r7, lr}
+ 415              		.cfi_def_cfa_offset 8
+ 416              		.cfi_offset 7, -8
+ 417              		.cfi_offset 14, -4
+ 418 0002 00AF     		add	r7, sp, #0
+ 419              		.cfi_def_cfa_register 7
  420:Generated_Source\PSoC4/LCDSPI.c **** #if (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG)
  421:Generated_Source\PSoC4/LCDSPI.c ****     if (LCDSPI_SCB_MODE_I2C_RUNTM_CFG)
  422:Generated_Source\PSoC4/LCDSPI.c ****     {
@@ -838,13 +894,13 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  430:Generated_Source\PSoC4/LCDSPI.c ****     else if (LCDSPI_SCB_MODE_SPI_RUNTM_CFG)
  431:Generated_Source\PSoC4/LCDSPI.c ****     {
  432:Generated_Source\PSoC4/LCDSPI.c ****         LCDSPI_SpiStop();
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 15
-
-
  433:Generated_Source\PSoC4/LCDSPI.c ****     }
  434:Generated_Source\PSoC4/LCDSPI.c ****     else if (LCDSPI_SCB_MODE_UART_RUNTM_CFG)
  435:Generated_Source\PSoC4/LCDSPI.c ****     {
  436:Generated_Source\PSoC4/LCDSPI.c ****         LCDSPI_UartStop();
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 16
+
+
  437:Generated_Source\PSoC4/LCDSPI.c ****     }
  438:Generated_Source\PSoC4/LCDSPI.c **** #endif /* (!LCDSPI_CY_SCBIP_V1) */
  439:Generated_Source\PSoC4/LCDSPI.c ****     else
@@ -859,8 +915,8 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  448:Generated_Source\PSoC4/LCDSPI.c **** 
  449:Generated_Source\PSoC4/LCDSPI.c **** #elif (LCDSPI_SCB_MODE_SPI_CONST_CFG)
  450:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_SpiStop();
- 367              		.loc 1 450 0
- 368 0004 FFF7FEFF 		bl	LCDSPI_SpiStop
+ 420              		.loc 1 450 0
+ 421 0004 FFF7FEFF 		bl	LCDSPI_SpiStop
  451:Generated_Source\PSoC4/LCDSPI.c **** 
  452:Generated_Source\PSoC4/LCDSPI.c **** #elif (LCDSPI_SCB_MODE_UART_CONST_CFG)
  453:Generated_Source\PSoC4/LCDSPI.c ****     LCDSPI_UartStop();
@@ -869,712 +925,759 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 1
  456:Generated_Source\PSoC4/LCDSPI.c ****     /* Unknown mode: do nothing */
  457:Generated_Source\PSoC4/LCDSPI.c **** #endif /* (LCDSPI_SCB_MODE_UNCONFIG_CONST_CFG) */
  458:Generated_Source\PSoC4/LCDSPI.c **** }
- 369              		.loc 1 458 0
- 370 0008 C046     		nop
- 371 000a BD46     		mov	sp, r7
- 372              		@ sp needed
- 373 000c 80BD     		pop	{r7, pc}
- 374              		.cfi_endproc
- 375              	.LFE10:
- 376              		.size	LCDSPI_ScbModeStop, .-LCDSPI_ScbModeStop
- 377 000e C046     		.text
- 378              	.Letext0:
- 379              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
- 380              		.section	.debug_info,"",%progbits
- 381              	.Ldebug_info0:
- 382 0000 C6010000 		.4byte	0x1c6
- 383 0004 0400     		.2byte	0x4
- 384 0006 00000000 		.4byte	.Ldebug_abbrev0
- 385 000a 04       		.byte	0x4
- 386 000b 01       		.uleb128 0x1
- 387 000c 28010000 		.4byte	.LASF32
- 388 0010 0C       		.byte	0xc
- 389 0011 77000000 		.4byte	.LASF33
- 390 0015 00000000 		.4byte	.LASF34
- 391 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 392 001d 00000000 		.4byte	0
- 393 0021 00000000 		.4byte	.Ldebug_line0
- 394 0025 02       		.uleb128 0x2
- 395 0026 01       		.byte	0x1
- 396 0027 06       		.byte	0x6
- 397 0028 89020000 		.4byte	.LASF0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 16
+ 422              		.loc 1 458 0
+ 423 0008 C046     		nop
+ 424 000a BD46     		mov	sp, r7
+ 425              		@ sp needed
+ 426 000c 80BD     		pop	{r7, pc}
+ 427              		.cfi_endproc
+ 428              	.LFE11:
+ 429              		.size	LCDSPI_ScbModeStop, .-LCDSPI_ScbModeStop
+ 430 000e C046     		.text
+ 431              	.Letext0:
+ 432              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 433              		.section	.debug_info,"",%progbits
+ 434              	.Ldebug_info0:
+ 435 0000 04020000 		.4byte	0x204
+ 436 0004 0400     		.2byte	0x4
+ 437 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 438 000a 04       		.byte	0x4
+ 439 000b 01       		.uleb128 0x1
+ 440 000c 49010000 		.4byte	.LASF35
+ 441 0010 0C       		.byte	0xc
+ 442 0011 77000000 		.4byte	.LASF36
+ 443 0015 00000000 		.4byte	.LASF37
+ 444 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 445 001d 00000000 		.4byte	0
+ 446 0021 00000000 		.4byte	.Ldebug_line0
+ 447 0025 02       		.uleb128 0x2
+ 448 0026 01       		.byte	0x1
+ 449 0027 06       		.byte	0x6
+ 450 0028 C8020000 		.4byte	.LASF0
+ 451 002c 02       		.uleb128 0x2
+ 452 002d 01       		.byte	0x1
+ 453 002e 08       		.byte	0x8
+ 454 002f FA000000 		.4byte	.LASF1
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 17
 
 
- 398 002c 02       		.uleb128 0x2
- 399 002d 01       		.byte	0x1
- 400 002e 08       		.byte	0x8
- 401 002f D9000000 		.4byte	.LASF1
- 402 0033 02       		.uleb128 0x2
- 403 0034 02       		.byte	0x2
- 404 0035 05       		.byte	0x5
- 405 0036 53020000 		.4byte	.LASF2
- 406 003a 02       		.uleb128 0x2
- 407 003b 02       		.byte	0x2
- 408 003c 07       		.byte	0x7
- 409 003d AE000000 		.4byte	.LASF3
- 410 0041 02       		.uleb128 0x2
- 411 0042 04       		.byte	0x4
- 412 0043 05       		.byte	0x5
- 413 0044 74020000 		.4byte	.LASF4
- 414 0048 02       		.uleb128 0x2
- 415 0049 04       		.byte	0x4
- 416 004a 07       		.byte	0x7
- 417 004b E7000000 		.4byte	.LASF5
- 418 004f 02       		.uleb128 0x2
- 419 0050 08       		.byte	0x8
- 420 0051 05       		.byte	0x5
- 421 0052 32020000 		.4byte	.LASF6
- 422 0056 02       		.uleb128 0x2
- 423 0057 08       		.byte	0x8
- 424 0058 07       		.byte	0x7
- 425 0059 FD010000 		.4byte	.LASF7
- 426 005d 03       		.uleb128 0x3
- 427 005e 04       		.byte	0x4
- 428 005f 05       		.byte	0x5
- 429 0060 696E7400 		.ascii	"int\000"
- 430 0064 02       		.uleb128 0x2
- 431 0065 04       		.byte	0x4
- 432 0066 07       		.byte	0x7
- 433 0067 D7010000 		.4byte	.LASF8
- 434 006b 04       		.uleb128 0x4
- 435 006c F9000000 		.4byte	.LASF9
- 436 0070 02       		.byte	0x2
- 437 0071 D201     		.2byte	0x1d2
- 438 0073 2C000000 		.4byte	0x2c
- 439 0077 04       		.uleb128 0x4
- 440 0078 C9010000 		.4byte	.LASF10
- 441 007c 02       		.byte	0x2
- 442 007d D301     		.2byte	0x1d3
- 443 007f 3A000000 		.4byte	0x3a
- 444 0083 04       		.uleb128 0x4
- 445 0084 D0010000 		.4byte	.LASF11
- 446 0088 02       		.byte	0x2
- 447 0089 D401     		.2byte	0x1d4
- 448 008b 48000000 		.4byte	0x48
- 449 008f 02       		.uleb128 0x2
- 450 0090 04       		.byte	0x4
- 451 0091 04       		.byte	0x4
- 452 0092 D3000000 		.4byte	.LASF12
- 453 0096 02       		.uleb128 0x2
- 454 0097 08       		.byte	0x8
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 17
+ 455 0033 02       		.uleb128 0x2
+ 456 0034 02       		.byte	0x2
+ 457 0035 05       		.byte	0x5
+ 458 0036 92020000 		.4byte	.LASF2
+ 459 003a 02       		.uleb128 0x2
+ 460 003b 02       		.byte	0x2
+ 461 003c 07       		.byte	0x7
+ 462 003d AE000000 		.4byte	.LASF3
+ 463 0041 02       		.uleb128 0x2
+ 464 0042 04       		.byte	0x4
+ 465 0043 05       		.byte	0x5
+ 466 0044 B3020000 		.4byte	.LASF4
+ 467 0048 02       		.uleb128 0x2
+ 468 0049 04       		.byte	0x4
+ 469 004a 07       		.byte	0x7
+ 470 004b 08010000 		.4byte	.LASF5
+ 471 004f 02       		.uleb128 0x2
+ 472 0050 08       		.byte	0x8
+ 473 0051 05       		.byte	0x5
+ 474 0052 71020000 		.4byte	.LASF6
+ 475 0056 02       		.uleb128 0x2
+ 476 0057 08       		.byte	0x8
+ 477 0058 07       		.byte	0x7
+ 478 0059 23020000 		.4byte	.LASF7
+ 479 005d 03       		.uleb128 0x3
+ 480 005e 04       		.byte	0x4
+ 481 005f 05       		.byte	0x5
+ 482 0060 696E7400 		.ascii	"int\000"
+ 483 0064 02       		.uleb128 0x2
+ 484 0065 04       		.byte	0x4
+ 485 0066 07       		.byte	0x7
+ 486 0067 FD010000 		.4byte	.LASF8
+ 487 006b 04       		.uleb128 0x4
+ 488 006c 1A010000 		.4byte	.LASF9
+ 489 0070 02       		.byte	0x2
+ 490 0071 D201     		.2byte	0x1d2
+ 491 0073 2C000000 		.4byte	0x2c
+ 492 0077 04       		.uleb128 0x4
+ 493 0078 EF010000 		.4byte	.LASF10
+ 494 007c 02       		.byte	0x2
+ 495 007d D301     		.2byte	0x1d3
+ 496 007f 3A000000 		.4byte	0x3a
+ 497 0083 04       		.uleb128 0x4
+ 498 0084 F6010000 		.4byte	.LASF11
+ 499 0088 02       		.byte	0x2
+ 500 0089 D401     		.2byte	0x1d4
+ 501 008b 48000000 		.4byte	0x48
+ 502 008f 02       		.uleb128 0x2
+ 503 0090 04       		.byte	0x4
+ 504 0091 04       		.byte	0x4
+ 505 0092 F4000000 		.4byte	.LASF12
+ 506 0096 02       		.uleb128 0x2
+ 507 0097 08       		.byte	0x8
+ 508 0098 04       		.byte	0x4
+ 509 0099 D7010000 		.4byte	.LASF13
+ 510 009d 02       		.uleb128 0x2
+ 511 009e 01       		.byte	0x1
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 18
 
 
- 455 0098 04       		.byte	0x4
- 456 0099 B6010000 		.4byte	.LASF13
- 457 009d 02       		.uleb128 0x2
- 458 009e 01       		.byte	0x1
- 459 009f 08       		.byte	0x8
- 460 00a0 40020000 		.4byte	.LASF14
- 461 00a4 04       		.uleb128 0x4
- 462 00a5 97000000 		.4byte	.LASF15
- 463 00a9 02       		.byte	0x2
- 464 00aa 7E02     		.2byte	0x27e
- 465 00ac B0000000 		.4byte	0xb0
- 466 00b0 05       		.uleb128 0x5
- 467 00b1 83000000 		.4byte	0x83
- 468 00b5 02       		.uleb128 0x2
- 469 00b6 08       		.byte	0x8
- 470 00b7 04       		.byte	0x4
- 471 00b8 7D020000 		.4byte	.LASF16
- 472 00bc 02       		.uleb128 0x2
- 473 00bd 04       		.byte	0x4
- 474 00be 07       		.byte	0x7
- 475 00bf 29020000 		.4byte	.LASF17
- 476 00c3 06       		.uleb128 0x6
- 477 00c4 BD010000 		.4byte	.LASF18
- 478 00c8 01       		.byte	0x1
- 479 00c9 7B       		.byte	0x7b
- 480 00ca 00000000 		.4byte	.LFB2
- 481 00ce 0E000000 		.4byte	.LFE2-.LFB2
- 482 00d2 01       		.uleb128 0x1
- 483 00d3 9C       		.byte	0x9c
- 484 00d4 06       		.uleb128 0x6
- 485 00d5 45020000 		.4byte	.LASF19
- 486 00d9 01       		.byte	0x1
- 487 00da AB       		.byte	0xab
- 488 00db 00000000 		.4byte	.LFB3
- 489 00df 24000000 		.4byte	.LFE3-.LFB3
- 490 00e3 01       		.uleb128 0x1
- 491 00e4 9C       		.byte	0x9c
- 492 00e5 06       		.uleb128 0x6
- 493 00e6 AB020000 		.4byte	.LASF20
- 494 00ea 01       		.byte	0x1
- 495 00eb D2       		.byte	0xd2
- 496 00ec 00000000 		.4byte	.LFB4
- 497 00f0 24000000 		.4byte	.LFE4-.LFB4
- 498 00f4 01       		.uleb128 0x1
- 499 00f5 9C       		.byte	0x9c
- 500 00f6 06       		.uleb128 0x6
- 501 00f7 5D020000 		.4byte	.LASF21
- 502 00fb 01       		.byte	0x1
- 503 00fc EF       		.byte	0xef
- 504 00fd 00000000 		.4byte	.LFB5
- 505 0101 28000000 		.4byte	.LFE5-.LFB5
- 506 0105 01       		.uleb128 0x1
- 507 0106 9C       		.byte	0x9c
- 508 0107 07       		.uleb128 0x7
- 509 0108 95020000 		.4byte	.LASF22
- 510 010c 01       		.byte	0x1
- 511 010d 1701     		.2byte	0x117
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 18
+ 512 009f 08       		.byte	0x8
+ 513 00a0 7F020000 		.4byte	.LASF14
+ 514 00a4 04       		.uleb128 0x4
+ 515 00a5 97000000 		.4byte	.LASF15
+ 516 00a9 02       		.byte	0x2
+ 517 00aa 7E02     		.2byte	0x27e
+ 518 00ac B0000000 		.4byte	0xb0
+ 519 00b0 05       		.uleb128 0x5
+ 520 00b1 83000000 		.4byte	0x83
+ 521 00b5 06       		.uleb128 0x6
+ 522 00b6 04       		.byte	0x4
+ 523 00b7 BB000000 		.4byte	0xbb
+ 524 00bb 07       		.uleb128 0x7
+ 525 00bc 02       		.uleb128 0x2
+ 526 00bd 08       		.byte	0x8
+ 527 00be 04       		.byte	0x4
+ 528 00bf BC020000 		.4byte	.LASF16
+ 529 00c3 02       		.uleb128 0x2
+ 530 00c4 04       		.byte	0x4
+ 531 00c5 07       		.byte	0x7
+ 532 00c6 68020000 		.4byte	.LASF17
+ 533 00ca 08       		.uleb128 0x8
+ 534 00cb DE010000 		.4byte	.LASF18
+ 535 00cf 01       		.byte	0x1
+ 536 00d0 7B       		.byte	0x7b
+ 537 00d1 00000000 		.4byte	.LFB2
+ 538 00d5 0E000000 		.4byte	.LFE2-.LFB2
+ 539 00d9 01       		.uleb128 0x1
+ 540 00da 9C       		.byte	0x9c
+ 541 00db 08       		.uleb128 0x8
+ 542 00dc 84020000 		.4byte	.LASF19
+ 543 00e0 01       		.byte	0x1
+ 544 00e1 AB       		.byte	0xab
+ 545 00e2 00000000 		.4byte	.LFB3
+ 546 00e6 24000000 		.4byte	.LFE3-.LFB3
+ 547 00ea 01       		.uleb128 0x1
+ 548 00eb 9C       		.byte	0x9c
+ 549 00ec 08       		.uleb128 0x8
+ 550 00ed EA020000 		.4byte	.LASF20
+ 551 00f1 01       		.byte	0x1
+ 552 00f2 D2       		.byte	0xd2
+ 553 00f3 00000000 		.4byte	.LFB4
+ 554 00f7 24000000 		.4byte	.LFE4-.LFB4
+ 555 00fb 01       		.uleb128 0x1
+ 556 00fc 9C       		.byte	0x9c
+ 557 00fd 08       		.uleb128 0x8
+ 558 00fe 9C020000 		.4byte	.LASF21
+ 559 0102 01       		.byte	0x1
+ 560 0103 EF       		.byte	0xef
+ 561 0104 00000000 		.4byte	.LFB5
+ 562 0108 34000000 		.4byte	.LFE5-.LFB5
+ 563 010c 01       		.uleb128 0x1
+ 564 010d 9C       		.byte	0x9c
+ 565 010e 09       		.uleb128 0x9
+ 566 010f D4020000 		.4byte	.LASF22
+ 567 0113 01       		.byte	0x1
+ 568 0114 1701     		.2byte	0x117
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 19
 
 
- 512 010f 00000000 		.4byte	.LFB6
- 513 0113 34000000 		.4byte	.LFE6-.LFB6
- 514 0117 01       		.uleb128 0x1
- 515 0118 9C       		.byte	0x9c
- 516 0119 3C010000 		.4byte	0x13c
- 517 011d 08       		.uleb128 0x8
- 518 011e A8000000 		.4byte	.LASF24
- 519 0122 01       		.byte	0x1
- 520 0123 1701     		.2byte	0x117
- 521 0125 83000000 		.4byte	0x83
- 522 0129 02       		.uleb128 0x2
- 523 012a 91       		.byte	0x91
- 524 012b 6C       		.sleb128 -20
- 525 012c 09       		.uleb128 0x9
- 526 012d 69020000 		.4byte	.LASF25
- 527 0131 01       		.byte	0x1
- 528 0132 1901     		.2byte	0x119
- 529 0134 83000000 		.4byte	0x83
- 530 0138 02       		.uleb128 0x2
- 531 0139 91       		.byte	0x91
- 532 013a 74       		.sleb128 -12
- 533 013b 00       		.byte	0
- 534 013c 07       		.uleb128 0x7
- 535 013d 12010000 		.4byte	.LASF23
- 536 0141 01       		.byte	0x1
- 537 0142 3001     		.2byte	0x130
- 538 0144 00000000 		.4byte	.LFB7
- 539 0148 34000000 		.4byte	.LFE7-.LFB7
- 540 014c 01       		.uleb128 0x1
- 541 014d 9C       		.byte	0x9c
- 542 014e 71010000 		.4byte	0x171
- 543 0152 08       		.uleb128 0x8
- 544 0153 A8000000 		.4byte	.LASF24
- 545 0157 01       		.byte	0x1
- 546 0158 3001     		.2byte	0x130
- 547 015a 83000000 		.4byte	0x83
- 548 015e 02       		.uleb128 0x2
- 549 015f 91       		.byte	0x91
- 550 0160 6C       		.sleb128 -20
- 551 0161 09       		.uleb128 0x9
- 552 0162 9D000000 		.4byte	.LASF26
- 553 0166 01       		.byte	0x1
- 554 0167 3201     		.2byte	0x132
- 555 0169 83000000 		.4byte	0x83
- 556 016d 02       		.uleb128 0x2
- 557 016e 91       		.byte	0x91
- 558 016f 74       		.sleb128 -12
- 559 0170 00       		.byte	0
- 560 0171 0A       		.uleb128 0xa
- 561 0172 14020000 		.4byte	.LASF27
- 562 0176 01       		.byte	0x1
- 563 0177 6401     		.2byte	0x164
- 564 0179 00000000 		.4byte	.LFB8
- 565 017d 0A000000 		.4byte	.LFE8-.LFB8
- 566 0181 01       		.uleb128 0x1
- 567 0182 9C       		.byte	0x9c
- 568 0183 0B       		.uleb128 0xb
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 19
+ 569 0116 00000000 		.4byte	.LFB6
+ 570 011a 34000000 		.4byte	.LFE6-.LFB6
+ 571 011e 01       		.uleb128 0x1
+ 572 011f 9C       		.byte	0x9c
+ 573 0120 43010000 		.4byte	0x143
+ 574 0124 0A       		.uleb128 0xa
+ 575 0125 A8000000 		.4byte	.LASF24
+ 576 0129 01       		.byte	0x1
+ 577 012a 1701     		.2byte	0x117
+ 578 012c 83000000 		.4byte	0x83
+ 579 0130 02       		.uleb128 0x2
+ 580 0131 91       		.byte	0x91
+ 581 0132 6C       		.sleb128 -20
+ 582 0133 0B       		.uleb128 0xb
+ 583 0134 A8020000 		.4byte	.LASF25
+ 584 0138 01       		.byte	0x1
+ 585 0139 1901     		.2byte	0x119
+ 586 013b 83000000 		.4byte	0x83
+ 587 013f 02       		.uleb128 0x2
+ 588 0140 91       		.byte	0x91
+ 589 0141 74       		.sleb128 -12
+ 590 0142 00       		.byte	0
+ 591 0143 09       		.uleb128 0x9
+ 592 0144 33010000 		.4byte	.LASF23
+ 593 0148 01       		.byte	0x1
+ 594 0149 3001     		.2byte	0x130
+ 595 014b 00000000 		.4byte	.LFB7
+ 596 014f 34000000 		.4byte	.LFE7-.LFB7
+ 597 0153 01       		.uleb128 0x1
+ 598 0154 9C       		.byte	0x9c
+ 599 0155 78010000 		.4byte	0x178
+ 600 0159 0A       		.uleb128 0xa
+ 601 015a A8000000 		.4byte	.LASF24
+ 602 015e 01       		.byte	0x1
+ 603 015f 3001     		.2byte	0x130
+ 604 0161 83000000 		.4byte	0x83
+ 605 0165 02       		.uleb128 0x2
+ 606 0166 91       		.byte	0x91
+ 607 0167 6C       		.sleb128 -20
+ 608 0168 0B       		.uleb128 0xb
+ 609 0169 9D000000 		.4byte	.LASF26
+ 610 016d 01       		.byte	0x1
+ 611 016e 3201     		.2byte	0x132
+ 612 0170 83000000 		.4byte	0x83
+ 613 0174 02       		.uleb128 0x2
+ 614 0175 91       		.byte	0x91
+ 615 0176 74       		.sleb128 -12
+ 616 0177 00       		.byte	0
+ 617 0178 09       		.uleb128 0x9
+ 618 0179 D3000000 		.4byte	.LASF27
+ 619 017d 01       		.byte	0x1
+ 620 017e 4F01     		.2byte	0x14f
+ 621 0180 00000000 		.4byte	.LFB8
+ 622 0184 1C000000 		.4byte	.LFE8-.LFB8
+ 623 0188 01       		.uleb128 0x1
+ 624 0189 9C       		.byte	0x9c
+ 625 018a 9E010000 		.4byte	0x19e
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 20
 
 
- 569 0184 E4010000 		.4byte	.LASF28
- 570 0188 01       		.byte	0x1
- 571 0189 7D01     		.2byte	0x17d
- 572 018b 00000000 		.4byte	.LFB9
- 573 018f 0E000000 		.4byte	.LFE9-.LFB9
- 574 0193 01       		.uleb128 0x1
- 575 0194 9C       		.byte	0x9c
- 576 0195 0B       		.uleb128 0xb
- 577 0196 FF000000 		.4byte	.LASF29
- 578 019a 01       		.byte	0x1
- 579 019b A201     		.2byte	0x1a2
- 580 019d 00000000 		.4byte	.LFB10
- 581 01a1 0E000000 		.4byte	.LFE10-.LFB10
- 582 01a5 01       		.uleb128 0x1
- 583 01a6 9C       		.byte	0x9c
- 584 01a7 0C       		.uleb128 0xc
- 585 01a8 B8020000 		.4byte	.LASF30
- 586 01ac 01       		.byte	0x1
- 587 01ad 51       		.byte	0x51
- 588 01ae 6B000000 		.4byte	0x6b
- 589 01b2 05       		.uleb128 0x5
- 590 01b3 03       		.byte	0x3
- 591 01b4 00000000 		.4byte	LCDSPI_initVar
- 592 01b8 0C       		.uleb128 0xc
- 593 01b9 C1000000 		.4byte	.LASF31
- 594 01bd 01       		.byte	0x1
- 595 01be 5A       		.byte	0x5a
- 596 01bf 77000000 		.4byte	0x77
- 597 01c3 05       		.uleb128 0x5
- 598 01c4 03       		.byte	0x3
- 599 01c5 00000000 		.4byte	LCDSPI_IntrTxMask
- 600 01c9 00       		.byte	0
- 601              		.section	.debug_abbrev,"",%progbits
- 602              	.Ldebug_abbrev0:
- 603 0000 01       		.uleb128 0x1
- 604 0001 11       		.uleb128 0x11
- 605 0002 01       		.byte	0x1
- 606 0003 25       		.uleb128 0x25
- 607 0004 0E       		.uleb128 0xe
- 608 0005 13       		.uleb128 0x13
- 609 0006 0B       		.uleb128 0xb
- 610 0007 03       		.uleb128 0x3
- 611 0008 0E       		.uleb128 0xe
- 612 0009 1B       		.uleb128 0x1b
- 613 000a 0E       		.uleb128 0xe
- 614 000b 55       		.uleb128 0x55
- 615 000c 17       		.uleb128 0x17
- 616 000d 11       		.uleb128 0x11
- 617 000e 01       		.uleb128 0x1
- 618 000f 10       		.uleb128 0x10
- 619 0010 17       		.uleb128 0x17
- 620 0011 00       		.byte	0
- 621 0012 00       		.byte	0
- 622 0013 02       		.uleb128 0x2
- 623 0014 24       		.uleb128 0x24
- 624 0015 00       		.byte	0
- 625 0016 0B       		.uleb128 0xb
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 20
+ 626 018e 0A       		.uleb128 0xa
+ 627 018f EA010000 		.4byte	.LASF28
+ 628 0193 01       		.byte	0x1
+ 629 0194 4F01     		.2byte	0x14f
+ 630 0196 B5000000 		.4byte	0xb5
+ 631 019a 02       		.uleb128 0x2
+ 632 019b 91       		.byte	0x91
+ 633 019c 74       		.sleb128 -12
+ 634 019d 00       		.byte	0
+ 635 019e 0C       		.uleb128 0xc
+ 636 019f 3A020000 		.4byte	.LASF29
+ 637 01a3 01       		.byte	0x1
+ 638 01a4 6401     		.2byte	0x164
+ 639 01a6 00000000 		.4byte	.LFB9
+ 640 01aa 10000000 		.4byte	.LFE9-.LFB9
+ 641 01ae 01       		.uleb128 0x1
+ 642 01af 9C       		.byte	0x9c
+ 643 01b0 0C       		.uleb128 0xc
+ 644 01b1 0A020000 		.4byte	.LASF30
+ 645 01b5 01       		.byte	0x1
+ 646 01b6 7D01     		.2byte	0x17d
+ 647 01b8 00000000 		.4byte	.LFB10
+ 648 01bc 0E000000 		.4byte	.LFE10-.LFB10
+ 649 01c0 01       		.uleb128 0x1
+ 650 01c1 9C       		.byte	0x9c
+ 651 01c2 0C       		.uleb128 0xc
+ 652 01c3 20010000 		.4byte	.LASF31
+ 653 01c7 01       		.byte	0x1
+ 654 01c8 A201     		.2byte	0x1a2
+ 655 01ca 00000000 		.4byte	.LFB11
+ 656 01ce 0E000000 		.4byte	.LFE11-.LFB11
+ 657 01d2 01       		.uleb128 0x1
+ 658 01d3 9C       		.byte	0x9c
+ 659 01d4 0D       		.uleb128 0xd
+ 660 01d5 F7020000 		.4byte	.LASF32
+ 661 01d9 01       		.byte	0x1
+ 662 01da 51       		.byte	0x51
+ 663 01db 6B000000 		.4byte	0x6b
+ 664 01df 05       		.uleb128 0x5
+ 665 01e0 03       		.byte	0x3
+ 666 01e1 00000000 		.4byte	LCDSPI_initVar
+ 667 01e5 0D       		.uleb128 0xd
+ 668 01e6 4F020000 		.4byte	.LASF33
+ 669 01ea 01       		.byte	0x1
+ 670 01eb 61       		.byte	0x61
+ 671 01ec B5000000 		.4byte	0xb5
+ 672 01f0 05       		.uleb128 0x5
+ 673 01f1 03       		.byte	0x3
+ 674 01f2 00000000 		.4byte	LCDSPI_customIntrHandler
+ 675 01f6 0D       		.uleb128 0xd
+ 676 01f7 C1000000 		.4byte	.LASF34
+ 677 01fb 01       		.byte	0x1
+ 678 01fc 5A       		.byte	0x5a
+ 679 01fd 77000000 		.4byte	0x77
+ 680 0201 05       		.uleb128 0x5
+ 681 0202 03       		.byte	0x3
+ 682 0203 00000000 		.4byte	LCDSPI_IntrTxMask
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 21
 
 
- 626 0017 0B       		.uleb128 0xb
- 627 0018 3E       		.uleb128 0x3e
- 628 0019 0B       		.uleb128 0xb
- 629 001a 03       		.uleb128 0x3
- 630 001b 0E       		.uleb128 0xe
- 631 001c 00       		.byte	0
- 632 001d 00       		.byte	0
- 633 001e 03       		.uleb128 0x3
- 634 001f 24       		.uleb128 0x24
- 635 0020 00       		.byte	0
- 636 0021 0B       		.uleb128 0xb
- 637 0022 0B       		.uleb128 0xb
- 638 0023 3E       		.uleb128 0x3e
- 639 0024 0B       		.uleb128 0xb
- 640 0025 03       		.uleb128 0x3
- 641 0026 08       		.uleb128 0x8
- 642 0027 00       		.byte	0
- 643 0028 00       		.byte	0
- 644 0029 04       		.uleb128 0x4
- 645 002a 16       		.uleb128 0x16
- 646 002b 00       		.byte	0
- 647 002c 03       		.uleb128 0x3
- 648 002d 0E       		.uleb128 0xe
- 649 002e 3A       		.uleb128 0x3a
- 650 002f 0B       		.uleb128 0xb
- 651 0030 3B       		.uleb128 0x3b
- 652 0031 05       		.uleb128 0x5
- 653 0032 49       		.uleb128 0x49
- 654 0033 13       		.uleb128 0x13
- 655 0034 00       		.byte	0
- 656 0035 00       		.byte	0
- 657 0036 05       		.uleb128 0x5
- 658 0037 35       		.uleb128 0x35
- 659 0038 00       		.byte	0
- 660 0039 49       		.uleb128 0x49
- 661 003a 13       		.uleb128 0x13
- 662 003b 00       		.byte	0
- 663 003c 00       		.byte	0
- 664 003d 06       		.uleb128 0x6
- 665 003e 2E       		.uleb128 0x2e
- 666 003f 00       		.byte	0
- 667 0040 3F       		.uleb128 0x3f
- 668 0041 19       		.uleb128 0x19
- 669 0042 03       		.uleb128 0x3
- 670 0043 0E       		.uleb128 0xe
- 671 0044 3A       		.uleb128 0x3a
- 672 0045 0B       		.uleb128 0xb
- 673 0046 3B       		.uleb128 0x3b
- 674 0047 0B       		.uleb128 0xb
- 675 0048 27       		.uleb128 0x27
- 676 0049 19       		.uleb128 0x19
- 677 004a 11       		.uleb128 0x11
- 678 004b 01       		.uleb128 0x1
- 679 004c 12       		.uleb128 0x12
- 680 004d 06       		.uleb128 0x6
- 681 004e 40       		.uleb128 0x40
- 682 004f 18       		.uleb128 0x18
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 21
+ 683 0207 00       		.byte	0
+ 684              		.section	.debug_abbrev,"",%progbits
+ 685              	.Ldebug_abbrev0:
+ 686 0000 01       		.uleb128 0x1
+ 687 0001 11       		.uleb128 0x11
+ 688 0002 01       		.byte	0x1
+ 689 0003 25       		.uleb128 0x25
+ 690 0004 0E       		.uleb128 0xe
+ 691 0005 13       		.uleb128 0x13
+ 692 0006 0B       		.uleb128 0xb
+ 693 0007 03       		.uleb128 0x3
+ 694 0008 0E       		.uleb128 0xe
+ 695 0009 1B       		.uleb128 0x1b
+ 696 000a 0E       		.uleb128 0xe
+ 697 000b 55       		.uleb128 0x55
+ 698 000c 17       		.uleb128 0x17
+ 699 000d 11       		.uleb128 0x11
+ 700 000e 01       		.uleb128 0x1
+ 701 000f 10       		.uleb128 0x10
+ 702 0010 17       		.uleb128 0x17
+ 703 0011 00       		.byte	0
+ 704 0012 00       		.byte	0
+ 705 0013 02       		.uleb128 0x2
+ 706 0014 24       		.uleb128 0x24
+ 707 0015 00       		.byte	0
+ 708 0016 0B       		.uleb128 0xb
+ 709 0017 0B       		.uleb128 0xb
+ 710 0018 3E       		.uleb128 0x3e
+ 711 0019 0B       		.uleb128 0xb
+ 712 001a 03       		.uleb128 0x3
+ 713 001b 0E       		.uleb128 0xe
+ 714 001c 00       		.byte	0
+ 715 001d 00       		.byte	0
+ 716 001e 03       		.uleb128 0x3
+ 717 001f 24       		.uleb128 0x24
+ 718 0020 00       		.byte	0
+ 719 0021 0B       		.uleb128 0xb
+ 720 0022 0B       		.uleb128 0xb
+ 721 0023 3E       		.uleb128 0x3e
+ 722 0024 0B       		.uleb128 0xb
+ 723 0025 03       		.uleb128 0x3
+ 724 0026 08       		.uleb128 0x8
+ 725 0027 00       		.byte	0
+ 726 0028 00       		.byte	0
+ 727 0029 04       		.uleb128 0x4
+ 728 002a 16       		.uleb128 0x16
+ 729 002b 00       		.byte	0
+ 730 002c 03       		.uleb128 0x3
+ 731 002d 0E       		.uleb128 0xe
+ 732 002e 3A       		.uleb128 0x3a
+ 733 002f 0B       		.uleb128 0xb
+ 734 0030 3B       		.uleb128 0x3b
+ 735 0031 05       		.uleb128 0x5
+ 736 0032 49       		.uleb128 0x49
+ 737 0033 13       		.uleb128 0x13
+ 738 0034 00       		.byte	0
+ 739 0035 00       		.byte	0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 22
 
 
- 683 0050 9642     		.uleb128 0x2116
- 684 0052 19       		.uleb128 0x19
- 685 0053 00       		.byte	0
- 686 0054 00       		.byte	0
- 687 0055 07       		.uleb128 0x7
- 688 0056 2E       		.uleb128 0x2e
- 689 0057 01       		.byte	0x1
- 690 0058 3F       		.uleb128 0x3f
- 691 0059 19       		.uleb128 0x19
- 692 005a 03       		.uleb128 0x3
- 693 005b 0E       		.uleb128 0xe
- 694 005c 3A       		.uleb128 0x3a
- 695 005d 0B       		.uleb128 0xb
- 696 005e 3B       		.uleb128 0x3b
- 697 005f 05       		.uleb128 0x5
- 698 0060 27       		.uleb128 0x27
- 699 0061 19       		.uleb128 0x19
- 700 0062 11       		.uleb128 0x11
- 701 0063 01       		.uleb128 0x1
- 702 0064 12       		.uleb128 0x12
- 703 0065 06       		.uleb128 0x6
- 704 0066 40       		.uleb128 0x40
- 705 0067 18       		.uleb128 0x18
- 706 0068 9742     		.uleb128 0x2117
- 707 006a 19       		.uleb128 0x19
- 708 006b 01       		.uleb128 0x1
- 709 006c 13       		.uleb128 0x13
- 710 006d 00       		.byte	0
- 711 006e 00       		.byte	0
- 712 006f 08       		.uleb128 0x8
- 713 0070 05       		.uleb128 0x5
- 714 0071 00       		.byte	0
- 715 0072 03       		.uleb128 0x3
- 716 0073 0E       		.uleb128 0xe
- 717 0074 3A       		.uleb128 0x3a
- 718 0075 0B       		.uleb128 0xb
- 719 0076 3B       		.uleb128 0x3b
- 720 0077 05       		.uleb128 0x5
- 721 0078 49       		.uleb128 0x49
- 722 0079 13       		.uleb128 0x13
- 723 007a 02       		.uleb128 0x2
- 724 007b 18       		.uleb128 0x18
- 725 007c 00       		.byte	0
- 726 007d 00       		.byte	0
- 727 007e 09       		.uleb128 0x9
- 728 007f 34       		.uleb128 0x34
- 729 0080 00       		.byte	0
- 730 0081 03       		.uleb128 0x3
- 731 0082 0E       		.uleb128 0xe
- 732 0083 3A       		.uleb128 0x3a
- 733 0084 0B       		.uleb128 0xb
- 734 0085 3B       		.uleb128 0x3b
- 735 0086 05       		.uleb128 0x5
- 736 0087 49       		.uleb128 0x49
- 737 0088 13       		.uleb128 0x13
- 738 0089 02       		.uleb128 0x2
- 739 008a 18       		.uleb128 0x18
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 22
+ 740 0036 05       		.uleb128 0x5
+ 741 0037 35       		.uleb128 0x35
+ 742 0038 00       		.byte	0
+ 743 0039 49       		.uleb128 0x49
+ 744 003a 13       		.uleb128 0x13
+ 745 003b 00       		.byte	0
+ 746 003c 00       		.byte	0
+ 747 003d 06       		.uleb128 0x6
+ 748 003e 0F       		.uleb128 0xf
+ 749 003f 00       		.byte	0
+ 750 0040 0B       		.uleb128 0xb
+ 751 0041 0B       		.uleb128 0xb
+ 752 0042 49       		.uleb128 0x49
+ 753 0043 13       		.uleb128 0x13
+ 754 0044 00       		.byte	0
+ 755 0045 00       		.byte	0
+ 756 0046 07       		.uleb128 0x7
+ 757 0047 15       		.uleb128 0x15
+ 758 0048 00       		.byte	0
+ 759 0049 27       		.uleb128 0x27
+ 760 004a 19       		.uleb128 0x19
+ 761 004b 00       		.byte	0
+ 762 004c 00       		.byte	0
+ 763 004d 08       		.uleb128 0x8
+ 764 004e 2E       		.uleb128 0x2e
+ 765 004f 00       		.byte	0
+ 766 0050 3F       		.uleb128 0x3f
+ 767 0051 19       		.uleb128 0x19
+ 768 0052 03       		.uleb128 0x3
+ 769 0053 0E       		.uleb128 0xe
+ 770 0054 3A       		.uleb128 0x3a
+ 771 0055 0B       		.uleb128 0xb
+ 772 0056 3B       		.uleb128 0x3b
+ 773 0057 0B       		.uleb128 0xb
+ 774 0058 27       		.uleb128 0x27
+ 775 0059 19       		.uleb128 0x19
+ 776 005a 11       		.uleb128 0x11
+ 777 005b 01       		.uleb128 0x1
+ 778 005c 12       		.uleb128 0x12
+ 779 005d 06       		.uleb128 0x6
+ 780 005e 40       		.uleb128 0x40
+ 781 005f 18       		.uleb128 0x18
+ 782 0060 9642     		.uleb128 0x2116
+ 783 0062 19       		.uleb128 0x19
+ 784 0063 00       		.byte	0
+ 785 0064 00       		.byte	0
+ 786 0065 09       		.uleb128 0x9
+ 787 0066 2E       		.uleb128 0x2e
+ 788 0067 01       		.byte	0x1
+ 789 0068 3F       		.uleb128 0x3f
+ 790 0069 19       		.uleb128 0x19
+ 791 006a 03       		.uleb128 0x3
+ 792 006b 0E       		.uleb128 0xe
+ 793 006c 3A       		.uleb128 0x3a
+ 794 006d 0B       		.uleb128 0xb
+ 795 006e 3B       		.uleb128 0x3b
+ 796 006f 05       		.uleb128 0x5
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 23
 
 
- 740 008b 00       		.byte	0
- 741 008c 00       		.byte	0
- 742 008d 0A       		.uleb128 0xa
- 743 008e 2E       		.uleb128 0x2e
- 744 008f 00       		.byte	0
- 745 0090 03       		.uleb128 0x3
- 746 0091 0E       		.uleb128 0xe
- 747 0092 3A       		.uleb128 0x3a
- 748 0093 0B       		.uleb128 0xb
- 749 0094 3B       		.uleb128 0x3b
- 750 0095 05       		.uleb128 0x5
- 751 0096 27       		.uleb128 0x27
- 752 0097 19       		.uleb128 0x19
- 753 0098 11       		.uleb128 0x11
- 754 0099 01       		.uleb128 0x1
- 755 009a 12       		.uleb128 0x12
- 756 009b 06       		.uleb128 0x6
- 757 009c 40       		.uleb128 0x40
- 758 009d 18       		.uleb128 0x18
- 759 009e 9742     		.uleb128 0x2117
- 760 00a0 19       		.uleb128 0x19
- 761 00a1 00       		.byte	0
- 762 00a2 00       		.byte	0
- 763 00a3 0B       		.uleb128 0xb
- 764 00a4 2E       		.uleb128 0x2e
- 765 00a5 00       		.byte	0
- 766 00a6 03       		.uleb128 0x3
- 767 00a7 0E       		.uleb128 0xe
- 768 00a8 3A       		.uleb128 0x3a
- 769 00a9 0B       		.uleb128 0xb
- 770 00aa 3B       		.uleb128 0x3b
- 771 00ab 05       		.uleb128 0x5
- 772 00ac 27       		.uleb128 0x27
- 773 00ad 19       		.uleb128 0x19
- 774 00ae 11       		.uleb128 0x11
- 775 00af 01       		.uleb128 0x1
- 776 00b0 12       		.uleb128 0x12
- 777 00b1 06       		.uleb128 0x6
- 778 00b2 40       		.uleb128 0x40
- 779 00b3 18       		.uleb128 0x18
- 780 00b4 9642     		.uleb128 0x2116
- 781 00b6 19       		.uleb128 0x19
- 782 00b7 00       		.byte	0
- 783 00b8 00       		.byte	0
- 784 00b9 0C       		.uleb128 0xc
- 785 00ba 34       		.uleb128 0x34
- 786 00bb 00       		.byte	0
- 787 00bc 03       		.uleb128 0x3
- 788 00bd 0E       		.uleb128 0xe
- 789 00be 3A       		.uleb128 0x3a
- 790 00bf 0B       		.uleb128 0xb
- 791 00c0 3B       		.uleb128 0x3b
- 792 00c1 0B       		.uleb128 0xb
- 793 00c2 49       		.uleb128 0x49
- 794 00c3 13       		.uleb128 0x13
- 795 00c4 3F       		.uleb128 0x3f
- 796 00c5 19       		.uleb128 0x19
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 23
+ 797 0070 27       		.uleb128 0x27
+ 798 0071 19       		.uleb128 0x19
+ 799 0072 11       		.uleb128 0x11
+ 800 0073 01       		.uleb128 0x1
+ 801 0074 12       		.uleb128 0x12
+ 802 0075 06       		.uleb128 0x6
+ 803 0076 40       		.uleb128 0x40
+ 804 0077 18       		.uleb128 0x18
+ 805 0078 9742     		.uleb128 0x2117
+ 806 007a 19       		.uleb128 0x19
+ 807 007b 01       		.uleb128 0x1
+ 808 007c 13       		.uleb128 0x13
+ 809 007d 00       		.byte	0
+ 810 007e 00       		.byte	0
+ 811 007f 0A       		.uleb128 0xa
+ 812 0080 05       		.uleb128 0x5
+ 813 0081 00       		.byte	0
+ 814 0082 03       		.uleb128 0x3
+ 815 0083 0E       		.uleb128 0xe
+ 816 0084 3A       		.uleb128 0x3a
+ 817 0085 0B       		.uleb128 0xb
+ 818 0086 3B       		.uleb128 0x3b
+ 819 0087 05       		.uleb128 0x5
+ 820 0088 49       		.uleb128 0x49
+ 821 0089 13       		.uleb128 0x13
+ 822 008a 02       		.uleb128 0x2
+ 823 008b 18       		.uleb128 0x18
+ 824 008c 00       		.byte	0
+ 825 008d 00       		.byte	0
+ 826 008e 0B       		.uleb128 0xb
+ 827 008f 34       		.uleb128 0x34
+ 828 0090 00       		.byte	0
+ 829 0091 03       		.uleb128 0x3
+ 830 0092 0E       		.uleb128 0xe
+ 831 0093 3A       		.uleb128 0x3a
+ 832 0094 0B       		.uleb128 0xb
+ 833 0095 3B       		.uleb128 0x3b
+ 834 0096 05       		.uleb128 0x5
+ 835 0097 49       		.uleb128 0x49
+ 836 0098 13       		.uleb128 0x13
+ 837 0099 02       		.uleb128 0x2
+ 838 009a 18       		.uleb128 0x18
+ 839 009b 00       		.byte	0
+ 840 009c 00       		.byte	0
+ 841 009d 0C       		.uleb128 0xc
+ 842 009e 2E       		.uleb128 0x2e
+ 843 009f 00       		.byte	0
+ 844 00a0 03       		.uleb128 0x3
+ 845 00a1 0E       		.uleb128 0xe
+ 846 00a2 3A       		.uleb128 0x3a
+ 847 00a3 0B       		.uleb128 0xb
+ 848 00a4 3B       		.uleb128 0x3b
+ 849 00a5 05       		.uleb128 0x5
+ 850 00a6 27       		.uleb128 0x27
+ 851 00a7 19       		.uleb128 0x19
+ 852 00a8 11       		.uleb128 0x11
+ 853 00a9 01       		.uleb128 0x1
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 24
 
 
- 797 00c6 02       		.uleb128 0x2
- 798 00c7 18       		.uleb128 0x18
- 799 00c8 00       		.byte	0
- 800 00c9 00       		.byte	0
- 801 00ca 00       		.byte	0
- 802              		.section	.debug_aranges,"",%progbits
- 803 0000 5C000000 		.4byte	0x5c
- 804 0004 0200     		.2byte	0x2
- 805 0006 00000000 		.4byte	.Ldebug_info0
- 806 000a 04       		.byte	0x4
- 807 000b 00       		.byte	0
- 808 000c 0000     		.2byte	0
- 809 000e 0000     		.2byte	0
- 810 0010 00000000 		.4byte	.LFB2
- 811 0014 0E000000 		.4byte	.LFE2-.LFB2
- 812 0018 00000000 		.4byte	.LFB3
- 813 001c 24000000 		.4byte	.LFE3-.LFB3
- 814 0020 00000000 		.4byte	.LFB4
- 815 0024 24000000 		.4byte	.LFE4-.LFB4
- 816 0028 00000000 		.4byte	.LFB5
- 817 002c 28000000 		.4byte	.LFE5-.LFB5
- 818 0030 00000000 		.4byte	.LFB6
- 819 0034 34000000 		.4byte	.LFE6-.LFB6
- 820 0038 00000000 		.4byte	.LFB7
- 821 003c 34000000 		.4byte	.LFE7-.LFB7
- 822 0040 00000000 		.4byte	.LFB8
- 823 0044 0A000000 		.4byte	.LFE8-.LFB8
- 824 0048 00000000 		.4byte	.LFB9
- 825 004c 0E000000 		.4byte	.LFE9-.LFB9
- 826 0050 00000000 		.4byte	.LFB10
- 827 0054 0E000000 		.4byte	.LFE10-.LFB10
- 828 0058 00000000 		.4byte	0
- 829 005c 00000000 		.4byte	0
- 830              		.section	.debug_ranges,"",%progbits
- 831              	.Ldebug_ranges0:
- 832 0000 00000000 		.4byte	.LFB2
- 833 0004 0E000000 		.4byte	.LFE2
- 834 0008 00000000 		.4byte	.LFB3
- 835 000c 24000000 		.4byte	.LFE3
- 836 0010 00000000 		.4byte	.LFB4
- 837 0014 24000000 		.4byte	.LFE4
- 838 0018 00000000 		.4byte	.LFB5
- 839 001c 28000000 		.4byte	.LFE5
- 840 0020 00000000 		.4byte	.LFB6
- 841 0024 34000000 		.4byte	.LFE6
- 842 0028 00000000 		.4byte	.LFB7
- 843 002c 34000000 		.4byte	.LFE7
- 844 0030 00000000 		.4byte	.LFB8
- 845 0034 0A000000 		.4byte	.LFE8
- 846 0038 00000000 		.4byte	.LFB9
- 847 003c 0E000000 		.4byte	.LFE9
- 848 0040 00000000 		.4byte	.LFB10
- 849 0044 0E000000 		.4byte	.LFE10
- 850 0048 00000000 		.4byte	0
- 851 004c 00000000 		.4byte	0
- 852              		.section	.debug_line,"",%progbits
- 853              	.Ldebug_line0:
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 24
+ 854 00aa 12       		.uleb128 0x12
+ 855 00ab 06       		.uleb128 0x6
+ 856 00ac 40       		.uleb128 0x40
+ 857 00ad 18       		.uleb128 0x18
+ 858 00ae 9642     		.uleb128 0x2116
+ 859 00b0 19       		.uleb128 0x19
+ 860 00b1 00       		.byte	0
+ 861 00b2 00       		.byte	0
+ 862 00b3 0D       		.uleb128 0xd
+ 863 00b4 34       		.uleb128 0x34
+ 864 00b5 00       		.byte	0
+ 865 00b6 03       		.uleb128 0x3
+ 866 00b7 0E       		.uleb128 0xe
+ 867 00b8 3A       		.uleb128 0x3a
+ 868 00b9 0B       		.uleb128 0xb
+ 869 00ba 3B       		.uleb128 0x3b
+ 870 00bb 0B       		.uleb128 0xb
+ 871 00bc 49       		.uleb128 0x49
+ 872 00bd 13       		.uleb128 0x13
+ 873 00be 3F       		.uleb128 0x3f
+ 874 00bf 19       		.uleb128 0x19
+ 875 00c0 02       		.uleb128 0x2
+ 876 00c1 18       		.uleb128 0x18
+ 877 00c2 00       		.byte	0
+ 878 00c3 00       		.byte	0
+ 879 00c4 00       		.byte	0
+ 880              		.section	.debug_aranges,"",%progbits
+ 881 0000 64000000 		.4byte	0x64
+ 882 0004 0200     		.2byte	0x2
+ 883 0006 00000000 		.4byte	.Ldebug_info0
+ 884 000a 04       		.byte	0x4
+ 885 000b 00       		.byte	0
+ 886 000c 0000     		.2byte	0
+ 887 000e 0000     		.2byte	0
+ 888 0010 00000000 		.4byte	.LFB2
+ 889 0014 0E000000 		.4byte	.LFE2-.LFB2
+ 890 0018 00000000 		.4byte	.LFB3
+ 891 001c 24000000 		.4byte	.LFE3-.LFB3
+ 892 0020 00000000 		.4byte	.LFB4
+ 893 0024 24000000 		.4byte	.LFE4-.LFB4
+ 894 0028 00000000 		.4byte	.LFB5
+ 895 002c 34000000 		.4byte	.LFE5-.LFB5
+ 896 0030 00000000 		.4byte	.LFB6
+ 897 0034 34000000 		.4byte	.LFE6-.LFB6
+ 898 0038 00000000 		.4byte	.LFB7
+ 899 003c 34000000 		.4byte	.LFE7-.LFB7
+ 900 0040 00000000 		.4byte	.LFB8
+ 901 0044 1C000000 		.4byte	.LFE8-.LFB8
+ 902 0048 00000000 		.4byte	.LFB9
+ 903 004c 10000000 		.4byte	.LFE9-.LFB9
+ 904 0050 00000000 		.4byte	.LFB10
+ 905 0054 0E000000 		.4byte	.LFE10-.LFB10
+ 906 0058 00000000 		.4byte	.LFB11
+ 907 005c 0E000000 		.4byte	.LFE11-.LFB11
+ 908 0060 00000000 		.4byte	0
+ 909 0064 00000000 		.4byte	0
+ 910              		.section	.debug_ranges,"",%progbits
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 25
 
 
- 854 0000 05010000 		.section	.debug_str,"MS",%progbits,1
- 854      02004300 
- 854      00000201 
- 854      FB0E0D00 
- 854      01010101 
- 855              	.LASF34:
- 856 0000 433A5C55 		.ascii	"C:\\Users\\megan\\Google Drive\\College\\S11 - Spri"
- 856      73657273 
- 856      5C6D6567 
- 856      616E5C47 
- 856      6F6F676C 
- 857 002e 6E672032 		.ascii	"ng 2018\\ECEN 4990\\Github\\ECEN4990-CapstoneII\\Ca"
- 857      3031385C 
- 857      4543454E 
- 857      20343939 
- 857      305C4769 
- 858 005d 7073746F 		.ascii	"pstoneII\\CentralBLE.cydsn\000"
- 858      6E654949 
- 858      5C43656E 
- 858      7472616C 
- 858      424C452E 
- 859              	.LASF33:
- 860 0077 47656E65 		.ascii	"Generated_Source\\PSoC4\\LCDSPI.c\000"
- 860      72617465 
- 860      645F536F 
- 860      75726365 
- 860      5C50536F 
- 861              	.LASF15:
- 862 0097 72656733 		.ascii	"reg32\000"
- 862      3200
- 863              	.LASF26:
- 864 009d 74784669 		.ascii	"txFifoCtrl\000"
- 864      666F4374 
- 864      726C00
- 865              	.LASF24:
- 866 00a8 6C657665 		.ascii	"level\000"
- 866      6C00
- 867              	.LASF3:
- 868 00ae 73686F72 		.ascii	"short unsigned int\000"
- 868      7420756E 
- 868      7369676E 
- 868      65642069 
- 868      6E7400
- 869              	.LASF31:
- 870 00c1 4C434453 		.ascii	"LCDSPI_IntrTxMask\000"
- 870      50495F49 
- 870      6E747254 
- 870      784D6173 
- 870      6B00
- 871              	.LASF12:
- 872 00d3 666C6F61 		.ascii	"float\000"
- 872      7400
- 873              	.LASF1:
- 874 00d9 756E7369 		.ascii	"unsigned char\000"
- 874      676E6564 
- 874      20636861 
- 874      7200
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 25
+ 911              	.Ldebug_ranges0:
+ 912 0000 00000000 		.4byte	.LFB2
+ 913 0004 0E000000 		.4byte	.LFE2
+ 914 0008 00000000 		.4byte	.LFB3
+ 915 000c 24000000 		.4byte	.LFE3
+ 916 0010 00000000 		.4byte	.LFB4
+ 917 0014 24000000 		.4byte	.LFE4
+ 918 0018 00000000 		.4byte	.LFB5
+ 919 001c 34000000 		.4byte	.LFE5
+ 920 0020 00000000 		.4byte	.LFB6
+ 921 0024 34000000 		.4byte	.LFE6
+ 922 0028 00000000 		.4byte	.LFB7
+ 923 002c 34000000 		.4byte	.LFE7
+ 924 0030 00000000 		.4byte	.LFB8
+ 925 0034 1C000000 		.4byte	.LFE8
+ 926 0038 00000000 		.4byte	.LFB9
+ 927 003c 10000000 		.4byte	.LFE9
+ 928 0040 00000000 		.4byte	.LFB10
+ 929 0044 0E000000 		.4byte	.LFE10
+ 930 0048 00000000 		.4byte	.LFB11
+ 931 004c 0E000000 		.4byte	.LFE11
+ 932 0050 00000000 		.4byte	0
+ 933 0054 00000000 		.4byte	0
+ 934              		.section	.debug_line,"",%progbits
+ 935              	.Ldebug_line0:
+ 936 0000 1A010000 		.section	.debug_str,"MS",%progbits,1
+ 936      02004300 
+ 936      00000201 
+ 936      FB0E0D00 
+ 936      01010101 
+ 937              	.LASF37:
+ 938 0000 433A5C55 		.ascii	"C:\\Users\\megan\\Google Drive\\College\\S11 - Spri"
+ 938      73657273 
+ 938      5C6D6567 
+ 938      616E5C47 
+ 938      6F6F676C 
+ 939 002e 6E672032 		.ascii	"ng 2018\\ECEN 4990\\Github\\ECEN4990-CapstoneII\\Ca"
+ 939      3031385C 
+ 939      4543454E 
+ 939      20343939 
+ 939      305C4769 
+ 940 005d 7073746F 		.ascii	"pstoneII\\CentralBLE.cydsn\000"
+ 940      6E654949 
+ 940      5C43656E 
+ 940      7472616C 
+ 940      424C452E 
+ 941              	.LASF36:
+ 942 0077 47656E65 		.ascii	"Generated_Source\\PSoC4\\LCDSPI.c\000"
+ 942      72617465 
+ 942      645F536F 
+ 942      75726365 
+ 942      5C50536F 
+ 943              	.LASF15:
+ 944 0097 72656733 		.ascii	"reg32\000"
+ 944      3200
+ 945              	.LASF26:
+ 946 009d 74784669 		.ascii	"txFifoCtrl\000"
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 26
 
 
- 875              	.LASF5:
- 876 00e7 6C6F6E67 		.ascii	"long unsigned int\000"
- 876      20756E73 
- 876      69676E65 
- 876      6420696E 
- 876      7400
- 877              	.LASF9:
- 878 00f9 75696E74 		.ascii	"uint8\000"
- 878      3800
- 879              	.LASF29:
- 880 00ff 4C434453 		.ascii	"LCDSPI_ScbModeStop\000"
- 880      50495F53 
- 880      63624D6F 
- 880      64655374 
- 880      6F7000
- 881              	.LASF23:
- 882 0112 4C434453 		.ascii	"LCDSPI_SetTxFifoLevel\000"
- 882      50495F53 
- 882      65745478 
- 882      4669666F 
- 882      4C657665 
- 883              	.LASF32:
- 884 0128 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 884      43313120 
- 884      352E342E 
- 884      31203230 
- 884      31363036 
- 885 015b 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
- 885      20726576 
- 885      6973696F 
- 885      6E203233 
- 885      37373135 
- 886 018e 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
- 886      66756E63 
- 886      74696F6E 
- 886      2D736563 
- 886      74696F6E 
- 887              	.LASF13:
- 888 01b6 646F7562 		.ascii	"double\000"
- 888      6C6500
- 889              	.LASF18:
- 890 01bd 4C434453 		.ascii	"LCDSPI_Init\000"
- 890      50495F49 
- 890      6E697400 
- 891              	.LASF10:
- 892 01c9 75696E74 		.ascii	"uint16\000"
- 892      313600
- 893              	.LASF11:
- 894 01d0 75696E74 		.ascii	"uint32\000"
- 894      333200
- 895              	.LASF8:
- 896 01d7 756E7369 		.ascii	"unsigned int\000"
- 896      676E6564 
- 896      20696E74 
- 896      00
- 897              	.LASF28:
- 898 01e4 4C434453 		.ascii	"LCDSPI_ScbModePostEnable\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 26
+ 946      666F4374 
+ 946      726C00
+ 947              	.LASF24:
+ 948 00a8 6C657665 		.ascii	"level\000"
+ 948      6C00
+ 949              	.LASF3:
+ 950 00ae 73686F72 		.ascii	"short unsigned int\000"
+ 950      7420756E 
+ 950      7369676E 
+ 950      65642069 
+ 950      6E7400
+ 951              	.LASF34:
+ 952 00c1 4C434453 		.ascii	"LCDSPI_IntrTxMask\000"
+ 952      50495F49 
+ 952      6E747254 
+ 952      784D6173 
+ 952      6B00
+ 953              	.LASF27:
+ 954 00d3 4C434453 		.ascii	"LCDSPI_SetCustomInterruptHandler\000"
+ 954      50495F53 
+ 954      65744375 
+ 954      73746F6D 
+ 954      496E7465 
+ 955              	.LASF12:
+ 956 00f4 666C6F61 		.ascii	"float\000"
+ 956      7400
+ 957              	.LASF1:
+ 958 00fa 756E7369 		.ascii	"unsigned char\000"
+ 958      676E6564 
+ 958      20636861 
+ 958      7200
+ 959              	.LASF5:
+ 960 0108 6C6F6E67 		.ascii	"long unsigned int\000"
+ 960      20756E73 
+ 960      69676E65 
+ 960      6420696E 
+ 960      7400
+ 961              	.LASF9:
+ 962 011a 75696E74 		.ascii	"uint8\000"
+ 962      3800
+ 963              	.LASF31:
+ 964 0120 4C434453 		.ascii	"LCDSPI_ScbModeStop\000"
+ 964      50495F53 
+ 964      63624D6F 
+ 964      64655374 
+ 964      6F7000
+ 965              	.LASF23:
+ 966 0133 4C434453 		.ascii	"LCDSPI_SetTxFifoLevel\000"
+ 966      50495F53 
+ 966      65745478 
+ 966      4669666F 
+ 966      4C657665 
+ 967              	.LASF35:
+ 968 0149 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 968      43313120 
+ 968      352E342E 
+ 968      31203230 
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 27
 
 
- 898      50495F53 
- 898      63624D6F 
- 898      6465506F 
- 898      7374456E 
- 899              	.LASF7:
- 900 01fd 6C6F6E67 		.ascii	"long long unsigned int\000"
- 900      206C6F6E 
- 900      6720756E 
- 900      7369676E 
- 900      65642069 
- 901              	.LASF27:
- 902 0214 4C434453 		.ascii	"LCDSPI_ScbEnableIntr\000"
- 902      50495F53 
- 902      6362456E 
- 902      61626C65 
- 902      496E7472 
- 903              	.LASF17:
- 904 0229 73697A65 		.ascii	"sizetype\000"
- 904      74797065 
- 904      00
- 905              	.LASF6:
- 906 0232 6C6F6E67 		.ascii	"long long int\000"
- 906      206C6F6E 
- 906      6720696E 
- 906      7400
- 907              	.LASF14:
- 908 0240 63686172 		.ascii	"char\000"
- 908      00
- 909              	.LASF19:
- 910 0245 4C434453 		.ascii	"LCDSPI_Enable\000"
- 910      50495F45 
- 910      6E61626C 
- 910      6500
- 911              	.LASF2:
- 912 0253 73686F72 		.ascii	"short int\000"
- 912      7420696E 
- 912      7400
- 913              	.LASF21:
- 914 025d 4C434453 		.ascii	"LCDSPI_Stop\000"
- 914      50495F53 
- 914      746F7000 
- 915              	.LASF25:
- 916 0269 72784669 		.ascii	"rxFifoCtrl\000"
- 916      666F4374 
- 916      726C00
- 917              	.LASF4:
- 918 0274 6C6F6E67 		.ascii	"long int\000"
- 918      20696E74 
- 918      00
- 919              	.LASF16:
- 920 027d 6C6F6E67 		.ascii	"long double\000"
- 920      20646F75 
- 920      626C6500 
- 921              	.LASF0:
- 922 0289 7369676E 		.ascii	"signed char\000"
- 922      65642063 
- 922      68617200 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccWKdvIP.s 			page 27
+ 968      31363036 
+ 969 017c 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 969      20726576 
+ 969      6973696F 
+ 969      6E203233 
+ 969      37373135 
+ 970 01af 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 970      66756E63 
+ 970      74696F6E 
+ 970      2D736563 
+ 970      74696F6E 
+ 971              	.LASF13:
+ 972 01d7 646F7562 		.ascii	"double\000"
+ 972      6C6500
+ 973              	.LASF18:
+ 974 01de 4C434453 		.ascii	"LCDSPI_Init\000"
+ 974      50495F49 
+ 974      6E697400 
+ 975              	.LASF28:
+ 976 01ea 66756E63 		.ascii	"func\000"
+ 976      00
+ 977              	.LASF10:
+ 978 01ef 75696E74 		.ascii	"uint16\000"
+ 978      313600
+ 979              	.LASF11:
+ 980 01f6 75696E74 		.ascii	"uint32\000"
+ 980      333200
+ 981              	.LASF8:
+ 982 01fd 756E7369 		.ascii	"unsigned int\000"
+ 982      676E6564 
+ 982      20696E74 
+ 982      00
+ 983              	.LASF30:
+ 984 020a 4C434453 		.ascii	"LCDSPI_ScbModePostEnable\000"
+ 984      50495F53 
+ 984      63624D6F 
+ 984      6465506F 
+ 984      7374456E 
+ 985              	.LASF7:
+ 986 0223 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 986      206C6F6E 
+ 986      6720756E 
+ 986      7369676E 
+ 986      65642069 
+ 987              	.LASF29:
+ 988 023a 4C434453 		.ascii	"LCDSPI_ScbEnableIntr\000"
+ 988      50495F53 
+ 988      6362456E 
+ 988      61626C65 
+ 988      496E7472 
+ 989              	.LASF33:
+ 990 024f 4C434453 		.ascii	"LCDSPI_customIntrHandler\000"
+ 990      50495F63 
+ 990      7573746F 
+ 990      6D496E74 
+ 990      7248616E 
+ 991              	.LASF17:
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 28
 
 
- 923              	.LASF22:
- 924 0295 4C434453 		.ascii	"LCDSPI_SetRxFifoLevel\000"
- 924      50495F53 
- 924      65745278 
- 924      4669666F 
- 924      4C657665 
- 925              	.LASF20:
- 926 02ab 4C434453 		.ascii	"LCDSPI_Start\000"
- 926      50495F53 
- 926      74617274 
- 926      00
- 927              	.LASF30:
- 928 02b8 4C434453 		.ascii	"LCDSPI_initVar\000"
- 928      50495F69 
- 928      6E697456 
- 928      617200
- 929              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 992 0268 73697A65 		.ascii	"sizetype\000"
+ 992      74797065 
+ 992      00
+ 993              	.LASF6:
+ 994 0271 6C6F6E67 		.ascii	"long long int\000"
+ 994      206C6F6E 
+ 994      6720696E 
+ 994      7400
+ 995              	.LASF14:
+ 996 027f 63686172 		.ascii	"char\000"
+ 996      00
+ 997              	.LASF19:
+ 998 0284 4C434453 		.ascii	"LCDSPI_Enable\000"
+ 998      50495F45 
+ 998      6E61626C 
+ 998      6500
+ 999              	.LASF2:
+ 1000 0292 73686F72 		.ascii	"short int\000"
+ 1000      7420696E 
+ 1000      7400
+ 1001              	.LASF21:
+ 1002 029c 4C434453 		.ascii	"LCDSPI_Stop\000"
+ 1002      50495F53 
+ 1002      746F7000 
+ 1003              	.LASF25:
+ 1004 02a8 72784669 		.ascii	"rxFifoCtrl\000"
+ 1004      666F4374 
+ 1004      726C00
+ 1005              	.LASF4:
+ 1006 02b3 6C6F6E67 		.ascii	"long int\000"
+ 1006      20696E74 
+ 1006      00
+ 1007              	.LASF16:
+ 1008 02bc 6C6F6E67 		.ascii	"long double\000"
+ 1008      20646F75 
+ 1008      626C6500 
+ 1009              	.LASF0:
+ 1010 02c8 7369676E 		.ascii	"signed char\000"
+ 1010      65642063 
+ 1010      68617200 
+ 1011              	.LASF22:
+ 1012 02d4 4C434453 		.ascii	"LCDSPI_SetRxFifoLevel\000"
+ 1012      50495F53 
+ 1012      65745278 
+ 1012      4669666F 
+ 1012      4C657665 
+ 1013              	.LASF20:
+ 1014 02ea 4C434453 		.ascii	"LCDSPI_Start\000"
+ 1014      50495F53 
+ 1014      74617274 
+ 1014      00
+ 1015              	.LASF32:
+ 1016 02f7 4C434453 		.ascii	"LCDSPI_initVar\000"
+ 1016      50495F69 
+ 1016      6E697456 
+ 1016      617200
+ 1017              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccroEdNk.s 			page 29
+
+

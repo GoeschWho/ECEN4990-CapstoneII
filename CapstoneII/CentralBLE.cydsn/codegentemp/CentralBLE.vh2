@@ -2,7 +2,7 @@
 --	Conversion of CentralBLE.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Tue Feb 20 16:03:43 2018
+--	Tue Feb 20 23:10:04 2018
 --
 
 USE cypress.cypress.all;
@@ -81,8 +81,8 @@ SIGNAL \LCDSPI:tmpFB_0__ss0_m_net_0\ : bit;
 SIGNAL \LCDSPI:tmpIO_0__ss0_m_net_0\ : bit;
 TERMINAL \LCDSPI:tmpSIOVREF__ss0_m_net_0\ : bit;
 SIGNAL \LCDSPI:tmpINTERRUPT_0__ss0_m_net_0\ : bit;
-SIGNAL \LCDSPI:cts_wire\ : bit;
 SIGNAL Net_385 : bit;
+SIGNAL \LCDSPI:cts_wire\ : bit;
 SIGNAL \LCDSPI:tx_wire\ : bit;
 SIGNAL \LCDSPI:rts_wire\ : bit;
 SIGNAL \LCDSPI:select_m_wire_3\ : bit;
@@ -109,11 +109,11 @@ SIGNAL tmpFB_0__rst0_m_net_0 : bit;
 SIGNAL tmpIO_0__rst0_m_net_0 : bit;
 TERMINAL tmpSIOVREF__rst0_m_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__rst0_m_net_0 : bit;
-SIGNAL tmpOE__LCD_init_net_0 : bit;
+SIGNAL tmpOE__LCD_int_net_0 : bit;
 SIGNAL Net_406 : bit;
-SIGNAL tmpIO_0__LCD_init_net_0 : bit;
-TERMINAL tmpSIOVREF__LCD_init_net_0 : bit;
-SIGNAL tmpINTERRUPT_0__LCD_init_net_0 : bit;
+SIGNAL tmpIO_0__LCD_int_net_0 : bit;
+TERMINAL tmpSIOVREF__LCD_int_net_0 : bit;
+SIGNAL tmpINTERRUPT_0__LCD_int_net_0 : bit;
 BEGIN
 
 zero <=  ('0') ;
@@ -658,6 +658,10 @@ L_1:cy_annotation_universal_v1_0
 		out_clock_en=>tmpOE__LED_BLUE_net_0,
 		out_reset=>zero,
 		interrupt=>\LCDSPI:tmpINTERRUPT_0__ss0_m_net_0\);
+\LCDSPI:SCB_IRQ\:cy_isr_v1_0
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
+	PORT MAP(int_signal=>Net_385);
 \LCDSPI:SCB\:cy_m0s8_scb_v2_0
 	GENERIC MAP(cy_registers=>"",
 		scb_mode=>1)
@@ -749,11 +753,11 @@ rst0_m:cy_psoc3_pins_v1_10
 		out_clock_en=>tmpOE__LED_BLUE_net_0,
 		out_reset=>zero,
 		interrupt=>tmpINTERRUPT_0__rst0_m_net_0);
-LCD_init:cy_psoc3_pins_v1_10
+LCD_int:cy_psoc3_pins_v1_10
 	GENERIC MAP(id=>"8d318d8b-cf7b-4b6b-b02c-ab1c5c49d0ba",
 		drive_mode=>"001",
 		ibuf_enabled=>"1",
-		init_dr_st=>"0",
+		init_dr_st=>"1",
 		input_sync=>"0",
 		input_clk_en=>'0',
 		input_sync_mode=>"0",
@@ -809,8 +813,8 @@ LCD_init:cy_psoc3_pins_v1_10
 		y=>(zero),
 		fb=>Net_406,
 		analog=>(open),
-		io=>(tmpIO_0__LCD_init_net_0),
-		siovref=>(tmpSIOVREF__LCD_init_net_0),
+		io=>(tmpIO_0__LCD_int_net_0),
+		siovref=>(tmpSIOVREF__LCD_int_net_0),
 		annotation=>(open),
 		in_clock=>zero,
 		in_clock_en=>tmpOE__LED_BLUE_net_0,
@@ -818,6 +822,6 @@ LCD_init:cy_psoc3_pins_v1_10
 		out_clock=>zero,
 		out_clock_en=>tmpOE__LED_BLUE_net_0,
 		out_reset=>zero,
-		interrupt=>tmpINTERRUPT_0__LCD_init_net_0);
+		interrupt=>tmpINTERRUPT_0__LCD_int_net_0);
 
 END R_T_L;

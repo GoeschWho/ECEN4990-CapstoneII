@@ -10,10 +10,14 @@
  * ========================================
 */
 #include <project.h>
-#include <stdio.h>
+#include <RA8875.h>
 
+/*  Declarations    */
 void StackEventHandler( uint32 eventCode, void *eventParam );
-void BLE_Connect();
+void LCDInitDemo();
+void LCDTouchscreenDemo();
+void RegReadTest();
+void BLEConnect();
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL 0x40030008
@@ -26,13 +30,16 @@ uint8 DevicesNearBy = 0;
 
 int main()
 {
-     CyGlobalIntEnable;   /* Enable global interrupts */
+    CyGlobalIntEnable;   /* Enable global interrupts */
+    LCDSPI_Start();
+    /*  LCD Setup   */
+    LCDInitDemo();
+    LCDTouchscreenDemo();
+    //RegReadTest();
     
-    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-
+    /* BLE Setup    */
     CyBle_Start( StackEventHandler );
-    
-    BLE_Connect();
+    //BLEConnect();
     
     for(;;)
     {
@@ -42,8 +49,7 @@ int main()
 }
 
 
-void StackEventHandler( uint32 eventCode, void *eventParam )
-{
+void StackEventHandler( uint32 eventCode, void *eventParam ) {
     CYBLE_GAPC_ADV_REPORT_T advReport;
     uint8 i;
     
@@ -87,7 +93,145 @@ void StackEventHandler( uint32 eventCode, void *eventParam )
     }
 }    
 
-void BLE_Connect() {
+void LCDInitDemo() {
+    
+    //------ Declarations ------/
+    // LCD Strings
+    char welcome1[] = "Megan Bird";
+    char welcome2[] = "ECEN 4350";
+    char welcome3[] = "Fall 2017";
+    char ble[] = "BLE_Central";
+    
+    uint16 myDelay = 200;
+    
+    //------ LCD Setup ------//  
+    
+    rst0_m_Write(1u);
+    
+    begin(RA8875_800x480);
+    displayOn(true);
+    GPIOX(true);      // Enable TFT - display enable tied to GPIOX
+    
+    PWM1config(true, RA8875_PWM_CLK_DIV1024); // PWM output for backlight  
+    PWM1out(255);
+    
+    LCD_int_Write(1u);  
+    
+    //----- Color Demo -----//
+    
+    fillScreen(RA8875_WHITE);    
+    CyDelay(myDelay);
+    fillScreen(RA8875_RED);
+    CyDelay(myDelay);
+    fillScreen(RA8875_YELLOW);
+    CyDelay(myDelay);
+    fillScreen(RA8875_GREEN);
+    CyDelay(myDelay);
+    fillScreen(RA8875_BLUE);
+    CyDelay(myDelay);
+    fillScreen(RA8875_CYAN);
+    CyDelay(myDelay);
+    fillScreen(RA8875_MAGENTA);
+    CyDelay(myDelay);
+    fillScreen(RA8875_BLACK);
+    
+    //CyDelay(300);
+    
+    //----- Drawing Demo -----//
+    /*
+    drawCircle(100, 100, 50, RA8875_BLACK);
+    fillCircle(100, 100, 49, RA8875_GREEN);
+    fillRect(11, 11, 398, 198, RA8875_BLUE);
+    drawRect(10, 10, 400, 200, RA8875_GREEN);
+    drawPixel(10,10,RA8875_BLACK);
+    drawPixel(11,11,RA8875_BLACK);
+    drawLine(10, 10, 200, 100, RA8875_RED);
+    drawTriangle(200, 15, 250, 100, 150, 125, RA8875_BLACK);
+    fillTriangle(200, 16, 249, 99, 151, 124, RA8875_YELLOW);
+    drawEllipse(300, 100, 100, 40, RA8875_BLACK);
+    fillEllipse(300, 100, 98, 38, RA8875_GREEN);
+    drawCurve(50, 100, 80, 40, 2, RA8875_BLACK);  
+    fillCurve(50, 100, 78, 38, 2, RA8875_WHITE);
+    */
+        
+    //--- Welcome Screen ---//
+    /*
+    CyDelay(300);
+    PWM1out(0);
+    fillScreen(RA8875_WHITE);
+    
+    for (int i = 0; i < 256; i++) {
+        PWM1out(i);
+        CyDelay(1);
+    }
+
+    textMode();
+    fillRect(75,85,370,100,RA8875_RED);
+    textSetCursor(100, 100);
+    textEnlarge(1);
+    textTransparent(RA8875_WHITE);
+    textWrite(welcome1,strlen(welcome1)); 
+    
+    textEnlarge(0);
+    textSetCursor(100, 200);
+    textTransparent(RA8875_BLACK);
+    textWrite(welcome2,strlen(welcome2)); 
+    textSetCursor(100, 250);
+    textWrite(welcome3,strlen(welcome3)); 
+    
+    textSetCursor(100, 350);
+    textTransparent(RA8875_BLUE);
+    textWrite(ble,strlen(ble));
+    */
+}
+
+void LCDTouchscreenDemo() {
+    //------ Declarations ------//
+    uint16_t tx;
+    uint16_t ty;
+    bool waiting = true;
+    
+    float xScale;
+    float yScale;
+    
+    touchEnable(true);
+    
+    xScale = 1024.0F/width();
+    yScale = 1024.0F/height();
+    
+    touchRead(&tx, &ty);
+//    tx = 0x0000;
+//    ty = 0x0000;
+    
+    //------ Wait for touch ------//
+    CyDelay(10);
+    while ( waiting )  {
+        if (!LCD_int_Read()) {
+            //LED_BLUE_Write(0);
+            if ( touched() ) {
+                //LED_GREEN_Write(0u);
+                touchRead(&tx, &ty);                
+                fillCircle((uint16_t)(tx/xScale), (uint16_t)(ty/yScale), 4, RA8875_WHITE);
+            }
+        }
+    }
+}
+
+void RegReadTest() {
+    uint32 size_result = LCDSPI_SpiUartGetRxBufferSize();
+    uint32 reg_result = readReg(0x01);
+    
+    if (size_result > 0) {
+        LED_BLUE_Write(0);
+    }
+    
+    if (reg_result != 0x000F) {
+        LED_GREEN_Write(0);    
+    }
+    
+}
+
+void BLEConnect() {
     
     CYBLE_API_RESULT_T scan_result;
     CYBLE_API_RESULT_T connect_result;

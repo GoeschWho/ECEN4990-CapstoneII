@@ -1,5 +1,5 @@
 /*******************************************************************************
-* File Name: LCD_init.h  
+* File Name: LCD_int.h  
 * Version 2.20
 *
 * Description:
@@ -15,8 +15,8 @@
 * the software package with which this file was provided.
 *******************************************************************************/
 
-#if !defined(CY_PINS_LCD_init_ALIASES_H) /* Pins LCD_init_ALIASES_H */
-#define CY_PINS_LCD_init_ALIASES_H
+#if !defined(CY_PINS_LCD_int_ALIASES_H) /* Pins LCD_int_ALIASES_H */
+#define CY_PINS_LCD_int_ALIASES_H
 
 #include "cytypes.h"
 #include "cyfitter.h"
@@ -26,17 +26,17 @@
 /***************************************
 *              Constants        
 ***************************************/
-#define LCD_init_0			(LCD_init__0__PC)
-#define LCD_init_0_PS		(LCD_init__0__PS)
-#define LCD_init_0_PC		(LCD_init__0__PC)
-#define LCD_init_0_DR		(LCD_init__0__DR)
-#define LCD_init_0_SHIFT	(LCD_init__0__SHIFT)
-#define LCD_init_0_INTR	((uint16)((uint16)0x0003u << (LCD_init__0__SHIFT*2u)))
+#define LCD_int_0			(LCD_int__0__PC)
+#define LCD_int_0_PS		(LCD_int__0__PS)
+#define LCD_int_0_PC		(LCD_int__0__PC)
+#define LCD_int_0_DR		(LCD_int__0__DR)
+#define LCD_int_0_SHIFT	(LCD_int__0__SHIFT)
+#define LCD_int_0_INTR	((uint16)((uint16)0x0003u << (LCD_int__0__SHIFT*2u)))
 
-#define LCD_init_INTR_ALL	 ((uint16)(LCD_init_0_INTR))
+#define LCD_int_INTR_ALL	 ((uint16)(LCD_int_0_INTR))
 
 
-#endif /* End Pins LCD_init_ALIASES_H */
+#endif /* End Pins LCD_int_ALIASES_H */
 
 
 /* [] END OF FILE */
