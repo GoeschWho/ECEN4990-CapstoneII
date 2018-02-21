@@ -1277,12 +1277,10 @@ uint8_t  readReg(uint8_t reg)
 /**************************************************************************/
 void  writeData(uint8_t d) 
 {
-    //LCDSPI_Start();
-    CyDelay(1); // testing
+    CyDelay(1);
     LCDSPI_SpiUartWriteTxData(RA8875_DATAWRITE);
     LCDSPI_SpiUartWriteTxData(d);
-    CyDelay(1); // testing
-    //LCDSPI_Stop();
+    CyDelay(1);
 }
 
 /**************************************************************************/
@@ -1293,47 +1291,28 @@ void  writeData(uint8_t d)
 uint8_t  readData(void) 
 {
     uint8_t x = 0u;
-//    uint8_t y = 0u;
-   
-//  digitalWrite(_cs, LOW);
-//    spi_begin();
-    //LCDSPI_Start();
+    
+    // prepare for request
     CyDelay(1);
-    
-    //LCDSPI_SpiUartClearRxBuffer(); // testing
-    
     LCDSPI_ClearMasterInterruptSource(LCDSPI_INTR_MASTER_SPI_DONE); // testing
     
-//  SPI.transfer(RA8875_DATAREAD);
+    // request data
     LCDSPI_SpiUartWriteTxData(RA8875_DATAREAD);
-//    LCDSPI_SpiUartClearRxBuffer();  // testing
     LCDSPI_SpiUartWriteTxData(0);
-//  uint8_t x = SPI.transfer(0x0);
-    
+
+    // wait for transmission to finish
     while(0u == (LCDSPI_GetMasterInterruptSource() & LCDSPI_INTR_MASTER_SPI_DONE)) //testing
     {
         /* Wait while Master completes transaction */
     }
-    //CyDelay(5);
-//    y = LCDSPI_SpiUartGetRxBufferSize();
-    //x = LCDSPI_SpiUartReadRxData() & 0x000F;
+
+    // discard blank data captured during transmission
     while (LCDSPI_SpiUartGetRxBufferSize() > 1) {
         x = LCDSPI_SpiUartReadRxData();
     }
     x = LCDSPI_SpiUartReadRxData();
     
-//    spi_end();
-//  digitalWrite(_cs, HIGH);
-    CyDelay(1);
-    //LCDSPI_Stop();
-    
-    // testing
-//    LCDSPI_Start();
-//    CyDelay(1);
-//    LCDSPI_SpiUartWriteTxData(x);
-//    LCDSPI_SpiUartWriteTxData(y);
-//    CyDelay(1);
-//    LCDSPI_Stop();   
+    CyDelay(1);  
     
     return x;
 }
@@ -1345,13 +1324,10 @@ uint8_t  readData(void)
 /**************************************************************************/
 void  writeCommand(uint8_t d) 
 {
-    //LCDSPI_Start(); 
-    CyDelay(1); // testing
+    CyDelay(1);
     LCDSPI_SpiUartWriteTxData(RA8875_CMDWRITE);
-    
     LCDSPI_SpiUartWriteTxData(d);
-    CyDelay(1); // testing
-    //LCDSPI_Stop();
+    CyDelay(1);
 }
 
 /**************************************************************************/
@@ -1361,30 +1337,29 @@ void  writeCommand(uint8_t d)
 /**************************************************************************/
 uint8_t  readStatus(void) 
 {
-//  digitalWrite(_cs, LOW);
-//    spi_begin();
-    //LCDSPI_Start();
+    uint8_t x;
+    
+    // prepare for request
     CyDelay(1);
+    LCDSPI_ClearMasterInterruptSource(LCDSPI_INTR_MASTER_SPI_DONE);
     
-    LCDSPI_ClearMasterInterruptSource(LCDSPI_INTR_MASTER_SPI_DONE); // testing
-    
-//  SPI.transfer(RA8875_CMDREAD);
+    // request status
     LCDSPI_SpiUartWriteTxData(RA8875_CMDREAD);
-    LCDSPI_SpiUartWriteTxData(0); // testing
-//  uint8_t x = SPI.transfer(0x0);
+    LCDSPI_SpiUartWriteTxData(0);                   // keep SPI line open for RX
     
-    while(0u == (LCDSPI_GetMasterInterruptSource() & LCDSPI_INTR_MASTER_SPI_DONE)) //testing
+    // wait for transmission to finish
+    while(0u == (LCDSPI_GetMasterInterruptSource() & LCDSPI_INTR_MASTER_SPI_DONE))
     {
         /* Wait while Master completes transaction */
     }
     
-    uint8_t x = LCDSPI_SpiUartReadRxData();
+    // discard blank data captured during transmission
+    while (LCDSPI_SpiUartGetRxBufferSize() > 1) {
+        x = LCDSPI_SpiUartReadRxData();
+    }
     x = LCDSPI_SpiUartReadRxData();
-//    spi_end();
-//
-//  digitalWrite(_cs, HIGH);
-    CyDelay(1); // testing
-    //LCDSPI_Stop();
+
+    CyDelay(1);
     
     return x;
 }

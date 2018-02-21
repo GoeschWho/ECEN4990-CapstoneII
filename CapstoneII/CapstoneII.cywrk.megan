@@ -102,6 +102,7 @@
 <v>CapstoneII\CentralBLE\Generated_Source\PSoC4\LCDSPI_ss0_m</v>
 <v>CapstoneII\CentralBLE\Generated_Source\PSoC4\LED_BLUE</v>
 <v>CapstoneII\CentralBLE\Generated_Source\PSoC4\LED_GREEN</v>
+<v>CapstoneII\CentralBLE\Generated_Source\PSoC4\LED_GREEN\LED_GREEN.c</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
@@ -252,6 +253,7 @@
 <v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_GREEN.lst</v>
 <v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LED_GREEN_PM.lst</v>
 <v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\RA8875.lst</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>
@@ -266,49 +268,10 @@
 <v>CapstoneII\CentralBLE\PSoC 4 Architecture TRM</v>
 <v>CapstoneII\CentralBLE\PRoC BLE Family Datasheet</v>
 <v>CapstoneII\CentralBLE\System Reference Guides</v>
-<v>CapstoneII\CentralBLE\System Reference Guides\cy_boot_v5_60</v>
-<v>CapstoneII\CentralBLE\System Reference Guides\cy_dmac_v1_10</v>
-<v>CapstoneII\CentralBLE\System Reference Guides\cy_lfclk_v1_20</v>
-<v>CapstoneII\CentralBLE\Battery_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\BLE_v3_30.pdf</v>
-<v>CapstoneII\CentralBLE\Capacitor_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\cy_pins_v2_20</v>
-<v>CapstoneII\CentralBLE\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
-<v>CapstoneII\CentralBLE\Gnd_v1_0</v>
-<v>CapstoneII\CentralBLE\Gnd_v1_0\Gnd_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\Inductor_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\LED_v1_0</v>
-<v>CapstoneII\CentralBLE\LED_v1_0\LED_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\Power_v1_0</v>
-<v>CapstoneII\CentralBLE\Power_v1_0\Power_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\Resistor_v1_0</v>
-<v>CapstoneII\CentralBLE\Resistor_v1_0\Resistor_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\SCB_P4_v4_0.pdf</v>
-<v>CapstoneII\CentralBLE\SwitchSPST_v1_0</v>
-<v>CapstoneII\CentralBLE\SwitchSPST_v1_0\SwitchSPST_v1_0.pdf</v>
 <v>CapstoneII\PeripheralBLE</v>
 <v>CapstoneII\PeripheralBLE\PSoC 4 Architecture TRM</v>
 <v>CapstoneII\PeripheralBLE\PRoC BLE Family Datasheet</v>
 <v>CapstoneII\PeripheralBLE\System Reference Guides</v>
-<v>CapstoneII\PeripheralBLE\System Reference Guides\cy_boot_v5_60</v>
-<v>CapstoneII\PeripheralBLE\System Reference Guides\cy_dmac_v1_10</v>
-<v>CapstoneII\PeripheralBLE\System Reference Guides\cy_lfclk_v1_20</v>
-<v>CapstoneII\PeripheralBLE\Battery_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\BLE_v3_30.pdf</v>
-<v>CapstoneII\PeripheralBLE\Capacitor_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\cy_pins_v2_20</v>
-<v>CapstoneII\PeripheralBLE\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
-<v>CapstoneII\PeripheralBLE\Gnd_v1_0</v>
-<v>CapstoneII\PeripheralBLE\Gnd_v1_0\Gnd_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\Inductor_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\LED_v1_0</v>
-<v>CapstoneII\PeripheralBLE\LED_v1_0\LED_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\Power_v1_0</v>
-<v>CapstoneII\PeripheralBLE\Power_v1_0\Power_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\Resistor_v1_0</v>
-<v>CapstoneII\PeripheralBLE\Resistor_v1_0\Resistor_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\SwitchSPST_v1_0</v>
-<v>CapstoneII\PeripheralBLE\SwitchSPST_v1_0\SwitchSPST_v1_0.pdf</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
 <v>CapstoneII</v>
@@ -316,48 +279,10 @@
 <v>CapstoneII\CentralBLE\PSoC 4 Architecture TRM</v>
 <v>CapstoneII\CentralBLE\PRoC BLE Family Datasheet</v>
 <v>CapstoneII\CentralBLE\System Reference Guides</v>
-<v>CapstoneII\CentralBLE\System Reference Guides\cy_boot_v5_60</v>
-<v>CapstoneII\CentralBLE\System Reference Guides\cy_dmac_v1_10</v>
-<v>CapstoneII\CentralBLE\System Reference Guides\cy_lfclk_v1_20</v>
-<v>CapstoneII\CentralBLE\Battery_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\BLE_v3_30.pdf</v>
-<v>CapstoneII\CentralBLE\Capacitor_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\cy_pins_v2_20</v>
-<v>CapstoneII\CentralBLE\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
-<v>CapstoneII\CentralBLE\Gnd_v1_0</v>
-<v>CapstoneII\CentralBLE\Gnd_v1_0\Gnd_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\Inductor_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\LED_v1_0</v>
-<v>CapstoneII\CentralBLE\LED_v1_0\LED_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\Power_v1_0</v>
-<v>CapstoneII\CentralBLE\Power_v1_0\Power_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\Resistor_v1_0</v>
-<v>CapstoneII\CentralBLE\Resistor_v1_0\Resistor_v1_0.pdf</v>
-<v>CapstoneII\CentralBLE\SCB_P4_v4_0.pdf</v>
-<v>CapstoneII\CentralBLE\SwitchSPST_v1_0</v>
-<v>CapstoneII\CentralBLE\SwitchSPST_v1_0\SwitchSPST_v1_0.pdf</v>
 <v>CapstoneII\PeripheralBLE</v>
 <v>CapstoneII\PeripheralBLE\PSoC 4 Architecture TRM</v>
 <v>CapstoneII\PeripheralBLE\PRoC BLE Family Datasheet</v>
 <v>CapstoneII\PeripheralBLE\System Reference Guides</v>
-<v>CapstoneII\PeripheralBLE\System Reference Guides\cy_boot_v5_60</v>
-<v>CapstoneII\PeripheralBLE\System Reference Guides\cy_dmac_v1_10</v>
-<v>CapstoneII\PeripheralBLE\System Reference Guides\cy_lfclk_v1_20</v>
-<v>CapstoneII\PeripheralBLE\Battery_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\BLE_v3_30.pdf</v>
-<v>CapstoneII\PeripheralBLE\Capacitor_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\cy_pins_v2_20</v>
-<v>CapstoneII\PeripheralBLE\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
-<v>CapstoneII\PeripheralBLE\Gnd_v1_0</v>
-<v>CapstoneII\PeripheralBLE\Gnd_v1_0\Gnd_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\Inductor_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\LED_v1_0</v>
-<v>CapstoneII\PeripheralBLE\LED_v1_0\LED_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\Power_v1_0</v>
-<v>CapstoneII\PeripheralBLE\Power_v1_0\Power_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\Resistor_v1_0</v>
-<v>CapstoneII\PeripheralBLE\Resistor_v1_0\Resistor_v1_0.pdf</v>
-<v>CapstoneII\PeripheralBLE\SwitchSPST_v1_0</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStatesV2>
