@@ -26,3 +26,7 @@ set_io "\LCDSPI:mosi_m(0)\" iocell 0 4
 set_io "LED_BLUE(0)" iocell 2 2
 set_io "LED_GREEN(0)" iocell 2 3
 set_io "rst0_m(0)" iocell 1 4
+set_io "LED_RED(0)" iocell 2 4
+set_io "FAN1(0)" iocell 4 0
+set_io "FAN2(0)" iocell 3 7
+set_io "FAN3(0)" iocell 3 6

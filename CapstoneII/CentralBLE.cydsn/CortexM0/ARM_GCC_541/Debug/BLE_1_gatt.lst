@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
   55 001d 00       		.byte	0
   56 001e 00       		.byte	0
   57 001f 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 2
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 2
 
 
   58 0020 00       		.byte	0
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  112 0056 00       		.byte	0
  113 0057 00       		.byte	0
  114 0058 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 3
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 3
 
 
  115 0059 00       		.byte	0
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  169 008f 00       		.byte	0
  170 0090 00       		.byte	0
  171 0091 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 4
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 4
 
 
  172 0092 00       		.byte	0
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  226 00c8 00       		.byte	0
  227 00c9 00       		.byte	0
  228 00ca 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 5
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 5
 
 
  229 00cb 00       		.byte	0
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  283 0101 00       		.byte	0
  284 0102 00       		.byte	0
  285 0103 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 6
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 6
 
 
  286 0104 00       		.byte	0
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  340 013a 00       		.byte	0
  341 013b 00       		.byte	0
  342 013c 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 7
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 7
 
 
  343 013d 00       		.byte	0
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  397 0173 00       		.byte	0
  398 0174 00       		.byte	0
  399 0175 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 8
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 8
 
 
  400 0176 00       		.byte	0
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  454 01ac 00       		.byte	0
  455 01ad 00       		.byte	0
  456 01ae 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 9
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 9
 
 
  457 01af 00       		.byte	0
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  511 01e5 00       		.byte	0
  512 01e6 00       		.byte	0
  513 01e7 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 10
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 10
 
 
  514 01e8 00       		.byte	0
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  568 021e 00       		.byte	0
  569 021f 00       		.byte	0
  570 0220 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 11
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 11
 
 
  571 0221 00       		.byte	0
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  625 0257 00       		.byte	0
  626 0258 00       		.byte	0
  627 0259 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 12
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 12
 
 
  628 025a 00       		.byte	0
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  682              		.type	cyBle_attValues, %object
  683              		.size	cyBle_attValues, 36
  684              	cyBle_attValues:
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 13
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 13
 
 
  685 0000 43       		.byte	67
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  739 0013 04       		.byte	4
  740 0014 8E       		.byte	-114
  741 0015 8D       		.byte	-115
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 14
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 14
 
 
  742 0016 AC       		.byte	-84
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  796              		.global	cyBle_gattDB
  797              		.section	.rodata
  798              		.align	2
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 15
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 15
 
 
  799              		.type	cyBle_gattDB, %object
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  853 00a8 0700     		.short	7
  854 00aa 0000     		.space	2
  855 00ac 0100     		.short	1
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 16
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 16
 
 
  856 00ae 0000     		.space	2
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  910 0136 0000     		.space	2
  911 0138 1000     		.short	16
  912 013a 0000     		.space	2
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 17
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 17
 
 
  913 013c 30000000 		.word	cyBle_attValuesLen+48
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
   21:Generated_Source\PSoC4/BLE_1_gatt.c **** * Global variables
   22:Generated_Source\PSoC4/BLE_1_gatt.c **** ***************************************/
   23:Generated_Source\PSoC4/BLE_1_gatt.c **** 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 18
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 18
 
 
   24:Generated_Source\PSoC4/BLE_1_gatt.c **** CYBLE_STATE_T cyBle_state;
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
   78:Generated_Source\PSoC4/BLE_1_gatt.c ****         0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 
   79:Generated_Source\PSoC4/BLE_1_gatt.c ****         0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u }, 
   80:Generated_Source\PSoC4/BLE_1_gatt.c ****         {{
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 19
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 19
 
 
   81:Generated_Source\PSoC4/BLE_1_gatt.c ****             0x00u, 0x00u,
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  135:Generated_Source\PSoC4/BLE_1_gatt.c **** };
  136:Generated_Source\PSoC4/BLE_1_gatt.c **** #if(CYBLE_GATT_DB_CCCD_COUNT != 0u)
  137:Generated_Source\PSoC4/BLE_1_gatt.c **** uint8 cyBle_attValuesCCCD[CYBLE_GATT_DB_CCCD_COUNT];
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 20
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 20
 
 
  138:Generated_Source\PSoC4/BLE_1_gatt.c **** #endif /* CYBLE_GATT_DB_CCCD_COUNT != 0u */
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  192:Generated_Source\PSoC4/BLE_1_gatt.c **** #if(CYBLE_GATT_ROLE_SERVER)
  193:Generated_Source\PSoC4/BLE_1_gatt.c **** 
  194:Generated_Source\PSoC4/BLE_1_gatt.c **** /****************************************************************************** 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 21
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 21
 
 
  195:Generated_Source\PSoC4/BLE_1_gatt.c **** * Function Name: CyBle_GattsReInitGattDb
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  220:Generated_Source\PSoC4/BLE_1_gatt.c ****     {
  221:Generated_Source\PSoC4/BLE_1_gatt.c ****         apiResult = CYBLE_ERROR_INVALID_STATE;
  976              		.loc 1 221 0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 22
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 22
 
 
  977 0022 BB1D     		adds	r3, r7, #6
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  246:Generated_Source\PSoC4/BLE_1_gatt.c **** {
  1007              		.loc 1 246 0
  1008              		.cfi_startproc
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 23
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 23
 
 
  1009              		@ args = 0, pretend = 0, frame = 16
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1051 003c 5B68     		ldr	r3, [r3, #4]
  1052 003e 1800     		movs	r0, r3
  1053 0040 FFF7FEFF 		bl	CyBle_Get16ByPtr
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 24
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 24
 
 
  1054 0044 0300     		movs	r3, r0
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1096 0088 BD46     		mov	sp, r7
  1097 008a 05B0     		add	sp, sp, #20
  1098              		@ sp needed
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 25
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 25
 
 
  1099 008c 90BD     		pop	{r4, r7, pc}
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1153 0049 04       		.byte	0x4
  1154 004a 07       		.byte	0x7
  1155 004b 201B0000 		.4byte	.LASF5
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 26
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 26
 
 
  1156 004f 02       		.uleb128 0x2
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1210 00b8 04       		.byte	0x4
  1211 00b9 07       		.uleb128 0x7
  1212 00ba 04       		.byte	0x4
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 27
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 27
 
 
  1213 00bb BF000000 		.4byte	0xbf
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1267 012b 5C320000 		.4byte	.LASF30
  1268 012f 26       		.byte	0x26
  1269 0130 0B       		.uleb128 0xb
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 28
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 28
 
 
  1270 0131 B5020000 		.4byte	.LASF31
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1324 019d F7020000 		.4byte	.LASF49
  1325 01a1 41       		.byte	0x41
  1326 01a2 0B       		.uleb128 0xb
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 29
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 29
 
 
  1327 01a3 DB3B0000 		.4byte	.LASF50
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1381 020f 2C3D0000 		.4byte	.LASF68
  1382 0213 54       		.byte	0x54
  1383 0214 0B       		.uleb128 0xb
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 30
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 30
 
 
  1384 0215 EB050000 		.4byte	.LASF69
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1438 0281 13290000 		.4byte	.LASF87
  1439 0285 FD       		.byte	0xfd
  1440 0286 0B       		.uleb128 0xb
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 31
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 31
 
 
  1441 0287 F0260000 		.4byte	.LASF88
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1495 02f4 0B       		.uleb128 0xb
  1496 02f5 87200000 		.4byte	.LASF104
  1497 02f9 0F       		.byte	0xf
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 32
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 32
 
 
  1498 02fa 0B       		.uleb128 0xb
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1552 036b 03       		.byte	0x3
  1553 036c 7104     		.2byte	0x471
  1554 036e 8D020000 		.4byte	0x28d
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 33
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 33
 
 
  1555 0372 07       		.uleb128 0x7
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1609 03de 0B       		.uleb128 0xb
  1610 03df B33A0000 		.4byte	.LASF138
  1611 03e3 0F       		.byte	0xf
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 34
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 34
 
 
  1612 03e4 0B       		.uleb128 0xb
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1666 0450 0B       		.uleb128 0xb
  1667 0451 50360000 		.4byte	.LASF157
  1668 0455 A2       		.byte	0xa2
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 35
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 35
 
 
  1669 0456 0B       		.uleb128 0xb
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1723 04c6 C101     		.2byte	0x1c1
  1724 04c8 72030000 		.4byte	0x372
  1725 04cc 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 36
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 36
 
 
  1726 04cd 10       		.uleb128 0x10
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1780 053d 05       		.byte	0x5
  1781 053e 90       		.byte	0x90
  1782 053f 18050000 		.4byte	0x518
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 37
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 37
 
 
  1783 0543 04       		.byte	0x4
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1837 05a9 DF       		.byte	0xdf
  1838 05aa 7C050000 		.4byte	0x57c
  1839 05ae 14       		.uleb128 0x14
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 38
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 38
 
 
  1840 05af 08       		.byte	0x8
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1894 061e 0C       		.byte	0xc
  1895 061f 00       		.byte	0
  1896 0620 04       		.uleb128 0x4
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 39
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 39
 
 
  1897 0621 1C140000 		.4byte	.LASF189
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  1951 0690 7902     		.2byte	0x279
  1952 0692 17       		.uleb128 0x17
  1953 0693 46360000 		.4byte	.LASF197
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 40
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 40
 
 
  1954 0697 08       		.byte	0x8
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2008 070e 0C       		.uleb128 0xc
  2009 070f AF370000 		.4byte	.LASF205
  2010 0713 0501     		.2byte	0x105
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 41
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 41
 
 
  2011 0715 0C       		.uleb128 0xc
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2065 0793 0C       		.uleb128 0xc
  2066 0794 D0360000 		.4byte	.LASF224
  2067 0798 1801     		.2byte	0x118
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 42
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 42
 
 
  2068 079a 0C       		.uleb128 0xc
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2122 0818 0C       		.uleb128 0xc
  2123 0819 CE3C0000 		.4byte	.LASF243
  2124 081d 2B01     		.2byte	0x12b
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 43
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 43
 
 
  2125 081f 0C       		.uleb128 0xc
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2179 089d 0C       		.uleb128 0xc
  2180 089e 34250000 		.4byte	.LASF262
  2181 08a2 3E01     		.2byte	0x13e
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 44
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 44
 
 
  2182 08a4 0C       		.uleb128 0xc
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2236 0922 0C       		.uleb128 0xc
  2237 0923 CD000000 		.4byte	.LASF281
  2238 0927 5101     		.2byte	0x151
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 45
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 45
 
 
  2239 0929 0C       		.uleb128 0xc
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2293 09a7 0C       		.uleb128 0xc
  2294 09a8 E4090000 		.4byte	.LASF300
  2295 09ac 6401     		.2byte	0x164
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 46
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 46
 
 
  2296 09ae 0C       		.uleb128 0xc
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2350 0a2c 0C       		.uleb128 0xc
  2351 0a2d A42C0000 		.4byte	.LASF319
  2352 0a31 7701     		.2byte	0x177
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 47
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 47
 
 
  2353 0a33 0C       		.uleb128 0xc
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2407 0ab1 0C       		.uleb128 0xc
  2408 0ab2 082C0000 		.4byte	.LASF338
  2409 0ab6 8A01     		.2byte	0x18a
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 48
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 48
 
 
  2410 0ab8 0C       		.uleb128 0xc
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2464 0b36 0C       		.uleb128 0xc
  2465 0b37 FC1A0000 		.4byte	.LASF357
  2466 0b3b 9D01     		.2byte	0x19d
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 49
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 49
 
 
  2467 0b3d 0C       		.uleb128 0xc
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2521 0bbb 0C       		.uleb128 0xc
  2522 0bbc 950B0000 		.4byte	.LASF376
  2523 0bc0 B001     		.2byte	0x1b0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 50
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 50
 
 
  2524 0bc2 0C       		.uleb128 0xc
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2578 0c40 0C       		.uleb128 0xc
  2579 0c41 78390000 		.4byte	.LASF395
  2580 0c45 C301     		.2byte	0x1c3
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 51
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 51
 
 
  2581 0c47 0C       		.uleb128 0xc
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2635 0cc5 0C       		.uleb128 0xc
  2636 0cc6 F52F0000 		.4byte	.LASF414
  2637 0cca D601     		.2byte	0x1d6
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 52
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 52
 
 
  2638 0ccc 0C       		.uleb128 0xc
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2692 0d4a 0C       		.uleb128 0xc
  2693 0d4b B11A0000 		.4byte	.LASF433
  2694 0d4f E901     		.2byte	0x1e9
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 53
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 53
 
 
  2695 0d51 0C       		.uleb128 0xc
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2749 0dcf 0C       		.uleb128 0xc
  2750 0dd0 B2040000 		.4byte	.LASF452
  2751 0dd4 FC01     		.2byte	0x1fc
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 54
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 54
 
 
  2752 0dd6 0C       		.uleb128 0xc
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2806 0e54 0C       		.uleb128 0xc
  2807 0e55 982F0000 		.4byte	.LASF471
  2808 0e59 0F02     		.2byte	0x20f
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 55
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 55
 
 
  2809 0e5b 0C       		.uleb128 0xc
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2863 0ed9 0C       		.uleb128 0xc
  2864 0eda 6F0D0000 		.4byte	.LASF490
  2865 0ede 2202     		.2byte	0x222
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 56
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 56
 
 
  2866 0ee0 0C       		.uleb128 0xc
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2920 0f4f 15160000 		.4byte	.LASF500
  2921 0f53 01       		.byte	0x1
  2922 0f54 F5       		.byte	0xf5
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 57
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 57
 
 
  2923 0f55 6F040000 		.4byte	0x46f
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  2977 0fc9 68       		.byte	0x68
  2978 0fca D40F0000 		.4byte	0xfd4
  2979 0fce 05       		.uleb128 0x5
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 58
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 58
 
 
  2980 0fcf 03       		.byte	0x3
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3034 104a 01       		.byte	0x1
  3035 104b 89       		.byte	0x89
  3036 104c 35100000 		.4byte	0x1035
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 59
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 59
 
 
  3037 1050 05       		.uleb128 0x5
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3091 000f 10       		.uleb128 0x10
  3092 0010 17       		.uleb128 0x17
  3093 0011 00       		.byte	0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 60
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 60
 
 
  3094 0012 00       		.byte	0
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3148 0048 0B       		.uleb128 0xb
  3149 0049 49       		.uleb128 0x49
  3150 004a 13       		.uleb128 0x13
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 61
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 61
 
 
  3151 004b 00       		.byte	0
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3205 0081 0B       		.uleb128 0xb
  3206 0082 0B       		.uleb128 0xb
  3207 0083 49       		.uleb128 0x49
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 62
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 62
 
 
  3208 0084 13       		.uleb128 0x13
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3262 00ba 01       		.byte	0x1
  3263 00bb 0B       		.uleb128 0xb
  3264 00bc 0B       		.uleb128 0xb
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 63
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 63
 
 
  3265 00bd 3A       		.uleb128 0x3a
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3319 00f3 3A       		.uleb128 0x3a
  3320 00f4 0B       		.uleb128 0xb
  3321 00f5 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 64
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 64
 
 
  3322 00f6 0B       		.uleb128 0xb
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3376 012c 49       		.uleb128 0x49
  3377 012d 13       		.uleb128 0x13
  3378 012e 2F       		.uleb128 0x2f
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 65
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 65
 
 
  3379 012f 0B       		.uleb128 0xb
@@ -3898,7 +3898,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3433 0166 49       		.uleb128 0x49
  3434 0167 13       		.uleb128 0x13
  3435 0168 02       		.uleb128 0x2
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 66
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 66
 
 
  3436 0169 18       		.uleb128 0x18
@@ -3958,7 +3958,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3490 0014 40000000 		.4byte	.LFE2-.LFB2
  3491 0018 00000000 		.4byte	.LFB3
  3492 001c 98000000 		.4byte	.LFE3-.LFB3
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 67
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 67
 
 
  3493 0020 00000000 		.4byte	0
@@ -4018,7 +4018,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3519      545F4243 
  3519      53435F52 
  3519      4541445F 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 68
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 68
 
 
  3520              	.LASF281:
@@ -4078,7 +4078,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3538              	.LASF297:
  3539 01f9 4359424C 		.ascii	"CYBLE_EVT_CPSC_READ_CHAR_RESPONSE\000"
  3539      455F4556 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 69
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 69
 
 
  3539      545F4350 
@@ -4138,7 +4138,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3557      52495445 
  3558              	.LASF11:
  3559 0335 75696E74 		.ascii	"uint32\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 70
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 70
 
 
  3559      333200
@@ -4198,7 +4198,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3577      494E4449 
  3578              	.LASF470:
  3579 0469 4359424C 		.ascii	"CYBLE_EVT_UDSC_WRITE_DESCR_RESPONSE\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 71
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 71
 
 
  3579      455F4556 
@@ -4258,7 +4258,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3597      455F5354 
  3597      4154455F 
  3597      5343414E 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 72
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 72
 
 
  3597      4E494E47 
@@ -4318,7 +4318,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3617              	.LASF261:
  3618 06e4 4359424C 		.ascii	"CYBLE_EVT_BLSS_INDICATION_ENABLED\000"
  3618      455F4556 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 73
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 73
 
 
  3618      545F424C 
@@ -4378,7 +4378,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3636      524F525F 
  3636      42545F4F 
  3636      4E5F4E4F 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 74
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 74
 
 
  3637              	.LASF308:
@@ -4438,7 +4438,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3656      455F4741 
  3656      54545F45 
  3656      52525F41 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 75
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 75
 
 
  3656      4E43535F 
@@ -4498,7 +4498,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3676 0a59 4359424C 		.ascii	"CYBLE_EVT_CSCSS_INDICATION_DISABLED\000"
  3676      455F4556 
  3676      545F4353 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 76
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 76
 
 
  3676      4353535F 
@@ -4558,7 +4558,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3694      6500
  3695              	.LASF376:
  3696 0b95 4359424C 		.ascii	"CYBLE_EVT_HTSS_NOTIFICATION_ENABLED\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 77
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 77
 
 
  3696      455F4556 
@@ -4618,7 +4618,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3714      434F4D4D 
  3715              	.LASF218:
  3716 0cb6 4359424C 		.ascii	"CYBLE_EVT_AIOSS_NOTIFICATION_ENABLED\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 78
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 78
 
 
  3716      455F4556 
@@ -4678,7 +4678,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3734      4F4B00
  3735              	.LASF53:
  3736 0dde 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BY_GROUP_TYPE_RSP\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 79
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 79
 
 
  3736      455F4556 
@@ -4738,7 +4738,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3754      545F5750 
  3754      5453535F 
  3754      494E4449 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 80
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 80
 
 
  3755              	.LASF43:
@@ -4798,7 +4798,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3774      455F4556 
  3774      545F414E 
  3774      4353535F 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 81
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 81
 
 
  3774      4E4F5449 
@@ -4858,7 +4858,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3794      545F4149 
  3794      4F53435F 
  3794      4552524F 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 82
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 82
 
 
  3795              	.LASF226:
@@ -4918,7 +4918,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3813              	.LASF445:
  3814 126f 4359424C 		.ascii	"CYBLE_EVT_RTUSC_READ_CHAR_RESPONSE\000"
  3814      455F4556 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 83
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 83
 
 
  3814      545F5254 
@@ -4978,7 +4978,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3833      455F4556 
  3833      545F4852 
  3833      53535F45 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 84
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 84
 
 
  3833      4E455247 
@@ -5038,7 +5038,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3851      53525643 
  3852              	.LASF90:
  3853 14f2 4359424C 		.ascii	"CYBLE_ERROR_INVALID_PARAMETER\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 85
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 85
 
 
  3853      455F4552 
@@ -5098,7 +5098,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3871      74747357 
  3871      72697465 
  3871      4576656E 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 86
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 86
 
 
  3872              	.LASF477:
@@ -5158,7 +5158,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3890              	.LASF254:
  3891 1747 4359424C 		.ascii	"CYBLE_EVT_BCSS_INDICATION_ENABLED\000"
  3891      455F4556 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 87
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 87
 
 
  3891      545F4243 
@@ -5218,7 +5218,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3909      31363036 
  3910 1888 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
  3910      20726576 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 88
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 88
 
 
  3910      6973696F 
@@ -5278,7 +5278,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3927      5353435F 
  3927      52454144 
  3928              	.LASF334:
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 89
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 89
 
 
  3929 19f3 4359424C 		.ascii	"CYBLE_EVT_ESSC_READ_DESCR_RESPONSE\000"
@@ -5338,7 +5338,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3947 1b20 6C6F6E67 		.ascii	"long unsigned int\000"
  3947      20756E73 
  3947      69676E65 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 90
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 90
 
 
  3947      6420696E 
@@ -5398,7 +5398,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3965      4C324341 
  3965      505F5053 
  3966              	.LASF381:
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 91
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 91
 
 
  3967 1c7c 4359424C 		.ascii	"CYBLE_EVT_HTSS_CHAR_WRITE\000"
@@ -5458,7 +5458,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  3985      455F4556 
  3985      545F4347 
  3985      4D53435F 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 92
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 92
 
 
  3985      52454144 
@@ -5518,7 +5518,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4005 1ead 4359424C 		.ascii	"CYBLE_EVT_GAP_PASSKEY_ENTRY_REQUEST\000"
  4005      455F4556 
  4005      545F4741 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 93
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 93
 
 
  4005      505F5041 
@@ -5578,7 +5578,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4023      7400
  4024              	.LASF455:
  4025 1fd6 4359424C 		.ascii	"CYBLE_EVT_TPSC_READ_CHAR_RESPONSE\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 94
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 94
 
 
  4025      455F4556 
@@ -5638,7 +5638,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4043      43455F41 
  4044              	.LASF326:
  4045 2116 4359424C 		.ascii	"CYBLE_EVT_ESSS_INDICATION_DISABLED\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 95
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 95
 
 
  4045      455F4556 
@@ -5698,7 +5698,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4063      455F4552 
  4063      524F525F 
  4063      4C324341 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 96
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 96
 
 
  4063      505F4348 
@@ -5758,7 +5758,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4083      545F4849 
  4083      4453535F 
  4083      4E4F5449 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 97
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 97
 
 
  4084              	.LASF71:
@@ -5818,7 +5818,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4103      50524550 
  4104              	.LASF187:
  4105 24b4 61747445 		.ascii	"attEndHandle\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 98
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 98
 
 
  4105      6E644861 
@@ -5878,7 +5878,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4123      5448454E 
  4123      54494341 
  4123      54494F4E 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 99
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 99
 
 
  4124              	.LASF102:
@@ -5938,7 +5938,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4143 2741 4359424C 		.ascii	"CYBLE_EVT_GATTS_WRITE_REQ\000"
  4143      455F4556 
  4143      545F4741 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 100
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 100
 
 
  4143      5454535F 
@@ -5998,7 +5998,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4161      53435F52 
  4161      4541445F 
  4162              	.LASF77:
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 101
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 101
 
 
  4163 2864 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_CONN_CNF\000"
@@ -6058,7 +6058,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4181      545F4852 
  4181      53435F4E 
  4181      4F544946 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 102
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 102
 
 
  4182              	.LASF23:
@@ -6118,7 +6118,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4200              	.LASF213:
  4201 2aa3 4359424C 		.ascii	"CYBLE_EVT_GATTC_DESCR_DUPLICATION\000"
  4201      455F4556 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 103
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 103
 
 
  4201      545F4741 
@@ -6178,7 +6178,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4220      455F4556 
  4220      545F4C4E 
  4220      53435F52 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 104
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 104
 
 
  4220      4541445F 
@@ -6238,7 +6238,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4239              	.LASF163:
  4240 2cfc 4359424C 		.ascii	"CYBLE_GATT_DB_ATTR_HANDLE_T\000"
  4240      455F4741 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 105
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 105
 
 
  4240      54545F44 
@@ -6298,7 +6298,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4260      655F4170 
  4260      706C4361 
  4260      6C6C6261 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 106
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 106
 
 
  4260      636B00
@@ -6358,7 +6358,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4280 2f04 61637475 		.ascii	"actualLength\000"
  4280      616C4C65 
  4280      6E677468 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 107
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 107
 
 
  4280      00
@@ -6418,7 +6418,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4298      52454144 
  4299              	.LASF356:
  4300 303f 4359424C 		.ascii	"CYBLE_EVT_HIDSC_READ_CHAR_RESPONSE\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 108
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 108
 
 
  4300      455F4556 
@@ -6478,7 +6478,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4319              	.LASF323:
  4320 3154 4359424C 		.ascii	"CYBLE_EVT_ESSS_NOTIFICATION_ENABLED\000"
  4320      455F4556 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 109
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 109
 
 
  4320      545F4553 
@@ -6538,7 +6538,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4336      4E444943 
  4337              	.LASF482:
  4338 32a8 4359424C 		.ascii	"CYBLE_EVT_WPTSC_READ_DESCR_RESPONSE\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 110
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 110
 
 
  4338      455F4556 
@@ -6598,7 +6598,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4358      545F424D 
  4358      53535F57 
  4358      52495445 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 111
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 111
 
 
  4359              	.LASF179:
@@ -6658,7 +6658,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4378              	.LASF239:
  4379 34d5 4359424C 		.ascii	"CYBLE_EVT_ANCSC_ERROR_RESPONSE\000"
  4379      455F4556 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 112
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 112
 
 
  4379      545F414E 
@@ -6718,7 +6718,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4397      545F5544 
  4397      53535F49 
  4397      4E444943 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 113
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 113
 
 
  4398              	.LASF363:
@@ -6778,7 +6778,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4417      455F4556 
  4417      545F4241 
  4417      53435F52 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 114
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 114
 
 
  4417      4541445F 
@@ -6838,7 +6838,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4435      5F5400
  4436              	.LASF276:
  4437 3842 4359424C 		.ascii	"CYBLE_EVT_CGMSS_INDICATION_DISABLED\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 115
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 115
 
 
  4437      455F4556 
@@ -6898,7 +6898,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4455      455F4556 
  4455      545F5354 
  4455      41434B5F 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 116
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 116
 
 
  4455      42555359 
@@ -6958,7 +6958,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4475      7420756E 
  4475      7369676E 
  4475      65642069 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 117
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 117
 
 
  4475      6E7400
@@ -7018,7 +7018,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4496              	.LASF91:
  4497 3ba8 4359424C 		.ascii	"CYBLE_ERROR_INVALID_OPERATION\000"
  4497      455F4552 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 118
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 118
 
 
  4497      524F525F 
@@ -7078,7 +7078,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4515      545F414E 
  4515      53435F4E 
  4515      4F544946 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 119
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 119
 
 
  4516              	.LASF32:
@@ -7138,7 +7138,7 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 1
  4535      545F414E 
  4535      53535F4E 
  4535      4F544946 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccB2GWxG.s 			page 120
+ARM GAS  C:\Users\megan\AppData\Local\Temp\ccMyh5kk.s 			page 120
 
 
  4536              	.LASF383:

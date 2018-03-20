@@ -18,6 +18,7 @@ void LCDInitDemo();
 void LCDTouchscreenDemo();
 void RegReadTest();
 void BLEConnect();
+void FanTest();
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL 0x40030008
@@ -31,15 +32,18 @@ uint8 DevicesNearBy = 0;
 int main()
 {
     CyGlobalIntEnable;   /* Enable global interrupts */
-    LCDSPI_Start();
+    //LCDSPI_Start();
     /*  LCD Setup   */
-    LCDInitDemo();
-    LCDTouchscreenDemo();
+    //LCDInitDemo();
+    //LCDTouchscreenDemo();
     //RegReadTest();
     
     /* BLE Setup    */
-    CyBle_Start( StackEventHandler );
+    //CyBle_Start( StackEventHandler );
     //BLEConnect();
+    
+    /* Fan Test     */
+    FanTest();
     
     for(;;)
     {
@@ -292,6 +296,19 @@ void BLEConnect() {
     }
     
     
+}
+
+void FanTest() {
+    while(1) {
+        FAN1_Write(1);
+        FAN2_Write(1);
+        FAN3_Write(1);
+        CyDelay(1000);
+        FAN1_Write(0);
+        FAN2_Write(0);
+        FAN3_Write(0);
+        CyDelay(1000);
+    }
 }
             
 /* [] END OF FILE */

@@ -31,7 +31,7 @@ int main()
         /* Place your application code here */
         CyBle_ProcessEvents();
         
-        //BLEStayConnected();
+        BLEStayConnected();
     }
 }
 

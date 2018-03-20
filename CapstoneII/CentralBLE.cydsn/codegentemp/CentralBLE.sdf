@@ -1,6 +1,6 @@
 (DELAYFILE
  (SDFVERSION "IEEE 1497 4.0")
- (DATE "2018-02-21T15:09:13Z")
+ (DATE "2018-03-17T15:30:06Z")
  (DESIGN "CentralBLE")
  (VENDOR "Cypress Semiconductor")
  (PROGRAM "PSoC Creator")
@@ -35,6 +35,10 @@
     (INTERCONNECT \\LCDSPI\:ss0_m\(0\)_PAD\\ \\LCDSPI\:ss0_m\(0\)\\.pad_in (0.000:0.000:0.000))
     (INTERCONNECT rst0_m\(0\)_PAD rst0_m\(0\).pad_in (0.000:0.000:0.000))
     (INTERCONNECT LCD_int\(0\)_PAD LCD_int\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT LED_RED\(0\)_PAD LED_RED\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT FAN1\(0\)_PAD FAN1\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT FAN2\(0\)_PAD FAN2\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT FAN3\(0\)_PAD FAN3\(0\).pad_in (0.000:0.000:0.000))
    )
   )
  )
