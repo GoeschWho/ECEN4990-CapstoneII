@@ -23,31 +23,57 @@
 */
 /* This array contains attribute handles for the defined Custom Services and their characteristics and descriptors.
    The array index definitions are located in the CYBLE_custom.h file. */
-const CYBLE_CUSTOMS_T cyBle_customs[0x01u] = {
-
-    /* Custom Service service */
-    {
-        0x000Eu, /* Handle of the Custom Service service */ 
-        {
-
-            /* Custom Characteristic characteristic */
-            {
-                0x0010u, /* Handle of the Custom Characteristic characteristic */ 
-                
-                /* Array of Descriptors handles */
-                {
-                    0x0011u, /* Handle of the Custom Descriptor descriptor */ 
-                }, 
-            },
-        }, 
-    },
-};
 
 
 #endif /* (CYBLE_CUSTOM_SERVER) */
 
 #ifdef CYBLE_CUSTOM_CLIENT
     
+static const CYBLE_UUID128_T cyBle_customUuid128[] = {
+    /* Custom Service */
+    { {0x08u, 0xB3u, 0x0Du, 0x39u, 0x7Fu, 0x98u, 0xE4u, 0xB9u, 0x76u, 0x47u, 0xBCu, 0x0Au, 0xB1u, 0x7Bu, 0xBEu, 0x15u} },
+    /* Custom Characteristic */
+    { {0xD5u, 0x14u, 0x9Fu, 0x80u, 0xC6u, 0xAEu, 0x2Au, 0x82u, 0x93u, 0x41u, 0xEAu, 0x48u, 0x43u, 0x30u, 0x18u, 0x70u} },
+    /* Custom Descriptor */
+    { {0x09u, 0xB1u, 0xC5u, 0x37u, 0xC6u, 0x9Eu, 0x13u, 0xBDu, 0x0Fu, 0x4Bu, 0xD2u, 0xA1u, 0xE4u, 0xB3u, 0x0Bu, 0x7Cu} },
+};
+
+static CYBLE_CUSTOMC_DESC_T cyBle_customCDesc[0x01u] = {
+
+    /* Custom Descriptor */
+    {
+        CYBLE_GATT_INVALID_ATTR_HANDLE_VALUE, /* Descriptor handle */ 
+        (const CYBLE_UUID128_T *) &cyBle_customUuid128[2], /* 128-bit UUID */ 
+        0x02u, /* UUID Format - 16-bit (0x01) or 128-bit (0x02) */ 
+    },
+};
+
+static CYBLE_CUSTOMC_CHAR_T cyBle_customCChar[0x01u] = {
+
+    /* Custom Characteristic */
+    {
+        CYBLE_GATT_INVALID_ATTR_HANDLE_VALUE, /* Characteristic handle */ 
+        CYBLE_GATT_INVALID_ATTR_HANDLE_VALUE, /* Characteristic end handle */ 
+        (const CYBLE_UUID128_T *) &cyBle_customUuid128[1], /* 128-bit UUID */ 
+        0x02u, /* UUID Format - 16-bit (0x01) or 128-bit (0x02) */ 
+        0x00u, /* Characteristic properties */ 
+        0x01u, /* Number of descriptors */ 
+        &cyBle_customCDesc[0], /* Characteristic Descriptors */ 
+    },
+};
+
+CYBLE_CUSTOMC_T cyBle_customCServ[CYBLE_CUSTOMC_SERVICE_COUNT] = {
+
+    /* Custom Service */
+    {
+        CYBLE_GATT_INVALID_ATTR_HANDLE_VALUE, /* Custom Service handle */ 
+        (const CYBLE_UUID128_T *) &cyBle_customUuid128[0], /* 128-bit UUID */ 
+        0x02u, /* UUID Format - 16-bit (0x01) or 128-bit (0x02) */ 
+        0x01u, /* Number of characteristics */ 
+        &cyBle_customCChar[0], /* Custom Service Characteristics */ 
+    },
+};
+
 
 static uint16 cyBle_customDisServIndex;
 static uint16 cyBle_customDisCharIndex;

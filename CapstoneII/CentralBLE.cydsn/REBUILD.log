@@ -1,0 +1,3 @@
+--------------- Rebuild Started: 04/03/2018 20:08:50 Project: RA8875.c, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/RA8875.lst -g -D DEBUG -Wall -ffunction-sections -ffat-lto-objects -O0 -c RA8875.c -o .\CortexM0\ARM_GCC_541\Debug\RA8875.o
+--------------- Rebuild Succeeded: 04/03/2018 20:08:50 ---------------

@@ -24,21 +24,17 @@
 ***************************************/
 
 /* Maximum supported Custom Services */
-#define CYBLE_CUSTOMS_SERVICE_COUNT                  (0x01u)
-#define CYBLE_CUSTOMC_SERVICE_COUNT                  (0x00u)
-#define CYBLE_CUSTOM_SERVICE_CHAR_COUNT              (0x01u)
-#define CYBLE_CUSTOM_SERVICE_CHAR_DESCRIPTORS_COUNT  (0x01u)
+#define CYBLE_CUSTOMS_SERVICE_COUNT                  (0x00u)
+#define CYBLE_CUSTOMC_SERVICE_COUNT                  (0x01u)
+#define CYBLE_CUSTOM_SERVICE_CHAR_COUNT              (0x00u)
+#define CYBLE_CUSTOM_SERVICE_CHAR_DESCRIPTORS_COUNT  (0x00u)
 
 /* Below are the indexes and handles of the defined Custom Services and their characteristics */
-#define CYBLE_CUSTOM_SERVICE_SERVICE_INDEX   (0x00u) /* Index of Custom Service service in the cyBle_customs array */
-#define CYBLE_CUSTOM_SERVICE_CUSTOM_CHARACTERISTIC_CHAR_INDEX   (0x00u) /* Index of Custom Characteristic characteristic */
-#define CYBLE_CUSTOM_SERVICE_CUSTOM_CHARACTERISTIC_CUSTOM_DESCRIPTOR_DESC_INDEX   (0x00u) /* Index of Custom Descriptor descriptor */
+#define CYBLE_CUSTOMC_CUSTOM_SERVICE_SERVICE_INDEX   (0x00u) /* Index of Custom Service service in the cyBle_customCServ array */
+#define CYBLE_CUSTOMC_CUSTOM_SERVICE_CUSTOM_CHARACTERISTIC_CHAR_INDEX   (0x00u) /* Index of Custom Characteristic characteristic */
+#define CYBLE_CUSTOMC_CUSTOM_SERVICE_CUSTOM_CHARACTERISTIC_CUSTOM_DESCRIPTOR_DESC_INDEX   (0x00u) /* Index of Custom Descriptor descriptor */
 
 
-#define CYBLE_CUSTOM_SERVICE_SERVICE_HANDLE   (0x000Eu) /* Handle of Custom Service service */
-#define CYBLE_CUSTOM_SERVICE_CUSTOM_CHARACTERISTIC_DECL_HANDLE   (0x000Fu) /* Handle of Custom Characteristic characteristic declaration */
-#define CYBLE_CUSTOM_SERVICE_CUSTOM_CHARACTERISTIC_CHAR_HANDLE   (0x0010u) /* Handle of Custom Characteristic characteristic */
-#define CYBLE_CUSTOM_SERVICE_CUSTOM_CHARACTERISTIC_CUSTOM_DESCRIPTOR_DESC_HANDLE   (0x0011u) /* Handle of Custom Descriptor descriptor */
 
 
 

@@ -309,6 +309,7 @@ void textMode(void)
   temp = readData();
   temp &= ~((1<<7) | (1<<5)); // Clear bits 7 and 5
   writeData(temp);
+
 }
 
 /**************************************************************************/
@@ -381,12 +382,13 @@ void textTransparent(uint16_t foreColor)
   writeData((foreColor & 0x07e0) >> 5);
   writeCommand(0x65);
   writeData((foreColor & 0x001f));
-
+    
   /* Set transparency flag */
   writeCommand(0x22);
   uint8_t temp = readData();
-  temp |= (1<<6); // Set bit 6
-  writeData(temp);  
+  temp |= (1<<6); // Set bit 6 
+  writeData(temp); 
+
 }
 
 /**************************************************************************/
@@ -496,7 +498,7 @@ void setXY(uint16_t x, uint16_t y) {
 */
 /**************************************************************************/
 void pushPixels(uint32_t num, uint16_t p) {
-    LCDSPI_Start(); 
+    //LCDSPI_Start(); 
  
     LCDSPI_SpiUartWriteTxData(RA8875_DATAWRITE);
     
@@ -505,7 +507,7 @@ void pushPixels(uint32_t num, uint16_t p) {
     LCDSPI_SpiUartWriteTxData(p);
   }
 
-    LCDSPI_Stop();
+    //LCDSPI_Stop();
 }
 
 /**************************************************************************/
@@ -536,14 +538,14 @@ void drawPixel(int16_t x, int16_t y, uint16_t color)
   writeReg(RA8875_CURV1, y >> 8);  
   writeCommand(RA8875_MRWC);
 
-    LCDSPI_Start(); 
+    //LCDSPI_Start(); 
  
     LCDSPI_SpiUartWriteTxData(RA8875_DATAWRITE);
     
     LCDSPI_SpiUartWriteTxData(color >> 8);
     LCDSPI_SpiUartWriteTxData(color);
     
-    LCDSPI_Stop();
+    //LCDSPI_Stop();
 }
 
 /**************************************************************************/
@@ -1296,6 +1298,9 @@ uint8_t  readData(void)
     CyDelay(1);
     LCDSPI_ClearMasterInterruptSource(LCDSPI_INTR_MASTER_SPI_DONE); // testing
     
+    // testing
+    LCDSPI_SpiUartClearRxBuffer();
+    
     // request data
     LCDSPI_SpiUartWriteTxData(RA8875_DATAREAD);
     LCDSPI_SpiUartWriteTxData(0);
@@ -1305,10 +1310,13 @@ uint8_t  readData(void)
     {
         /* Wait while Master completes transaction */
     }
-
+    while (LCDSPI_SpiUartGetRxBufferSize() == 0)
+    CyDelay(1);
+    
     // discard blank data captured during transmission
     while (LCDSPI_SpiUartGetRxBufferSize() > 1) {
-        x = LCDSPI_SpiUartReadRxData();
+    //while (LCDSPI_SpiUartReadRxData() == 0xFF ) {
+        LCDSPI_SpiUartReadRxData();
     }
     x = LCDSPI_SpiUartReadRxData();
     

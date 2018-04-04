@@ -79,20 +79,25 @@ CYBLE_STATE_T cyBle_state;
         0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u }, 
         {{
             0x00u, 0x00u,
-        },
-        {
             0x00u, 0x00u,
         },
         {
             0x00u, 0x00u,
-        },
-        {
             0x00u, 0x00u,
         },
         {
+            0x00u, 0x00u,
+            0x00u, 0x00u,
+        },
+        {
+            0x00u, 0x00u,
+            0x00u, 0x00u,
+        },
+        {
+            0x00u, 0x00u,
             0x00u, 0x00u,
         }}, 
-        0x02u, /* CYBLE_GATT_DB_CCCD_COUNT */ 
+        0x04u, /* CYBLE_GATT_DB_CCCD_COUNT */ 
         0x05u, /* CYBLE_GAP_MAX_BONDED_DEVICE */ 
     };
 #endif /* (CYBLE_MODE_PROFILE) */
@@ -108,7 +113,7 @@ CYBLE_STATE_T cyBle_state;
     0x000Fu,    /* Handle of the Client Characteristic Configuration descriptor */
 };
     
-    static uint8 cyBle_attValues[0x1Du] = {
+    static uint8 cyBle_attValues[0x32u] = {
     /* Device Name */
     (uint8)'P', (uint8)'e', (uint8)'r', (uint8)'i', (uint8)'p', (uint8)'h', (uint8)'e', (uint8)'r', (uint8)'a',
     (uint8)'l', (uint8)'B', (uint8)'L', (uint8)'E',
@@ -128,6 +133,24 @@ CYBLE_STATE_T cyBle_state;
     /* Service Changed */
     0x00u, 0x00u, 0x00u, 0x00u,
 
+    /* Descriptor Value Changed */
+    0x00u, 0x00u,
+
+    /* Temperature */
+    0x71u, 0x00u,
+
+    /* Environmental Sensing Measurement */
+    0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+
+    /* Environmental Sensing Trigger Setting */
+    0x00u, 0x00u,
+
+    /* Characteristic User Description */
+    
+
+    /* Valid Range */
+    0x00u, 0x80u, 0xFFu, 0x7Fu,
+
 };
 #if(CYBLE_GATT_DB_CCCD_COUNT != 0u)
 uint8 cyBle_attValuesCCCD[CYBLE_GATT_DB_CCCD_COUNT];
@@ -141,9 +164,16 @@ CYBLE_GATTS_ATT_GEN_VAL_LEN_T cyBle_attValuesLen[CYBLE_GATT_DB_ATT_VAL_COUNT] = 
     { 0x0001u, (void *)&cyBle_attValues[24] }, /* Resolvable Private Address Only */
     { 0x0004u, (void *)&cyBle_attValues[25] }, /* Service Changed */
     { 0x0002u, (void *)&cyBle_attValuesCCCD[0] }, /* Client Characteristic Configuration */
+    { 0x0002u, (void *)&cyBle_attValues[29] }, /* Descriptor Value Changed */
+    { 0x0002u, (void *)&cyBle_attValuesCCCD[2] }, /* Client Characteristic Configuration */
+    { 0x0002u, (void *)&cyBle_attValues[31] }, /* Temperature */
+    { 0x000Bu, (void *)&cyBle_attValues[33] }, /* Environmental Sensing Measurement */
+    { 0x0002u, (void *)&cyBle_attValues[44] }, /* Environmental Sensing Trigger Setting */
+    { 0x0000u, (void *)&cyBle_attValues[46] }, /* Characteristic User Description */
+    { 0x0004u, (void *)&cyBle_attValues[46] }, /* Valid Range */
 };
 
-const CYBLE_GATTS_DB_T cyBle_gattDB[0x0Fu] = {
+const CYBLE_GATTS_DB_T cyBle_gattDB[0x19u] = {
     { 0x0001u, 0x2800u /* Primary service                     */, 0x00000001u /*       */, 0x000Bu, {{0x1800u, NULL}}                           },
     { 0x0002u, 0x2803u /* Characteristic                      */, 0x00020001u /* rd    */, 0x0003u, {{0x2A00u, NULL}}                           },
     { 0x0003u, 0x2A00u /* Device Name                         */, 0x01020001u /* rd    */, 0x0003u, {{0x000Du, (void *)&cyBle_attValuesLen[0]}} },
@@ -159,6 +189,16 @@ const CYBLE_GATTS_DB_T cyBle_gattDB[0x0Fu] = {
     { 0x000Du, 0x2803u /* Characteristic                      */, 0x00200001u /* ind   */, 0x000Fu, {{0x2A05u, NULL}}                           },
     { 0x000Eu, 0x2A05u /* Service Changed                     */, 0x01200000u /* ind   */, 0x000Fu, {{0x0004u, (void *)&cyBle_attValuesLen[5]}} },
     { 0x000Fu, 0x2902u /* Client Characteristic Configuration */, 0x010A0101u /* rd,wr */, 0x000Fu, {{0x0002u, (void *)&cyBle_attValuesLen[6]}} },
+    { 0x0010u, 0x2800u /* Primary service                     */, 0x00000001u /*       */, 0x0019u, {{0x181Au, NULL}}                           },
+    { 0x0011u, 0x2803u /* Characteristic                      */, 0x00200001u /* ind   */, 0x0013u, {{0x2A7Du, NULL}}                           },
+    { 0x0012u, 0x2A7Du /* Descriptor Value Changed            */, 0x01200000u /* ind   */, 0x0013u, {{0x0002u, (void *)&cyBle_attValuesLen[7]}} },
+    { 0x0013u, 0x2902u /* Client Characteristic Configuration */, 0x010A0101u /* rd,wr */, 0x0013u, {{0x0002u, (void *)&cyBle_attValuesLen[8]}} },
+    { 0x0014u, 0x2803u /* Characteristic                      */, 0x00020001u /* rd    */, 0x0019u, {{0x2A6Eu, NULL}}                           },
+    { 0x0015u, 0x2A6Eu /* Temperature                         */, 0x01020001u /* rd    */, 0x0019u, {{0x0002u, (void *)&cyBle_attValuesLen[9]}} },
+    { 0x0016u, 0x290Cu /* Environmental Sensing Measurement   */, 0x01020001u /* rd    */, 0x0016u, {{0x000Bu, (void *)&cyBle_attValuesLen[10]}} },
+    { 0x0017u, 0x290Du /* Environmental Sensing Trigger Setti */, 0x01020001u /* rd    */, 0x0017u, {{0x0002u, (void *)&cyBle_attValuesLen[11]}} },
+    { 0x0018u, 0x2901u /* Characteristic User Description     */, 0x01020001u /* rd    */, 0x0018u, {{0x0000u, (void *)&cyBle_attValuesLen[12]}} },
+    { 0x0019u, 0x2906u /* Valid Range                         */, 0x01020001u /* rd    */, 0x0019u, {{0x0004u, (void *)&cyBle_attValuesLen[13]}} },
 };
 
 

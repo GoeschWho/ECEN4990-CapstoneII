@@ -108,7 +108,7 @@ CYBLE_STATE_T cyBle_state;
     0x000Du,    /* Handle of the Client Characteristic Configuration descriptor */
 };
     
-    static uint8 cyBle_attValues[0x24u] = {
+    static uint8 cyBle_attValues[0x12u] = {
     /* Device Name */
     (uint8)'C', (uint8)'e', (uint8)'n', (uint8)'t', (uint8)'r', (uint8)'a', (uint8)'l', (uint8)'B', (uint8)'L',
     (uint8)'E',
@@ -125,24 +125,10 @@ CYBLE_STATE_T cyBle_state;
     /* Service Changed */
     0x00u, 0x00u, 0x00u, 0x00u,
 
-    /* Custom Characteristic */
-    0x00u,
-
-    /* Custom Descriptor */
-    0x00u, 0x74u, 0x98u, 0x39u, 0xC0u, 0xE8u, 0xC3u, 0x04u, 0xA2u, 0xA1u, 0x41u, 0xE7u, 0x19u, 0x0Du, 0xF8u, 0xD9u,
-    0xD8u,
-
 };
 #if(CYBLE_GATT_DB_CCCD_COUNT != 0u)
 uint8 cyBle_attValuesCCCD[CYBLE_GATT_DB_CCCD_COUNT];
 #endif /* CYBLE_GATT_DB_CCCD_COUNT != 0u */
-
-const uint8 cyBle_attUuid128[][16u] = {
-    /* Custom Service */
-    { 0x04u, 0x8Au, 0x6Cu, 0xCCu, 0x59u, 0x98u, 0xECu, 0x95u, 0x60u, 0x45u, 0xCEu, 0x04u, 0x8Eu, 0x8Du, 0xACu, 0xB1u },
-    /* Custom Characteristic */
-    { 0xB9u, 0x7Cu, 0x1Fu, 0x00u, 0x78u, 0x2Eu, 0xB7u, 0x81u, 0xB1u, 0x4Bu, 0x9Cu, 0x06u, 0x59u, 0x17u, 0xF0u, 0xC6u },
-};
 
 CYBLE_GATTS_ATT_GEN_VAL_LEN_T cyBle_attValuesLen[CYBLE_GATT_DB_ATT_VAL_COUNT] = {
     { 0x000Au, (void *)&cyBle_attValues[0] }, /* Device Name */
@@ -151,13 +137,9 @@ CYBLE_GATTS_ATT_GEN_VAL_LEN_T cyBle_attValuesLen[CYBLE_GATT_DB_ATT_VAL_COUNT] = 
     { 0x0001u, (void *)&cyBle_attValues[13] }, /* Resolvable Private Address Only */
     { 0x0004u, (void *)&cyBle_attValues[14] }, /* Service Changed */
     { 0x0002u, (void *)&cyBle_attValuesCCCD[0] }, /* Client Characteristic Configuration */
-    { 0x0010u, (void *)&cyBle_attUuid128[0] }, /* Custom Service UUID */
-    { 0x0010u, (void *)&cyBle_attUuid128[1] }, /* Custom Characteristic UUID */
-    { 0x0001u, (void *)&cyBle_attValues[18] }, /* Custom Characteristic */
-    { 0x0001u, (void *)&cyBle_attValues[19] }, /* Custom Descriptor */
 };
 
-const CYBLE_GATTS_DB_T cyBle_gattDB[0x11u] = {
+const CYBLE_GATTS_DB_T cyBle_gattDB[0x0Du] = {
     { 0x0001u, 0x2800u /* Primary service                     */, 0x00000001u /*       */, 0x0009u, {{0x1800u, NULL}}                           },
     { 0x0002u, 0x2803u /* Characteristic                      */, 0x00020001u /* rd    */, 0x0003u, {{0x2A00u, NULL}}                           },
     { 0x0003u, 0x2A00u /* Device Name                         */, 0x01020001u /* rd    */, 0x0003u, {{0x000Au, (void *)&cyBle_attValuesLen[0]}} },
@@ -171,10 +153,6 @@ const CYBLE_GATTS_DB_T cyBle_gattDB[0x11u] = {
     { 0x000Bu, 0x2803u /* Characteristic                      */, 0x00200001u /* ind   */, 0x000Du, {{0x2A05u, NULL}}                           },
     { 0x000Cu, 0x2A05u /* Service Changed                     */, 0x01200000u /* ind   */, 0x000Du, {{0x0004u, (void *)&cyBle_attValuesLen[4]}} },
     { 0x000Du, 0x2902u /* Client Characteristic Configuration */, 0x010A0101u /* rd,wr */, 0x000Du, {{0x0002u, (void *)&cyBle_attValuesLen[5]}} },
-    { 0x000Eu, 0x2800u /* Primary service                     */, 0x08000001u /*       */, 0x0011u, {{0x0010u, (void *)&cyBle_attValuesLen[6]}} },
-    { 0x000Fu, 0x2803u /* Characteristic                      */, 0x00000001u /*       */, 0x0011u, {{0x0010u, (void *)&cyBle_attValuesLen[7]}} },
-    { 0x0010u, 0x1759u /* Custom Characteristic               */, 0x09000000u /*       */, 0x0011u, {{0x0001u, (void *)&cyBle_attValuesLen[8]}} },
-    { 0x0011u, 0xF80Du /* Custom Descriptor                   */, 0x09000001u /*       */, 0x0011u, {{0x0001u, (void *)&cyBle_attValuesLen[9]}} },
 };
 
 

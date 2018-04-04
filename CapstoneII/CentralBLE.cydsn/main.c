@@ -14,8 +14,10 @@
 
 /*  Declarations    */
 void StackEventHandler( uint32 eventCode, void *eventParam );
+void LCDInit(void);
 void LCDInitDemo();
 void LCDTouchscreenDemo();
+void GUIInit();
 void RegReadTest();
 void BLEConnect();
 void FanTest();
@@ -32,22 +34,25 @@ uint8 DevicesNearBy = 0;
 int main()
 {
     CyGlobalIntEnable;   /* Enable global interrupts */
-    //LCDSPI_Start();
+    
     /*  LCD Setup   */
+    LCDInit();
+    //RegReadTest();
+    //CyDelay(10000);
     //LCDInitDemo();
     //LCDTouchscreenDemo();
     //RegReadTest();
+    GUIInit();
     
     /* BLE Setup    */
     //CyBle_Start( StackEventHandler );
     //BLEConnect();
     
     /* Fan Test     */
-    FanTest();
+    //FanTest();
     
     for(;;)
     {
-        /* Place your application code here */
         CyBle_ProcessEvents();
     }
 }
@@ -97,16 +102,9 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
     }
 }    
 
-void LCDInitDemo() {
+void LCDInit() {
     
-    //------ Declarations ------/
-    // LCD Strings
-    char welcome1[] = "Megan Bird";
-    char welcome2[] = "ECEN 4350";
-    char welcome3[] = "Fall 2017";
-    char ble[] = "BLE_Central";
-    
-    uint16 myDelay = 200;
+    LCDSPI_Start();
     
     //------ LCD Setup ------//  
     
@@ -119,7 +117,19 @@ void LCDInitDemo() {
     PWM1config(true, RA8875_PWM_CLK_DIV1024); // PWM output for backlight  
     PWM1out(255);
     
-    LCD_int_Write(1u);  
+    LCD_int_Write(1u); 
+}
+
+void LCDInitDemo() {
+    
+    //------ Declarations ------/
+    // LCD Strings
+    char welcome1[] = "Megan Bird";
+    char welcome2[] = "ECEN 4350";
+    char welcome3[] = "Fall 2017";
+    char ble[] = "BLE_Central";
+    
+    uint16 myDelay = 200;
     
     //----- Color Demo -----//
     
@@ -186,6 +196,8 @@ void LCDInitDemo() {
     textSetCursor(100, 350);
     textTransparent(RA8875_BLUE);
     textWrite(ble,strlen(ble));
+    
+    CyDelay(10000);
     */
 }
 
@@ -234,16 +246,43 @@ void LCDTouchscreenDemo() {
     }
 }
 
+void GUIInit() {
+    
+    //------ Declarations ------/
+    // LCD Strings
+    char temp[] = "113";
+    
+    //------ Procedure ------//
+    
+    // Screen start-up
+    PWM1out(0);
+    fillScreen(RA8875_WHITE);
+    for (int i = 0; i < 256; i++) {
+        PWM1out(i);
+        CyDelay(1);
+    }
+    
+    // Print Temp
+    textMode();
+    textSetCursor(100, 100);
+    textTransparent(RA8875_BLUE);
+    textWrite(temp,strlen(temp)); 
+    
+}
+
 void RegReadTest() {
     uint32 size_result = LCDSPI_SpiUartGetRxBufferSize();
-    uint32 reg_result = readReg(0x01);
+    uint32 reg_result = readReg(0x22);
     
     if (size_result > 0) {
         LED_BLUE_Write(0);
     }
     
-    if (reg_result != 0x000F) {
+    if (reg_result != 0x0000) {
         LED_GREEN_Write(0);    
+    }
+    else {
+        LED_GREEN_Write(1);
     }
     
 }

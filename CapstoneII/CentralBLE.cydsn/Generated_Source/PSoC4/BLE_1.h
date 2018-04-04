@@ -149,7 +149,7 @@
     #define CYBLE_FAST_SCAN_INTERVAL                (0x0030u)
     #define CYBLE_FAST_SCAN_WINDOW                  (0x0030u)
     #define CYBLE_FAST_SCAN_TIMEOUT                 (0x001Eu)
-    #define CYBLE_SLOW_SCAN_ENABLED                 (0x01u)
+    #define CYBLE_SLOW_SCAN_ENABLED                 (0x00u)
     #define CYBLE_SLOW_SCAN_INTERVAL                (0x0800u)
     #define CYBLE_SLOW_SCAN_WINDOW                  (0x0708u)
     #define CYBLE_SLOW_SCAN_TIMEOUT                 (0x0096u)

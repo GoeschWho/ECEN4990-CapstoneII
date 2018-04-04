@@ -2,7 +2,7 @@
 --	Conversion of CentralBLE.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Sat Mar 17 10:30:04 2018
+--	Tue Apr 03 18:46:37 2018
 --
 
 USE cypress.cypress.all;

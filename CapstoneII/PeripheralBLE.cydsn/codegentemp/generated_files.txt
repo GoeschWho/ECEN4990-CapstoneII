@@ -47,8 +47,8 @@
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\BLE_1_StackGattClient.h" value="HEADER;;;;;BLE_1" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\BLE_1_Stack.h" value="HEADER;;;;;BLE_1" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\BLE_1_eventHandler.h" value="HEADER;;;;;BLE_1" />
-  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\BLE_1_custom.h" value="HEADER;;;;;BLE_1" />
-  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\BLE_1_custom.c" value="SOURCE_C;CortexM0;;;;BLE_1" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\BLE_1_ess.c" value="SOURCE_C;CortexM0;;;;BLE_1" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\BLE_1_ess.h" value="HEADER;;;;;BLE_1" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\LED_RED.c" value="SOURCE_C;CortexM0;;;;LED_RED" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\LED_RED.h" value="HEADER;;;;;LED_RED" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\LED_RED_aliases.h" value="HEADER;;;;;LED_RED" />
