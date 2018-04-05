@@ -113,7 +113,7 @@ CYBLE_STATE_T cyBle_state;
     0x000Fu,    /* Handle of the Client Characteristic Configuration descriptor */
 };
     
-    static uint8 cyBle_attValues[0x32u] = {
+    static uint8 cyBle_attValues[0x34u] = {
     /* Device Name */
     (uint8)'P', (uint8)'e', (uint8)'r', (uint8)'i', (uint8)'p', (uint8)'h', (uint8)'e', (uint8)'r', (uint8)'a',
     (uint8)'l', (uint8)'B', (uint8)'L', (uint8)'E',
@@ -137,7 +137,7 @@ CYBLE_STATE_T cyBle_state;
     0x00u, 0x00u,
 
     /* Temperature */
-    0x71u, 0x00u,
+    0x48u, 0x00u,
 
     /* Environmental Sensing Measurement */
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
@@ -150,6 +150,12 @@ CYBLE_STATE_T cyBle_state;
 
     /* Valid Range */
     0x00u, 0x80u, 0xFFu, 0x7Fu,
+
+    /* Temperature */
+    0x71u,
+
+    /* Custom Descriptor */
+    0x00u,
 
 };
 #if(CYBLE_GATT_DB_CCCD_COUNT != 0u)
@@ -171,9 +177,11 @@ CYBLE_GATTS_ATT_GEN_VAL_LEN_T cyBle_attValuesLen[CYBLE_GATT_DB_ATT_VAL_COUNT] = 
     { 0x0002u, (void *)&cyBle_attValues[44] }, /* Environmental Sensing Trigger Setting */
     { 0x0000u, (void *)&cyBle_attValues[46] }, /* Characteristic User Description */
     { 0x0004u, (void *)&cyBle_attValues[46] }, /* Valid Range */
+    { 0x0001u, (void *)&cyBle_attValues[50] }, /* Temperature */
+    { 0x0001u, (void *)&cyBle_attValues[51] }, /* Custom Descriptor */
 };
 
-const CYBLE_GATTS_DB_T cyBle_gattDB[0x19u] = {
+const CYBLE_GATTS_DB_T cyBle_gattDB[0x1Du] = {
     { 0x0001u, 0x2800u /* Primary service                     */, 0x00000001u /*       */, 0x000Bu, {{0x1800u, NULL}}                           },
     { 0x0002u, 0x2803u /* Characteristic                      */, 0x00020001u /* rd    */, 0x0003u, {{0x2A00u, NULL}}                           },
     { 0x0003u, 0x2A00u /* Device Name                         */, 0x01020001u /* rd    */, 0x0003u, {{0x000Du, (void *)&cyBle_attValuesLen[0]}} },
@@ -199,6 +207,10 @@ const CYBLE_GATTS_DB_T cyBle_gattDB[0x19u] = {
     { 0x0017u, 0x290Du /* Environmental Sensing Trigger Setti */, 0x01020001u /* rd    */, 0x0017u, {{0x0002u, (void *)&cyBle_attValuesLen[11]}} },
     { 0x0018u, 0x2901u /* Characteristic User Description     */, 0x01020001u /* rd    */, 0x0018u, {{0x0000u, (void *)&cyBle_attValuesLen[12]}} },
     { 0x0019u, 0x2906u /* Valid Range                         */, 0x01020001u /* rd    */, 0x0019u, {{0x0004u, (void *)&cyBle_attValuesLen[13]}} },
+    { 0x001Au, 0x2800u /* Primary service                     */, 0x00000001u /*       */, 0x001Du, {{0x0D42u, NULL}}                           },
+    { 0x001Bu, 0x2803u /* Characteristic                      */, 0x00020001u /* rd    */, 0x001Du, {{0x14BFu, NULL}}                           },
+    { 0x001Cu, 0x14BFu /* Temperature                         */, 0x01020001u /* rd    */, 0x001Du, {{0x0001u, (void *)&cyBle_attValuesLen[14]}} },
+    { 0x001Du, 0xF896u /* Custom Descriptor                   */, 0x01000001u /*       */, 0x001Du, {{0x0001u, (void *)&cyBle_attValuesLen[15]}} },
 };
 
 

@@ -18,9 +18,12 @@ void LCDInit(void);
 void LCDInitDemo();
 void LCDTouchscreenDemo();
 void GUIInit();
+void PrintInt(uint8_t n);
 void RegReadTest();
 void BLEConnect();
 void FanTest();
+
+ CYBLE_CONN_HANDLE_T                     connHandle;
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL 0x40030008
@@ -45,8 +48,8 @@ int main()
     GUIInit();
     
     /* BLE Setup    */
-    //CyBle_Start( StackEventHandler );
-    //BLEConnect();
+    CyBle_Start( StackEventHandler );
+    BLEConnect();
     
     /* Fan Test     */
     //FanTest();
@@ -54,13 +57,33 @@ int main()
     for(;;)
     {
         CyBle_ProcessEvents();
+        //CyBle_GattcStartDiscovery();
     }
 }
 
 
 void StackEventHandler( uint32 eventCode, void *eventParam ) {
-    CYBLE_GAPC_ADV_REPORT_T advReport;
-    uint8 i;
+    
+     //------ Declarations ------/
+    // LCD Strings
+    char ok[] = "CYBLE_ERROR_OK";
+    char error[] = "CYBLE_ERROR_OCCURED";
+    char param[] = "INVALID PARAMTER";
+    char operation[] = "INVALID OPERATION";
+    char serviceCount[] = "Service Count: ";
+    char dataLength[] = "Data Length: ";
+    char space[] = " ";
+    
+    CYBLE_GAPC_ADV_REPORT_T                 advReport;
+    CYBLE_GATTC_READ_BY_TYPE_REQ_T          readByTypeReqParam;
+    CYBLE_GATTC_READ_BY_TYPE_RSP_PARAM_T    readResponse;
+    CYBLE_GATT_ATTR_HANDLE_RANGE_T          range;
+    CYBLE_UUID_T                            uuid;
+    CYBLE_API_RESULT_T                      apiResult;
+   
+    uint8                                   i;
+    
+    
     
     switch( eventCode )
     {
@@ -74,7 +97,6 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
             /* CyBle_GappStartAdvertisement( CYBLE_ADVERTISING_FAST ); */
         break;
             
-        /* Add additional events as required */
         case CYBLE_EVT_GAPC_SCAN_PROGRESS_RESULT:
             
             /*copy the advertising packet recieved to advReport*/
@@ -90,10 +112,63 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
                 /* Increase the number of peer devices when 
                  * received aadvertising packet from different peer devices.*/
                 ++DevicesNearBy;
-                
-            }
+            }  
             
         break;
+            
+        /* This event is received when connection is established */
+        case CYBLE_EVT_GATT_CONNECT_IND:
+  
+             /* Retrieve BLE connection handle */
+             connHandle = *(CYBLE_CONN_HANDLE_T *) eventParam;
+            
+         break;
+            
+        case CYBLE_EVT_GAP_DEVICE_CONNECTED:
+                /*Start to dicovery the servioes of the serve after connection*/
+                CyBle_GattcStartDiscovery(cyBle_connHandle);  
+        break;
+            
+        case CYBLE_EVT_GATTC_DISCOVERY_COMPLETE:
+           // printf("\r\nDiscovery complete.\r\n");
+            
+            range.startHandle   = 0x0001;
+            range.endHandle     = 0xFFFF;
+            uuid.uuid16         = 0x14BF; 
+   
+            readByTypeReqParam.range = range;
+            readByTypeReqParam.uuid = uuid;
+            readByTypeReqParam.uuidFormat = 0x01;
+            
+            //textWrite(serviceCount,strlen(serviceCount));
+            //PrintInt(CYBLE_SRVI_COUNT);
+            
+            //apiResult = CyBle_GattcDiscoverAllCharacteristics(connHandle, range);
+   
+            apiResult = CyBle_GattcReadUsingCharacteristicUuid(connHandle,&readByTypeReqParam);
+            
+//            if ( apiResult == CYBLE_ERROR_OK )
+//                textWrite(ok,strlen(ok));
+//            else if ( apiResult == CYBLE_ERROR_INVALID_PARAMETER )
+//                textWrite(param,strlen(param));
+//            else if ( apiResult == CYBLE_ERROR_INVALID_OPERATION )
+//                textWrite(operation,strlen(operation));
+        break;
+        
+        case CYBLE_EVT_GATTC_READ_BY_TYPE_RSP:
+            
+            readResponse = *(CYBLE_GATTC_READ_BY_TYPE_RSP_PARAM_T *) eventParam;
+            
+            //textWrite(dataLength,strlen(dataLength));
+            //PrintInt(readResponse.attrData.length);
+            
+            for( i=2 ; i < readResponse.attrData.length; i++)
+            {
+                //printf("%c\r\n",readResponse.attrData.attrValue[i]);
+                textEnlarge(10);
+                PrintInt(readResponse.attrData.attrValue[i]);
+            }
+            break;
             
         /* default catch-all case */
 
@@ -265,9 +340,28 @@ void GUIInit() {
     // Print Temp
     textMode();
     textSetCursor(100, 100);
-    textTransparent(RA8875_BLUE);
-    textWrite(temp,strlen(temp)); 
+    textTransparent(RA8875_BLUE); 
+//    PrintInt(255);
+//    textSetCursor(100, 200);
+}
+
+void PrintInt(uint8_t n) {
+    // Declarations
+    uint8_t d;
+    char p[] = "0";
     
+    // Separate LSB
+    d = n % 10;
+    
+    // Convert to ASCII (+48)
+    p[0] = (d + 48);
+    
+    // Any digits to the left?
+    if (n / 10 != 0) {
+        PrintInt(n/10);
+    }
+    textWrite(p,strlen(p));
+    return;
 }
 
 void RegReadTest() {
@@ -289,6 +383,22 @@ void RegReadTest() {
 
 void BLEConnect() {
     
+     //------ Declarations ------/
+    // LCD Strings
+    char ok[] = "CYBLE_ERROR_OK";
+    char error[] = "CYBLE_ERROR_OCCURED";
+    char param[] = "CYBLE_ERROR_INVALID_PARAMETER";
+    char operation[] = "CYBLE_ERROR_INVALID_OPERATION";
+    char mem[] = "CYBLE_ERROR_MEMORY_ALLOCATION_FAILED";
+    char state[] = "CYBLE_ERROR_INVALID_STATE";
+    
+    CYBLE_API_RESULT_T                      apiResult;
+    
+//    CYBLE_CONN_HANDLE_T                     connHandle;
+    CYBLE_GATT_ATTR_HANDLE_RANGE_T          range;
+    CYBLE_UUID_T                            uuid;
+    CYBLE_GATTC_READ_BY_TYPE_REQ_T          readByTypeReqParam;
+    
     CYBLE_API_RESULT_T scan_result;
     CYBLE_API_RESULT_T connect_result;
     CYBLE_STATE_T ble_state;
@@ -298,6 +408,8 @@ void BLEConnect() {
    // CYBLE_GAP_BD_ADDR_T peripheral_addr = {{0x00,0xA0,0x50,0x00,0x00,0x01}, 0};
     CYBLE_GAP_BD_ADDR_T peripheral_addr = {{0x01,0x00,0x00,0x50,0xA0,0x00}, 0};
     
+    //------ GAP -------//
+    
     CyBle_ProcessEvents();
     
     scan_result = CyBle_GapcStartScan( CYBLE_SCANNING_FAST );
@@ -305,33 +417,48 @@ void BLEConnect() {
           LED_GREEN_Write(0);  
     }
     CyBle_ProcessEvents();
-    CyDelay(1000);
     CyBle_GapcStopScan();
     CyBle_ProcessEvents();
 //    if (DevicesNearBy == 0) {
 //        LED_BLUE_Write(0);   
 //    }
-    CyDelay(1000);
+//    CyDelay(1000);
     connect_result = CyBle_GapcConnectDevice( &peripheral_addr );
     
     CyBle_ProcessEvents();
     if (connect_result == CYBLE_ERROR_OK) {
         LED_BLUE_Write(0); 
-        CyDelay(1000);
+        CyDelay(500);
         LED_BLUE_Write(1);
-        CyDelay(1000);
+        CyDelay(500);
     }
     
+    //------ GATT ------//
+//    connHandle.bdHandle = CYBLE_GAP_MAX_BONDED_DEVICE;
+//    connHandle.attId = 0;
+    
+//    apiResult = CyBle_GattcStartDiscovery(cyBle_connHandle);
+//    
+//     if ( apiResult == CYBLE_ERROR_OK )
+//                textWrite(ok,strlen(ok));
+//    else if ( apiResult == CYBLE_ERROR_INVALID_PARAMETER)
+//        textWrite(param,strlen(param));                                             
+//    else if ( apiResult == CYBLE_ERROR_INVALID_OPERATION) 
+//        textWrite(operation,strlen(operation));
+//    else if ( apiResult == CYBLE_ERROR_MEMORY_ALLOCATION_FAILED) 
+//        textWrite(mem,strlen(mem)); 
+//    else if ( apiResult == CYBLE_ERROR_INVALID_STATE)                       // ERRORING HERE!
+//        textWrite(state,strlen(state)); 
     
     while(1) {
-    ble_state = CyBle_GetState();
-    if (ble_state == CYBLE_STATE_CONNECTED ) {
-        LED_BLUE_Write(0);   
-    }
-    else {
-        LED_BLUE_Write(1);
-    }
-    CyBle_ProcessEvents();
+        ble_state = CyBle_GetState();
+        if (ble_state == CYBLE_STATE_CONNECTED ) {
+            LED_BLUE_Write(0);   
+        }
+        else {
+            LED_BLUE_Write(1);
+        }
+        CyBle_ProcessEvents();
     }
     
     

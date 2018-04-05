@@ -38,6 +38,7 @@
 #include "BLE_1_StackGattClient.h"
 #include "BLE_1_Stack.h"
 #include "BLE_1_eventHandler.h"
+#include "BLE_1_custom.h"
 #include "BLE_1_ess.h"
 #include "LED_RED.h"
 #include "LED_RED_aliases.h"

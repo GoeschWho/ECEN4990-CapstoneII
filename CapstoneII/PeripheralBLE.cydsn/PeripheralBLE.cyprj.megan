@@ -111,6 +111,29 @@
 <dep name=".\Generated_Source\PSoC4\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC4\BLE_1_HAL_PVT.c" />
+<file name=".\CortexM0\ARM_GCC_541\Debug\BLE_1_custom.o">
+<dep name=".\Generated_Source\PSoC4\BLE_1.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_Stack.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_StackGap.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_StackGatt.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_StackGattClient.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_StackGattDb.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_StackGattServer.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_StackHostMain.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_StackL2cap.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_custom.c" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_custom.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_ess.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_eventHandler.h" />
+<dep name=".\Generated_Source\PSoC4\BLE_1_gatt.h" />
+<dep name=".\Generated_Source\PSoC4\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC4\CyLFClk.h" />
+<dep name=".\Generated_Source\PSoC4\CyLib.h" />
+<dep name=".\Generated_Source\PSoC4\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC4\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC4\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC4\BLE_1_custom.c" />
 <file name=".\CortexM0\ARM_GCC_541\Debug\BLE_1_ess.o">
 <dep name=".\Generated_Source\PSoC4\BLE_1.h" />
 <dep name=".\Generated_Source\PSoC4\BLE_1_Stack.h" />
@@ -254,28 +277,6 @@
 <file name=".\Generated_Source\PSoC4\cypins.h" />
 <file name=".\Generated_Source\PSoC4\project.h" />
 <file name=".\main.c" />
-<file name=".\CortexM0\ARM_GCC_541\Debug\BLE_1_custom.o">
-<dep name=".\Generated_Source\PSoC4\BLE_1.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_Stack.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_StackGap.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_StackGatt.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_StackGattClient.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_StackGattDb.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_StackGattServer.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_StackHostMain.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_StackL2cap.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_custom.c" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_custom.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_eventHandler.h" />
-<dep name=".\Generated_Source\PSoC4\BLE_1_gatt.h" />
-<dep name=".\Generated_Source\PSoC4\CyFlash.h" />
-<dep name=".\Generated_Source\PSoC4\CyLFClk.h" />
-<dep name=".\Generated_Source\PSoC4\CyLib.h" />
-<dep name=".\Generated_Source\PSoC4\cydevice_trm.h" />
-<dep name=".\Generated_Source\PSoC4\cyfitter.h" />
-<dep name=".\Generated_Source\PSoC4\cytypes.h" />
-</file>
-<file name=".\Generated_Source\PSoC4\BLE_1_custom.c" />
 <file name=".\CortexM0\ARM_GCC_541\Debug\ADC_In.o">
 <dep name=".\Generated_Source\PSoC4\ADC_In.c" />
 <dep name=".\Generated_Source\PSoC4\ADC_In.h" />
@@ -550,6 +551,7 @@
 <dep name=".\CortexM0\ARM_GCC_541\Debug\BLE_1_eventHandler.o" />
 <dep name=".\CortexM0\ARM_GCC_541\Debug\BLE_1_HAL_INT.o" />
 <dep name=".\CortexM0\ARM_GCC_541\Debug\BLE_1_HAL_PVT.o" />
+<dep name=".\CortexM0\ARM_GCC_541\Debug\BLE_1_custom.o" />
 <dep name=".\CortexM0\ARM_GCC_541\Debug\BLE_1_ess.o" />
 <dep name=".\CortexM0\ARM_GCC_541\Debug\BLE_1_bless_isr.o" />
 <dep name=".\CortexM0\ARM_GCC_541\Debug\Cm0Start.o" />
@@ -1037,7 +1039,7 @@
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\lib\common\cy_psoc3_inc.v</v>
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\warp\lib\common\stdlogic\rtlpkg.vif</v>
 </warp_dep>
-<deps_time v="131672723497730000" />
+<deps_time v="131673676592510000" />
 <top_block v="TopDesign" />
 <last_generation v="7" />
 <pdl_path v="" />
@@ -1047,7 +1049,7 @@
 <dataGuid v="769d31ea-68b1-4f0c-b90a-7c10a43ee563">
 <CyGuid_769d31ea-68b1-4f0c-b90a-7c10a43ee563 type_name="CyDesigner.Common.ProjMgmt.Model.CyLinkCustomData" version="1">
 <link_deps_times>
-<name_val_pair name="c9323d49-d323-40b8-9b59-cc008d68a989@Debug@CortexM0" v="131672723513640000" />
+<name_val_pair name="c9323d49-d323-40b8-9b59-cc008d68a989@Debug@CortexM0" v="131673676608580000" />
 </link_deps_times>
 </CyGuid_769d31ea-68b1-4f0c-b90a-7c10a43ee563>
 </dataGuid>

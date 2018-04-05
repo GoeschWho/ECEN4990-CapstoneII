@@ -80,6 +80,8 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\BLE_1_StackGattClient.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\BLE_1_Stack.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\BLE_1_eventHandler.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\BLE_1_custom.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\BLE_1_custom.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\BLE_1_ess.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\BLE_1_ess.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\BLE_1_bless_isr.c</File>
