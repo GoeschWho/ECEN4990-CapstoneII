@@ -73,6 +73,7 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
     char serviceCount[] = "Service Count: ";
     char dataLength[] = "Data Length: ";
     char space[] = " ";
+    char notification[] = "Notification Received";
     
     CYBLE_GAPC_ADV_REPORT_T                 advReport;
     CYBLE_GATTC_READ_BY_TYPE_REQ_T          readByTypeReqParam;
@@ -145,7 +146,7 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
             
             //apiResult = CyBle_GattcDiscoverAllCharacteristics(connHandle, range);
    
-            apiResult = CyBle_GattcReadUsingCharacteristicUuid(connHandle,&readByTypeReqParam);
+            apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
             
 //            if ( apiResult == CYBLE_ERROR_OK )
 //                textWrite(ok,strlen(ok));
@@ -162,13 +163,22 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
             //textWrite(dataLength,strlen(dataLength));
             //PrintInt(readResponse.attrData.length);
             
-            for( i=2 ; i < readResponse.attrData.length; i++)
-            {
+//            for( i=2 ; i < readResponse.attrData.length; i++)
+//            {
                 //printf("%c\r\n",readResponse.attrData.attrValue[i]);
+                textSetCursor(100,100);
                 textEnlarge(10);
-                PrintInt(readResponse.attrData.attrValue[i]);
-            }
-            break;
+                PrintInt(readResponse.attrData.attrValue[2]);
+//            }
+        break;
+                
+        case CYBLE_EVT_GATTC_HANDLE_VALUE_NTF:
+                
+            textWrite(notification,strlen(notification));
+                
+            apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
+                
+        break;
             
         /* default catch-all case */
 
@@ -434,6 +444,15 @@ void BLEConnect() {
     }
     
     //------ GATT ------//
+//    
+//            range.startHandle   = 0x0001;
+//            range.endHandle     = 0xFFFF;
+//            uuid.uuid16         = 0x14BF; 
+//   
+//            readByTypeReqParam.range = range;
+//            readByTypeReqParam.uuid = uuid;
+//            readByTypeReqParam.uuidFormat = 0x01;
+    
 //    connHandle.bdHandle = CYBLE_GAP_MAX_BONDED_DEVICE;
 //    connHandle.attId = 0;
     
@@ -449,16 +468,33 @@ void BLEConnect() {
 //        textWrite(mem,strlen(mem)); 
 //    else if ( apiResult == CYBLE_ERROR_INVALID_STATE)                       // ERRORING HERE!
 //        textWrite(state,strlen(state)); 
+
     
     while(1) {
         ble_state = CyBle_GetState();
         if (ble_state == CYBLE_STATE_CONNECTED ) {
             LED_BLUE_Write(0);   
+//                        apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
+//                    if ( apiResult == CYBLE_ERROR_OK )
+//                textWrite(ok,strlen(ok));
+//            else if ( apiResult == CYBLE_ERROR_INVALID_PARAMETER )
+//                textWrite(param,strlen(param));
+//            else if ( apiResult == CYBLE_ERROR_INVALID_OPERATION )
+//                textWrite(operation,strlen(operation));
         }
         else {
             LED_BLUE_Write(1);
         }
+            
+            
+            //textWrite(serviceCount,strlen(serviceCount));
+            //PrintInt(CYBLE_SRVI_COUNT);
+            
+            //apiResult = CyBle_GattcDiscoverAllCharacteristics(connHandle, range);
+   
+
         CyBle_ProcessEvents();
+//        CyDelay(1000);
     }
     
     
