@@ -144,7 +144,7 @@ void Temp_RequestTemp(uint8_t n) {
  * Returns:     Temperature in Fahrenheit
  * ------------------------------------------------------------
 */
-float Temp_GetTempF(uint8_t n) {
+float32 Temp_GetTempF(uint8_t n) {
     
     uint8_t scratchPad[8];
     
@@ -247,7 +247,7 @@ int16_t Temp_CalculateTemperature(uint8_t* scratchPad) {
  * Returns:     Float temperature value
  * ------------------------------------------------------------
 */
-float Temp_RawToFahrenheit(uint16_t raw) {
+float32 Temp_RawToFahrenheit(uint16_t raw) {
     
     return ((float) raw * 0.0140625) + 32;
     //return (float) (raw * 0.0078125 * 1.8) + 32;

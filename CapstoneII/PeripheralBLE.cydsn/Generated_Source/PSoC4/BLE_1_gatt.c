@@ -113,7 +113,7 @@ CYBLE_STATE_T cyBle_state;
     0x000Fu,    /* Handle of the Client Characteristic Configuration descriptor */
 };
     
-    static uint8 cyBle_attValues[0x1Fu] = {
+    static uint8 cyBle_attValues[0x22u] = {
     /* Device Name */
     (uint8)'P', (uint8)'e', (uint8)'r', (uint8)'i', (uint8)'p', (uint8)'h', (uint8)'e', (uint8)'r', (uint8)'a',
     (uint8)'l', (uint8)'B', (uint8)'L', (uint8)'E',
@@ -134,7 +134,7 @@ CYBLE_STATE_T cyBle_state;
     0x00u, 0x00u, 0x00u, 0x00u,
 
     /* Temperature */
-    0x71u,
+    0x00u, 0x00u, 0xE2u, 0x42u,
 
     /* Custom Descriptor */
     0x00u,
@@ -152,8 +152,8 @@ CYBLE_GATTS_ATT_GEN_VAL_LEN_T cyBle_attValuesLen[CYBLE_GATT_DB_ATT_VAL_COUNT] = 
     { 0x0001u, (void *)&cyBle_attValues[24] }, /* Resolvable Private Address Only */
     { 0x0004u, (void *)&cyBle_attValues[25] }, /* Service Changed */
     { 0x0002u, (void *)&cyBle_attValuesCCCD[0] }, /* Client Characteristic Configuration */
-    { 0x0001u, (void *)&cyBle_attValues[29] }, /* Temperature */
-    { 0x0001u, (void *)&cyBle_attValues[30] }, /* Custom Descriptor */
+    { 0x0004u, (void *)&cyBle_attValues[29] }, /* Temperature */
+    { 0x0001u, (void *)&cyBle_attValues[33] }, /* Custom Descriptor */
     { 0x0002u, (void *)&cyBle_attValuesCCCD[2] }, /* Client Characteristic Configuration */
 };
 
@@ -175,7 +175,7 @@ const CYBLE_GATTS_DB_T cyBle_gattDB[0x14u] = {
     { 0x000Fu, 0x2902u /* Client Characteristic Configuration */, 0x010A0101u /* rd,wr         */, 0x000Fu, {{0x0002u, (void *)&cyBle_attValuesLen[6]}} },
     { 0x0010u, 0x2800u /* Primary service                     */, 0x00000001u /*               */, 0x0014u, {{0x0D42u, NULL}}                           },
     { 0x0011u, 0x2803u /* Characteristic                      */, 0x005A0001u /* rd,wr,ntf,asw */, 0x0014u, {{0x14BFu, NULL}}                           },
-    { 0x0012u, 0x14BFu /* Temperature                         */, 0x015A0101u /* rd,wr,ntf,asw */, 0x0014u, {{0x0001u, (void *)&cyBle_attValuesLen[7]}} },
+    { 0x0012u, 0x14BFu /* Temperature                         */, 0x015A0101u /* rd,wr,ntf,asw */, 0x0014u, {{0x0004u, (void *)&cyBle_attValuesLen[7]}} },
     { 0x0013u, 0xF896u /* Custom Descriptor                   */, 0x01000001u /*               */, 0x0013u, {{0x0001u, (void *)&cyBle_attValuesLen[8]}} },
     { 0x0014u, 0x2902u /* Client Characteristic Configuration */, 0x010A0101u /* rd,wr         */, 0x0014u, {{0x0002u, (void *)&cyBle_attValuesLen[9]}} },
 };

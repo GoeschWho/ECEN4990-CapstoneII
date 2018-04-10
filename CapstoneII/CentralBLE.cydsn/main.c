@@ -11,6 +11,7 @@
 */
 #include <project.h>
 #include <RA8875.h>
+#include <math.h>
 
 /*  Declarations    */
 void StackEventHandler( uint32 eventCode, void *eventParam );
@@ -19,6 +20,7 @@ void LCDInitDemo();
 void LCDTouchscreenDemo();
 void GUIInit();
 void PrintInt(uint8_t n);
+void PrintFloat(float n);
 void RegReadTest();
 void BLEConnect();
 void FanTest();
@@ -83,7 +85,7 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
     CYBLE_API_RESULT_T                      apiResult;
    
     uint8                                   i;
-    
+    uint8_t fl_bytes[4];
     
     
     switch( eventCode )
@@ -160,16 +162,26 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
             
             readResponse = *(CYBLE_GATTC_READ_BY_TYPE_RSP_PARAM_T *) eventParam;
             
-            //textWrite(dataLength,strlen(dataLength));
-            //PrintInt(readResponse.attrData.length);
+            textWrite(dataLength,strlen(dataLength));
+            PrintInt(readResponse.attrData.length - 2);
             
-//            for( i=2 ; i < readResponse.attrData.length; i++)
-//            {
-                //printf("%c\r\n",readResponse.attrData.attrValue[i]);
-                textSetCursor(100,100);
-                textEnlarge(10);
-                PrintInt(readResponse.attrData.attrValue[2]);
-//            }
+            textSetCursor(100,200);
+            textEnlarge(10);
+               
+            for( i=2 ; i < readResponse.attrData.length; i++)
+            {
+                PrintInt(readResponse.attrData.attrValue[i]);
+                textWrite(space,strlen(space));
+                
+                fl_bytes[i-2] = readResponse.attrData.attrValue[i];
+                
+                //PrintInt(readResponse.attrData.attrValue[2]);
+                //PrintFloat(readResponse.attrData.attrValue[2]);
+            }
+            
+            // convert 4 bytes to float
+            PrintFloat( *(float32*)(fl_bytes) );
+            
         break;
                 
         case CYBLE_EVT_GATTC_HANDLE_VALUE_NTF:
@@ -370,8 +382,32 @@ void PrintInt(uint8_t n) {
     if (n / 10 != 0) {
         PrintInt(n/10);
     }
+    
     textWrite(p,strlen(p));
     return;
+}
+
+void PrintFloat(float n) {
+    
+    char dot[] = ".";
+    
+    // Extract integer part
+    int ipart = (int) n;
+    
+    // Extract floating part
+    float fpart = n - (float) ipart;
+    
+    // Convert integer part to string
+    PrintInt(ipart);
+    
+    // Display 1 digit after decimal point
+    textWrite(dot,strlen(dot));
+    
+    // Get the value of the fraction part up to 1 digit
+    // after the dot.
+    fpart = fpart * pow(10,1);
+    
+    PrintInt((int) fpart);    
 }
 
 void RegReadTest() {

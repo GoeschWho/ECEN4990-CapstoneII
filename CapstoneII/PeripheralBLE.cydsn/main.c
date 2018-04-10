@@ -16,7 +16,7 @@
 void StackEventHandler( uint32 eventCode, void *eventParam );
 void BLEConnect();
 void BLEStayConnected();
-void BLEUpdateTemp(uint8_t temperature);
+void BLEUpdateTemp(float32 temperature);
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL 0x40030008
@@ -101,7 +101,7 @@ void BLEStayConnected() {
     //temp
     uint8_t scratchPad[9];
     int16_t raw;
-    float fltemp;
+    float32 fltemp;
     uint8_t temp;
     bool crc_passed = false;
     uint8_t crc;
@@ -131,9 +131,10 @@ void BLEStayConnected() {
     fltemp = Temp_RawToFahrenheit(raw);
     
 //    fltemp = Temp_GetTempF(1);
-    temp = (uint8_t) fltemp;
-    raw = (uint8_t) fltemp;
-    BLEUpdateTemp(temp);
+    //temp = (uint8_t) fltemp;
+    //temp = (uint8_t) roundf(fltemp);
+    //raw = (uint8_t) fltemp;
+    BLEUpdateTemp(fltemp);
     
     while(1) {
         ble_state = CyBle_GetState();
@@ -153,25 +154,35 @@ void BLEStayConnected() {
     }
 }
 
-void BLEUpdateTemp(uint8_t temperature) {
+void BLEUpdateTemp(float32 temperature) {
     
     CYBLE_GATT_ERR_CODE_T gattResult;
     CYBLE_GATT_HANDLE_VALUE_PAIR_T handleValuePair;
     CYBLE_GATT_VALUE_T value;
     CYBLE_GATT_DB_ATTR_HANDLE_T attrHandle;
-    uint8_t *temp;
+    //uint8_t *temp;
+    
+    uint8_t bytes[sizeof(float32)];
     
     // Temp Characteristic Settings
-    temp = &temperature;
-    gattResult = 0;
-    value.val = temp;
-    value.len = sizeof(*temp);
-    //value.len = 1;
+//    temp = &temperature;
+//    gattResult = 0;
+//    value.val = temp;
+//    value.len = sizeof(*temp);
+    
+    *(float*)(bytes) = temperature;
+    
+    value.len = 1;
+    
     attrHandle = 0x0012;
     handleValuePair.attrHandle = attrHandle;
     handleValuePair.value = value;
     
-    gattResult = CyBle_GattsWriteAttributeValue(&handleValuePair,0u,NULL,CYBLE_GATT_DB_LOCALLY_INITIATED);
+    
+    for (uint8_t i = 0; i < 4; i++) {
+        handleValuePair.value.val = &bytes[i];
+        gattResult = CyBle_GattsWriteAttributeValue(&handleValuePair,i,NULL,CYBLE_GATT_DB_LOCALLY_INITIATED);
+    }
 //    LED_GREEN_Write(1);
 //    if (gattResult == 13u) {
 //        LED_GREEN_Write(0);

@@ -1,77 +1,71 @@
---------------- Build Started: 04/08/2018 11:10:42 Project: CentralBLE, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+--------------- Build Started: 04/10/2018 11:59:03 Project: CentralBLE, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
 The code generation step is up to date.
 arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/main.lst -g -D DEBUG -Wall -ffunction-sections -ffat-lto-objects -O0 -c main.c -o .\CortexM0\ARM_GCC_541\Debug\main.o
 main.c: In function 'StackEventHandler':
-main.c:83:45: warning: variable 'apiResult' set but not used [-Wunused-but-set-variable]
+main.c:85:45: warning: variable 'apiResult' set but not used [-Wunused-but-set-variable]
      CYBLE_API_RESULT_T                      apiResult;
                                              ^
-main.c:75:10: warning: unused variable 'space' [-Wunused-variable]
-     char space[] = " ";
-          ^
-main.c:74:10: warning: unused variable 'dataLength' [-Wunused-variable]
-     char dataLength[] = "Data Length: ";
-          ^
-main.c:73:10: warning: unused variable 'serviceCount' [-Wunused-variable]
+main.c:75:10: warning: unused variable 'serviceCount' [-Wunused-variable]
      char serviceCount[] = "Service Count: ";
           ^
-main.c:72:10: warning: unused variable 'operation' [-Wunused-variable]
+main.c:74:10: warning: unused variable 'operation' [-Wunused-variable]
      char operation[] = "INVALID OPERATION";
           ^
-main.c:71:10: warning: unused variable 'param' [-Wunused-variable]
+main.c:73:10: warning: unused variable 'param' [-Wunused-variable]
      char param[] = "INVALID PARAMTER";
           ^
-main.c:70:10: warning: unused variable 'error' [-Wunused-variable]
+main.c:72:10: warning: unused variable 'error' [-Wunused-variable]
      char error[] = "CYBLE_ERROR_OCCURED";
           ^
-main.c:69:10: warning: unused variable 'ok' [-Wunused-variable]
+main.c:71:10: warning: unused variable 'ok' [-Wunused-variable]
      char ok[] = "CYBLE_ERROR_OK";
           ^
 main.c: In function 'LCDInitDemo':
-main.c:215:10: warning: unused variable 'ble' [-Wunused-variable]
+main.c:227:10: warning: unused variable 'ble' [-Wunused-variable]
      char ble[] = "BLE_Central";
           ^
-main.c:214:10: warning: unused variable 'welcome3' [-Wunused-variable]
+main.c:226:10: warning: unused variable 'welcome3' [-Wunused-variable]
      char welcome3[] = "Fall 2017";
           ^
-main.c:213:10: warning: unused variable 'welcome2' [-Wunused-variable]
+main.c:225:10: warning: unused variable 'welcome2' [-Wunused-variable]
      char welcome2[] = "ECEN 4350";
           ^
-main.c:212:10: warning: unused variable 'welcome1' [-Wunused-variable]
+main.c:224:10: warning: unused variable 'welcome1' [-Wunused-variable]
      char welcome1[] = "Megan Bird";
           ^
 main.c: In function 'GUIInit':
-main.c:338:10: warning: unused variable 'temp' [-Wunused-variable]
+main.c:350:10: warning: unused variable 'temp' [-Wunused-variable]
      char temp[] = "113";
           ^
 main.c: In function 'BLEConnect':
-main.c:410:45: warning: unused variable 'readByTypeReqParam' [-Wunused-variable]
+main.c:446:45: warning: unused variable 'readByTypeReqParam' [-Wunused-variable]
      CYBLE_GATTC_READ_BY_TYPE_REQ_T          readByTypeReqParam;
                                              ^
-main.c:409:45: warning: unused variable 'uuid' [-Wunused-variable]
+main.c:445:45: warning: unused variable 'uuid' [-Wunused-variable]
      CYBLE_UUID_T                            uuid;
                                              ^
-main.c:408:45: warning: unused variable 'range' [-Wunused-variable]
+main.c:444:45: warning: unused variable 'range' [-Wunused-variable]
      CYBLE_GATT_ATTR_HANDLE_RANGE_T          range;
                                              ^
-main.c:405:45: warning: unused variable 'apiResult' [-Wunused-variable]
+main.c:441:45: warning: unused variable 'apiResult' [-Wunused-variable]
      CYBLE_API_RESULT_T                      apiResult;
                                              ^
-main.c:403:10: warning: unused variable 'state' [-Wunused-variable]
+main.c:439:10: warning: unused variable 'state' [-Wunused-variable]
      char state[] = "CYBLE_ERROR_INVALID_STATE";
           ^
-main.c:402:10: warning: unused variable 'mem' [-Wunused-variable]
+main.c:438:10: warning: unused variable 'mem' [-Wunused-variable]
      char mem[] = "CYBLE_ERROR_MEMORY_ALLOCATION_FAILED";
           ^
-main.c:401:10: warning: unused variable 'operation' [-Wunused-variable]
+main.c:437:10: warning: unused variable 'operation' [-Wunused-variable]
      char operation[] = "CYBLE_ERROR_INVALID_OPERATION";
           ^
-main.c:400:10: warning: unused variable 'param' [-Wunused-variable]
+main.c:436:10: warning: unused variable 'param' [-Wunused-variable]
      char param[] = "CYBLE_ERROR_INVALID_PARAMETER";
           ^
-main.c:399:10: warning: unused variable 'error' [-Wunused-variable]
+main.c:435:10: warning: unused variable 'error' [-Wunused-variable]
      char error[] = "CYBLE_ERROR_OCCURED";
           ^
-main.c:398:10: warning: unused variable 'ok' [-Wunused-variable]
+main.c:434:10: warning: unused variable 'ok' [-Wunused-variable]
      char ok[] = "CYBLE_ERROR_OK";
           ^
 arm-none-eabi-ar.exe -rs .\CortexM0\ARM_GCC_541\Debug\CentralBLE.a .\CortexM0\ARM_GCC_541\Debug\BLE_1.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_gatt.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_eventHandler.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_HAL_INT.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_HAL_PVT.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_custom.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_bless_isr.o .\CortexM0\ARM_GCC_541\Debug\CyFlash.o .\CortexM0\ARM_GCC_541\Debug\CyLib.o .\CortexM0\ARM_GCC_541\Debug\cyPm.o .\CortexM0\ARM_GCC_541\Debug\cyutils.o .\CortexM0\ARM_GCC_541\Debug\CyDMA.o .\CortexM0\ARM_GCC_541\Debug\CyLFClk.o .\CortexM0\ARM_GCC_541\Debug\LED_BLUE.o .\CortexM0\ARM_GCC_541\Debug\LED_BLUE_PM.o .\CortexM0\ARM_GCC_541\Debug\LED_GREEN.o .\CortexM0\ARM_GCC_541\Debug\LED_GREEN_PM.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_SPI_UART.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_PM.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_SPI.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_BOOT.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_SPI_BOOT.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_SPI_UART_INT.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_SCBCLK.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_sclk_m.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_sclk_m_PM.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_miso_m.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_miso_m_PM.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_mosi_m.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_mosi_m_PM.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_ss0_m.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_ss0_m_PM.o .\CortexM0\ARM_GCC_541\Debug\rst0_m.o .\CortexM0\ARM_GCC_541\Debug\rst0_m_PM.o .\CortexM0\ARM_GCC_541\Debug\LCD_int.o .\CortexM0\ARM_GCC_541\Debug\LCD_int_PM.o .\CortexM0\ARM_GCC_541\Debug\LCDSPI_SCB_IRQ.o .\CortexM0\ARM_GCC_541\Debug\LED_RED.o .\CortexM0\ARM_GCC_541\Debug\LED_RED_PM.o .\CortexM0\ARM_GCC_541\Debug\FAN1.o .\CortexM0\ARM_GCC_541\Debug\FAN1_PM.o .\CortexM0\ARM_GCC_541\Debug\FAN2.o .\CortexM0\ARM_GCC_541\Debug\FAN2_PM.o .\CortexM0\ARM_GCC_541\Debug\FAN3.o .\CortexM0\ARM_GCC_541\Debug\FAN3_PM.o .\CortexM0\ARM_GCC_541\Debug\CyBootAsmGnu.o
@@ -79,6 +73,6 @@ arm-none-eabi-ar.exe: creating .\CortexM0\ARM_GCC_541\Debug\CentralBLE.a
 arm-none-eabi-gcc.exe -Wl,--start-group -o "C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\CortexM0\ARM_GCC_541\Debug\CentralBLE.elf" .\CortexM0\ARM_GCC_541\Debug\main.o .\CortexM0\ARM_GCC_541\Debug\RA8875.o .\CortexM0\ARM_GCC_541\Debug\cyfitter_cfg.o .\CortexM0\ARM_GCC_541\Debug\cymetadata.o .\CortexM0\ARM_GCC_541\Debug\Cm0Start.o .\CortexM0\ARM_GCC_541\Debug\CentralBLE.a "C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\BLE_v3_30\Library\gccCyBLEStack_BLE_SOC_CENTRAL.a" "C:\Program Files (x86)\Cypress\PSoC Creator\4.1\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM0\ARM_GCC_541\Debug\CyComponentLibrary.a" -mcpu=cortex-m0 -mthumb -L Generated_Source\PSoC4 -Wl,-Map,.\CortexM0\ARM_GCC_541\Debug/CentralBLE.map -T Generated_Source\PSoC4\cm0gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -O0 -ffat-lto-objects -Wl,--end-group
 cyelftool.exe -C "C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\CortexM0\ARM_GCC_541\Debug\CentralBLE.elf" --flash_row_size 256 --flash_size 262144 --flash_offset 0x00000000
 cyelftool.exe -S "C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\CortexM0\ARM_GCC_541\Debug\CentralBLE.elf"
-Flash used: 96812 of 262144 bytes (36.9 %).
+Flash used: 98772 of 262144 bytes (37.7 %).
 SRAM used: 12648 of 32768 bytes (38.6 %). Stack: 2048 bytes. Heap: 128 bytes.
---------------- Build Succeeded: 04/08/2018 11:10:43 ---------------
+--------------- Build Succeeded: 04/10/2018 11:59:04 ---------------
