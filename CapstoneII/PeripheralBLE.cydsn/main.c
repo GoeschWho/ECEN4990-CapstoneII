@@ -11,6 +11,7 @@
 */
 #include <project.h>
 #include <DS18B20.h>
+#include <math.h>
 
 void StackEventHandler( uint32 eventCode, void *eventParam );
 void BLEConnect();
@@ -97,6 +98,15 @@ void BLEStayConnected() {
     CYBLE_STATE_T ble_state;
     uint8_t i = 0;
     
+    //temp
+    uint8_t scratchPad[9];
+    int16_t raw;
+    float fltemp;
+    uint8_t temp;
+    bool crc_passed = false;
+    uint8_t crc;
+    
+    
     CyBle_ProcessEvents();
     
 //    //testing BLE write
@@ -104,16 +114,26 @@ void BLEStayConnected() {
 //    BLEUpdateTemp(i++);
     
     // testing temp
-    CyDelay(500);
 //    if (Temp_Reset(1)) LED_GREEN_Write(0);
-//    Temp_WritePin(1,0);
-//    CyDelay(100);
-//    Temp_WritePin(1,1);
-    CyDelay(100);
-    Temp_RequestTemp(1);
-    while (Temp_ReadBit(1) == 0) LED_GREEN_Write(0);
-    LED_GREEN_Write(1);
+    CyDelay(1000);
+    while (!crc_passed) {
+        Temp_RequestTemp(1);
+        while (Temp_ReadBit(1) == 0) LED_GREEN_Write(0);
+        LED_GREEN_Write(1);    
     
+        Temp_ReadScratchPad(1,scratchPad);
+        crc = Temp_CRC(scratchPad);
+        crc_passed = (Temp_CRC(scratchPad) == scratchPad[8]) ? true : false;
+    }
+    LED_GREEN_Write(0);    
+    
+    raw = Temp_CalculateTemperature(scratchPad);
+    fltemp = Temp_RawToFahrenheit(raw);
+    
+//    fltemp = Temp_GetTempF(1);
+    temp = (uint8_t) fltemp;
+    raw = (uint8_t) fltemp;
+    BLEUpdateTemp(temp);
     
     while(1) {
         ble_state = CyBle_GetState();
@@ -152,10 +172,10 @@ void BLEUpdateTemp(uint8_t temperature) {
     handleValuePair.value = value;
     
     gattResult = CyBle_GattsWriteAttributeValue(&handleValuePair,0u,NULL,CYBLE_GATT_DB_LOCALLY_INITIATED);
-    LED_GREEN_Write(1);
-    if (gattResult == 13u) {
-        LED_GREEN_Write(0);
-    }  
+//    LED_GREEN_Write(1);
+//    if (gattResult == 13u) {
+//        LED_GREEN_Write(0);
+//    }  
     
 }
             

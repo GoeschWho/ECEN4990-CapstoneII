@@ -134,7 +134,142 @@ void Temp_RequestTemp(uint8_t n) {
     Temp_Write(n,STARTCONVO);
 }
 
+/* ------------------------------------------------------------
+ * Function: Temp_GetTempF
+ * ------------------------------------------------------------
+ * Description: Returns the current temperature in Fahrenheit
+ * 
+ * Parameters:  Sensor number
+ * 
+ * Returns:     Temperature in Fahrenheit
+ * ------------------------------------------------------------
+*/
+float Temp_GetTempF(uint8_t n) {
+    
+    uint8_t scratchPad[8];
+    
+    
+    Temp_ReadScratchPad(n,scratchPad);
+    return Temp_RawToFahrenheit(Temp_CalculateTemperature(scratchPad));
+}
 
+/* ------------------------------------------------------------
+ * Function: Temp_ReadScratchPad
+ * ------------------------------------------------------------
+ * Description: Issues a read scratchpad command and stores the
+ *              received bytes in an array.
+ * 
+ * Parameters:  Sensor number, scratchpad
+ * 
+ * Returns:     true if successful, otherwise false
+ * ------------------------------------------------------------
+*/
+bool Temp_ReadScratchPad(uint8_t n, uint8_t* scratchPad) {
+    
+    int b = Temp_Reset(n);
+    if (b == 0) return false;
+    
+    Temp_ROMSkip(n);
+    Temp_Write(n,READSCRATCH);
+    
+    // Read all registers in a simple loop
+	// byte 0: temperature LSB
+	// byte 1: temperature MSB
+	// byte 2: high alarm temp
+	// byte 3: low alarm temp
+	// byte 4: DS18S20: store for crc
+	//         DS18B20 & DS1822: configuration register
+	// byte 5: internal use & crc
+	// byte 6: DS18S20: COUNT_REMAIN
+	//         DS18B20 & DS1822: store for crc
+	// byte 7: DS18S20: COUNT_PER_C
+	//         DS18B20 & DS1822: store for crc
+	// byte 8: SCRATCHPAD_CRC
+	for (uint8_t i = 0; i < 9; i++) {
+		scratchPad[i] = Temp_Read(n);
+	}
+
+	b = Temp_Reset(n);
+	return (b == 1);
+}
+
+/* ------------------------------------------------------------
+ * Function: Temp_CalculateTemperature
+ * ------------------------------------------------------------
+ * Description: Reads the scratchpad and returns the fixed-point
+ *              temperature, scaling factor 2^-7
+ * 
+ * Parameters:  None
+ * 
+ * Returns:     Fixed-point temperature, scaling factor 2^-7
+ * ------------------------------------------------------------
+*/
+int16_t Temp_CalculateTemperature(uint8_t* scratchPad) {
+    
+    int16_t fpTemperature = (((int16_t) scratchPad[TEMP_MSB]) << 11)
+			| (((int16_t) scratchPad[TEMP_LSB]) << 3);
+            
+    /*
+	 DS1820 and DS18S20 have a 9-bit temperature register.
+	 Resolutions greater than 9-bit can be calculated using the data from
+	 the temperature, and COUNT REMAIN and COUNT PER °C registers in the
+	 scratchpad.  The resolution of the calculation depends on the model.
+	 While the COUNT PER °C register is hard-wired to 16 (10h) in a
+	 DS18S20, it changes with temperature in DS1820.
+	 After reading the scratchpad, the TEMP_READ value is obtained by
+	 truncating the 0.5°C bit (bit 0) from the temperature data. The
+	 extended resolution temperature can then be calculated using the
+	 following equation:
+	 COUNT_PER_C - COUNT_REMAIN
+	 TEMPERATURE = TEMP_READ - 0.25 + --------------------------
+	 COUNT_PER_C
+	 Hagai Shatz simplified this to integer arithmetic for a 12 bits
+	 value for a DS18S20, and James Cameron added legacy DS1820 support.
+	 See - http://myarduinotoy.blogspot.co.uk/2013/02/12bit-result-from-ds18s20.html
+	 */
+
+	//if (deviceAddress[0] == DS18S20MODEL) {
+//		fpTemperature = ((fpTemperature & 0xfff0) << 3) - 16
+//				+ (((scratchPad[COUNT_PER_C] - scratchPad[COUNT_REMAIN]) << 7)
+//						/ scratchPad[COUNT_PER_C]);
+	//}
+
+	return fpTemperature;
+}
+
+/* ------------------------------------------------------------
+ * Function: Temp_RawToFahrenheit
+ * ------------------------------------------------------------
+ * Description: Converts raw temp to Fahrenheit
+ * 
+ * Parameters:  Raw temperature value
+ * 
+ * Returns:     Float temperature value
+ * ------------------------------------------------------------
+*/
+float Temp_RawToFahrenheit(uint16_t raw) {
+    
+    return ((float) raw * 0.0140625) + 32;
+    //return (float) (raw * 0.0078125 * 1.8) + 32;
+}
+
+uint8_t Temp_CRC(uint8_t* scratchPad) {
+
+	uint8_t crc = 0;
+    uint8_t* addr = scratchPad;
+    uint8_t len = 8;
+
+    while (len--) {
+		uint8_t inbyte = *addr++;
+		for (uint8_t i = 8; i; i--) {
+			uint8_t mix = (crc ^ inbyte) & 0x01;
+			crc >>= 1;
+			if (mix) crc ^= 0x8C;
+			inbyte >>= 1;
+		}
+    }
+	return crc;
+}
 
 /* ------------------------------------------------------------
  * MID-LEVEL DRIVERS
@@ -178,7 +313,7 @@ void Temp_Write(uint8_t n, uint8_t byte) {
 uint8_t Temp_Read(uint8_t n) {
     
     uint8_t bitMask;    
-    uint8_t r;
+    uint8_t r = 0;
     
     
     for (bitMask = 0x01; bitMask; bitMask <<=1) {
@@ -233,7 +368,8 @@ uint8_t Temp_ReadBit(uint8_t n) {
     Temp_SetDriveMode(n,OUT);
     CyDelayUs(3);
     Temp_SetDriveMode(n,IN);    // let pin float, pull-up will raise
-    CyDelayUs(10); 
+    //CyDelayUs(10);
+    CyDelayUs(2);
     r = Temp_ReadPin(n);
     CyDelayUs(53);
     return r;

@@ -12,6 +12,10 @@
 
 #include <project.h>
 
+//------ Definitions ------//
+typedef enum { false, true } bool;
+
+
 //------ Protypes ------//
 
 // High-Level Functions
@@ -19,6 +23,11 @@ uint8_t Temp_Reset(uint8_t n);
 void Temp_ROMSelect(uint8_t n, const uint8_t rom[8]);
 void Temp_ROMSkip(uint8_t n);
 void Temp_RequestTemp(uint8_t n);
+float Temp_GetTempF(uint8_t n);
+bool Temp_ReadScratchPad(uint8_t n, uint8_t* scratchPad);
+int16_t Temp_CalculateTemperature(uint8_t* scratchPad);
+float Temp_RawToFahrenheit(uint16_t raw);
+uint8_t Temp_CRC(uint8_t* scratchPad);
 
 // Mid-Level Drivers
 void Temp_Write(uint8_t n, uint8_t byte);

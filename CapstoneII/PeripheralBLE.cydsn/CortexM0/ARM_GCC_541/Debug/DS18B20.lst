@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 1
 
 
    1              		.syntax unified
@@ -43,31 +43,58 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
   13:DS18B20.c     **** #include <project.h>
   14:DS18B20.c     **** #include "DS18B20.h"
   15:DS18B20.c     **** 
-  16:DS18B20.c     **** #define     OUT     1
-  17:DS18B20.c     **** #define     IN      0
-  18:DS18B20.c     **** 
-  19:DS18B20.c     **** /* ------------------------------------------------------------
-  20:DS18B20.c     ****  * HIGH-LEVEL FUNCTIONS
-  21:DS18B20.c     ****  * ------------------------------------------------------------
-  22:DS18B20.c     **** */
-  23:DS18B20.c     **** 
-  24:DS18B20.c     **** /* ------------------------------------------------------------
-  25:DS18B20.c     ****  * Function: Temp_Reset
-  26:DS18B20.c     ****  * ------------------------------------------------------------
-  27:DS18B20.c     ****  * Description: Performs the reset function.  Will wait up to 
-  28:DS18B20.c     ****  *              250us for the bus to come high.  If it doesn't, 
-  29:DS18B20.c     ****  *              then it isbroken or shorted and we return a 0.
-  30:DS18B20.c     ****  * 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 2
+  16:DS18B20.c     **** // Pin drive modes
+  17:DS18B20.c     **** #define     OUT     1
+  18:DS18B20.c     **** #define     IN      0
+  19:DS18B20.c     **** 
+  20:DS18B20.c     **** // OneWire commands
+  21:DS18B20.c     **** #define STARTCONVO      0x44  // Tells device to take a temperature reading and put it on the scrat
+  22:DS18B20.c     **** #define COPYSCRATCH     0x48  // Copy EEPROM
+  23:DS18B20.c     **** #define READSCRATCH     0xBE  // Read EEPROM
+  24:DS18B20.c     **** #define WRITESCRATCH    0x4E  // Write to EEPROM
+  25:DS18B20.c     **** #define RECALLSCRATCH   0xB8  // Reload from last known
+  26:DS18B20.c     **** #define READPOWERSUPPLY 0xB4  // Determine if device needs parasite power
+  27:DS18B20.c     **** #define ALARMSEARCH     0xEC  // Query bus for devices with an alarm condition
+  28:DS18B20.c     **** 
+  29:DS18B20.c     **** // Scratchpad locations
+  30:DS18B20.c     **** #define TEMP_LSB        0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 2
 
 
-  31:DS18B20.c     ****  * Parameters:  Sensor number
-  32:DS18B20.c     ****  * 
-  33:DS18B20.c     ****  * Returns:     1 if a device asserted a presence pulse, 0 otherwise.
-  34:DS18B20.c     ****  * ------------------------------------------------------------
-  35:DS18B20.c     **** */
-  36:DS18B20.c     **** uint8_t Temp_Reset(uint8_t n) {
-  28              		.loc 1 36 0
+  31:DS18B20.c     **** #define TEMP_MSB        1
+  32:DS18B20.c     **** #define HIGH_ALARM_TEMP 2
+  33:DS18B20.c     **** #define LOW_ALARM_TEMP  3
+  34:DS18B20.c     **** #define CONFIGURATION   4
+  35:DS18B20.c     **** #define INTERNAL_BYTE   5
+  36:DS18B20.c     **** #define COUNT_REMAIN    6
+  37:DS18B20.c     **** #define COUNT_PER_C     7
+  38:DS18B20.c     **** #define SCRATCHPAD_CRC  8
+  39:DS18B20.c     **** 
+  40:DS18B20.c     **** // Device resolution
+  41:DS18B20.c     **** #define TEMP_9_BIT  0x1F //  9 bit
+  42:DS18B20.c     **** #define TEMP_10_BIT 0x3F // 10 bit
+  43:DS18B20.c     **** #define TEMP_11_BIT 0x5F // 11 bit
+  44:DS18B20.c     **** #define TEMP_12_BIT 0x7F // 12 bit
+  45:DS18B20.c     **** 
+  46:DS18B20.c     **** /* ------------------------------------------------------------
+  47:DS18B20.c     ****  * HIGH-LEVEL FUNCTIONS
+  48:DS18B20.c     ****  * ------------------------------------------------------------
+  49:DS18B20.c     **** */
+  50:DS18B20.c     **** 
+  51:DS18B20.c     **** /* ------------------------------------------------------------
+  52:DS18B20.c     ****  * Function: Temp_Reset
+  53:DS18B20.c     ****  * ------------------------------------------------------------
+  54:DS18B20.c     ****  * Description: Performs the reset function.  Will wait up to 
+  55:DS18B20.c     ****  *              250us for the bus to come high.  If it doesn't, 
+  56:DS18B20.c     ****  *              then it isbroken or shorted and we return a 0.
+  57:DS18B20.c     ****  * 
+  58:DS18B20.c     ****  * Parameters:  Sensor number
+  59:DS18B20.c     ****  * 
+  60:DS18B20.c     ****  * Returns:     1 if a device asserted a presence pulse, 0 otherwise.
+  61:DS18B20.c     ****  * ------------------------------------------------------------
+  62:DS18B20.c     **** */
+  63:DS18B20.c     **** uint8_t Temp_Reset(uint8_t n) {
+  28              		.loc 1 63 0
   29              		.cfi_startproc
   30              		@ args = 0, pretend = 0, frame = 16
   31              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -82,27 +109,30 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
   40 0006 0200     		movs	r2, r0
   41 0008 FB1D     		adds	r3, r7, #7
   42 000a 1A70     		strb	r2, [r3]
-  37:DS18B20.c     ****     
-  38:DS18B20.c     ****     uint8_t r;
-  39:DS18B20.c     ****     uint8_t retries = 125;
-  43              		.loc 1 39 0
+  64:DS18B20.c     ****     
+  65:DS18B20.c     ****     uint8_t r;
+  66:DS18B20.c     ****     uint8_t retries = 125;
+  43              		.loc 1 66 0
   44 000c 0F23     		movs	r3, #15
   45 000e FB18     		adds	r3, r7, r3
   46 0010 7D22     		movs	r2, #125
   47 0012 1A70     		strb	r2, [r3]
-  40:DS18B20.c     ****     
-  41:DS18B20.c     ****     
-  42:DS18B20.c     ****     Temp_SetDriveMode(n,IN);
-  48              		.loc 1 42 0
+  67:DS18B20.c     ****     
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 3
+
+
+  68:DS18B20.c     ****     
+  69:DS18B20.c     ****     Temp_SetDriveMode(n,IN);
+  48              		.loc 1 69 0
   49 0014 FB1D     		adds	r3, r7, #7
   50 0016 1B78     		ldrb	r3, [r3]
   51 0018 0021     		movs	r1, #0
   52 001a 1800     		movs	r0, r3
   53 001c FFF7FEFF 		bl	Temp_SetDriveMode
   54              	.L4:
-  43:DS18B20.c     ****     do {
-  44:DS18B20.c     ****         if (--retries == 0) return 0;
-  55              		.loc 1 44 0
+  70:DS18B20.c     ****     do {
+  71:DS18B20.c     ****         if (--retries == 0) return 0;
+  55              		.loc 1 71 0
   56 0020 0F23     		movs	r3, #15
   57 0022 FB18     		adds	r3, r7, r3
   58 0024 0F22     		movs	r2, #15
@@ -115,59 +145,59 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
   65 0032 1B78     		ldrb	r3, [r3]
   66 0034 002B     		cmp	r3, #0
   67 0036 01D1     		bne	.L2
-  68              		.loc 1 44 0 is_stmt 0 discriminator 1
+  68              		.loc 1 71 0 is_stmt 0 discriminator 1
   69 0038 0023     		movs	r3, #0
   70 003a 37E0     		b	.L3
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 3
-
-
   71              	.L2:
-  45:DS18B20.c     ****         CyDelayUs(2);
-  72              		.loc 1 45 0 is_stmt 1
+  72:DS18B20.c     ****         CyDelayUs(2);
+  72              		.loc 1 72 0 is_stmt 1
   73 003c 0220     		movs	r0, #2
   74 003e FFF7FEFF 		bl	CyDelayUs
-  46:DS18B20.c     ****     } while ( !Temp_ReadPin(n));
-  75              		.loc 1 46 0
+  73:DS18B20.c     ****     } while ( !Temp_ReadPin(n));
+  75              		.loc 1 73 0
   76 0042 FB1D     		adds	r3, r7, #7
   77 0044 1B78     		ldrb	r3, [r3]
   78 0046 1800     		movs	r0, r3
   79 0048 FFF7FEFF 		bl	Temp_ReadPin
   80 004c 031E     		subs	r3, r0, #0
   81 004e E7D0     		beq	.L4
-  47:DS18B20.c     ****     
-  48:DS18B20.c     ****     Temp_WritePin(n,0);
-  82              		.loc 1 48 0
+  74:DS18B20.c     ****     
+  75:DS18B20.c     ****     Temp_WritePin(n,0);
+  82              		.loc 1 75 0
   83 0050 FB1D     		adds	r3, r7, #7
   84 0052 1B78     		ldrb	r3, [r3]
   85 0054 0021     		movs	r1, #0
   86 0056 1800     		movs	r0, r3
   87 0058 FFF7FEFF 		bl	Temp_WritePin
-  49:DS18B20.c     ****     Temp_SetDriveMode(n,OUT);   // drive output low
-  88              		.loc 1 49 0
+  76:DS18B20.c     ****     Temp_SetDriveMode(n,OUT);   // drive output low
+  88              		.loc 1 76 0
   89 005c FB1D     		adds	r3, r7, #7
   90 005e 1B78     		ldrb	r3, [r3]
   91 0060 0121     		movs	r1, #1
   92 0062 1800     		movs	r0, r3
   93 0064 FFF7FEFF 		bl	Temp_SetDriveMode
-  50:DS18B20.c     ****     CyDelayUs(480);
-  94              		.loc 1 50 0
+  77:DS18B20.c     ****     CyDelayUs(480);
+  94              		.loc 1 77 0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 4
+
+
   95 0068 F023     		movs	r3, #240
   96 006a 5B00     		lsls	r3, r3, #1
   97 006c 1800     		movs	r0, r3
   98 006e FFF7FEFF 		bl	CyDelayUs
-  51:DS18B20.c     ****     Temp_SetDriveMode(n,IN);    // allow to float
-  99              		.loc 1 51 0
+  78:DS18B20.c     ****     Temp_SetDriveMode(n,IN);    // allow to float
+  99              		.loc 1 78 0
  100 0072 FB1D     		adds	r3, r7, #7
  101 0074 1B78     		ldrb	r3, [r3]
  102 0076 0021     		movs	r1, #0
  103 0078 1800     		movs	r0, r3
  104 007a FFF7FEFF 		bl	Temp_SetDriveMode
-  52:DS18B20.c     ****     CyDelayUs(70);
- 105              		.loc 1 52 0
+  79:DS18B20.c     ****     CyDelayUs(70);
+ 105              		.loc 1 79 0
  106 007e 4620     		movs	r0, #70
  107 0080 FFF7FEFF 		bl	CyDelayUs
-  53:DS18B20.c     ****     r = !Temp_ReadPin(n);
- 108              		.loc 1 53 0
+  80:DS18B20.c     ****     r = !Temp_ReadPin(n);
+ 108              		.loc 1 80 0
  109 0084 FB1D     		adds	r3, r7, #7
  110 0086 1B78     		ldrb	r3, [r3]
  111 0088 1800     		movs	r0, r3
@@ -178,24 +208,21 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  116 0094 DAB2     		uxtb	r2, r3
  117 0096 0E23     		movs	r3, #14
  118 0098 FB18     		adds	r3, r7, r3
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 4
-
-
  119 009a 1A70     		strb	r2, [r3]
-  54:DS18B20.c     ****     CyDelayUs(410);
- 120              		.loc 1 54 0
+  81:DS18B20.c     ****     CyDelayUs(410);
+ 120              		.loc 1 81 0
  121 009c CD23     		movs	r3, #205
  122 009e 5B00     		lsls	r3, r3, #1
  123 00a0 1800     		movs	r0, r3
  124 00a2 FFF7FEFF 		bl	CyDelayUs
-  55:DS18B20.c     ****     return r;
- 125              		.loc 1 55 0
+  82:DS18B20.c     ****     return r;
+ 125              		.loc 1 82 0
  126 00a6 0E23     		movs	r3, #14
  127 00a8 FB18     		adds	r3, r7, r3
  128 00aa 1B78     		ldrb	r3, [r3]
  129              	.L3:
-  56:DS18B20.c     **** }
- 130              		.loc 1 56 0
+  83:DS18B20.c     **** }
+ 130              		.loc 1 83 0
  131 00ac 1800     		movs	r0, r3
  132 00ae BD46     		mov	sp, r7
  133 00b0 04B0     		add	sp, sp, #16
@@ -211,20 +238,23 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  143              		.thumb_func
  144              		.type	Temp_ROMSelect, %function
  145              	Temp_ROMSelect:
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 5
+
+
  146              	.LFB36:
-  57:DS18B20.c     **** 
-  58:DS18B20.c     **** /* ------------------------------------------------------------
-  59:DS18B20.c     ****  * Function: Temp_ROMSelect
-  60:DS18B20.c     ****  * ------------------------------------------------------------
-  61:DS18B20.c     ****  * Description: Issues a match ROM command.
-  62:DS18B20.c     ****  * 
-  63:DS18B20.c     ****  * Parameters:  Sensor number, ROM address
-  64:DS18B20.c     ****  * 
-  65:DS18B20.c     ****  * Returns:     Nothing
-  66:DS18B20.c     ****  * ------------------------------------------------------------
-  67:DS18B20.c     **** */
-  68:DS18B20.c     **** void Temp_ROMSelect(uint8_t n, const uint8_t rom[8]) {
- 147              		.loc 1 68 0
+  84:DS18B20.c     **** 
+  85:DS18B20.c     **** /* ------------------------------------------------------------
+  86:DS18B20.c     ****  * Function: Temp_ROMSelect
+  87:DS18B20.c     ****  * ------------------------------------------------------------
+  88:DS18B20.c     ****  * Description: Issues a match ROM command.
+  89:DS18B20.c     ****  * 
+  90:DS18B20.c     ****  * Parameters:  Sensor number, ROM address
+  91:DS18B20.c     ****  * 
+  92:DS18B20.c     ****  * Returns:     Nothing
+  93:DS18B20.c     ****  * ------------------------------------------------------------
+  94:DS18B20.c     **** */
+  95:DS18B20.c     **** void Temp_ROMSelect(uint8_t n, const uint8_t rom[8]) {
+ 147              		.loc 1 95 0
  148              		.cfi_startproc
  149              		@ args = 0, pretend = 0, frame = 16
  150              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -238,31 +268,28 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  158              		.cfi_def_cfa_register 7
  159 0006 0200     		movs	r2, r0
  160 0008 3960     		str	r1, [r7]
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 5
-
-
  161 000a FB1D     		adds	r3, r7, #7
  162 000c 1A70     		strb	r2, [r3]
-  69:DS18B20.c     ****     
-  70:DS18B20.c     ****     uint8_t i;
-  71:DS18B20.c     ****     
-  72:DS18B20.c     ****     
-  73:DS18B20.c     ****     Temp_Write(n,0x55);        // Choose ROM
- 163              		.loc 1 73 0
+  96:DS18B20.c     ****     
+  97:DS18B20.c     ****     uint8_t i;
+  98:DS18B20.c     ****     
+  99:DS18B20.c     ****     
+ 100:DS18B20.c     ****     Temp_Write(n,0x55);        // Choose ROM
+ 163              		.loc 1 100 0
  164 000e FB1D     		adds	r3, r7, #7
  165 0010 1B78     		ldrb	r3, [r3]
  166 0012 5521     		movs	r1, #85
  167 0014 1800     		movs	r0, r3
  168 0016 FFF7FEFF 		bl	Temp_Write
-  74:DS18B20.c     ****     for (i = 0; i < 8; i++) Temp_Write(n,rom[i]);
- 169              		.loc 1 74 0
+ 101:DS18B20.c     ****     for (i = 0; i < 8; i++) Temp_Write(n,rom[i]);
+ 169              		.loc 1 101 0
  170 001a 0F23     		movs	r3, #15
  171 001c FB18     		adds	r3, r7, r3
  172 001e 0022     		movs	r2, #0
  173 0020 1A70     		strb	r2, [r3]
  174 0022 12E0     		b	.L6
  175              	.L7:
- 176              		.loc 1 74 0 is_stmt 0 discriminator 3
+ 176              		.loc 1 101 0 is_stmt 0 discriminator 3
  177 0024 0F23     		movs	r3, #15
  178 0026 FB18     		adds	r3, r7, r3
  179 0028 1B78     		ldrb	r3, [r3]
@@ -271,6 +298,9 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  182 002e 1A78     		ldrb	r2, [r3]
  183 0030 FB1D     		adds	r3, r7, #7
  184 0032 1B78     		ldrb	r3, [r3]
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 6
+
+
  185 0034 1100     		movs	r1, r2
  186 0036 1800     		movs	r0, r3
  187 0038 FFF7FEFF 		bl	Temp_Write
@@ -282,14 +312,14 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  193 0046 0132     		adds	r2, r2, #1
  194 0048 1A70     		strb	r2, [r3]
  195              	.L6:
- 196              		.loc 1 74 0 discriminator 1
+ 196              		.loc 1 101 0 discriminator 1
  197 004a 0F23     		movs	r3, #15
  198 004c FB18     		adds	r3, r7, r3
  199 004e 1B78     		ldrb	r3, [r3]
  200 0050 072B     		cmp	r3, #7
  201 0052 E7D9     		bls	.L7
-  75:DS18B20.c     **** }
- 202              		.loc 1 75 0 is_stmt 1
+ 102:DS18B20.c     **** }
+ 202              		.loc 1 102 0 is_stmt 1
  203 0054 C046     		nop
  204 0056 BD46     		mov	sp, r7
  205 0058 04B0     		add	sp, sp, #16
@@ -298,9 +328,6 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  208              		.cfi_endproc
  209              	.LFE36:
  210              		.size	Temp_ROMSelect, .-Temp_ROMSelect
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 6
-
-
  211              		.section	.text.Temp_ROMSkip,"ax",%progbits
  212              		.align	2
  213              		.global	Temp_ROMSkip
@@ -309,19 +336,19 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  216              		.type	Temp_ROMSkip, %function
  217              	Temp_ROMSkip:
  218              	.LFB37:
-  76:DS18B20.c     **** 
-  77:DS18B20.c     **** /* ------------------------------------------------------------
-  78:DS18B20.c     ****  * Function: Temp_ROMSkip
-  79:DS18B20.c     ****  * ------------------------------------------------------------
-  80:DS18B20.c     ****  * Description: Issues a skip ROM command.
-  81:DS18B20.c     ****  * 
-  82:DS18B20.c     ****  * Parameters:  Sensor number
-  83:DS18B20.c     ****  * 
-  84:DS18B20.c     ****  * Returns:     Nothing
-  85:DS18B20.c     ****  * ------------------------------------------------------------
-  86:DS18B20.c     **** */
-  87:DS18B20.c     **** void Temp_ROMSkip(uint8_t n) {
- 219              		.loc 1 87 0
+ 103:DS18B20.c     **** 
+ 104:DS18B20.c     **** /* ------------------------------------------------------------
+ 105:DS18B20.c     ****  * Function: Temp_ROMSkip
+ 106:DS18B20.c     ****  * ------------------------------------------------------------
+ 107:DS18B20.c     ****  * Description: Issues a skip ROM command.
+ 108:DS18B20.c     ****  * 
+ 109:DS18B20.c     ****  * Parameters:  Sensor number
+ 110:DS18B20.c     ****  * 
+ 111:DS18B20.c     ****  * Returns:     Nothing
+ 112:DS18B20.c     ****  * ------------------------------------------------------------
+ 113:DS18B20.c     **** */
+ 114:DS18B20.c     **** void Temp_ROMSkip(uint8_t n) {
+ 219              		.loc 1 114 0
  220              		.cfi_startproc
  221              		@ args = 0, pretend = 0, frame = 8
  222              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -331,21 +358,24 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  226              		.cfi_offset 14, -4
  227 0002 82B0     		sub	sp, sp, #8
  228              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 7
+
+
  229 0004 00AF     		add	r7, sp, #0
  230              		.cfi_def_cfa_register 7
  231 0006 0200     		movs	r2, r0
  232 0008 FB1D     		adds	r3, r7, #7
  233 000a 1A70     		strb	r2, [r3]
-  88:DS18B20.c     ****     
-  89:DS18B20.c     ****     Temp_Write(n,0xCC);     // Skip ROM
- 234              		.loc 1 89 0
+ 115:DS18B20.c     ****     
+ 116:DS18B20.c     ****     Temp_Write(n,0xCC);     // Skip ROM
+ 234              		.loc 1 116 0
  235 000c FB1D     		adds	r3, r7, #7
  236 000e 1B78     		ldrb	r3, [r3]
  237 0010 CC21     		movs	r1, #204
  238 0012 1800     		movs	r0, r3
  239 0014 FFF7FEFF 		bl	Temp_Write
-  90:DS18B20.c     **** }
- 240              		.loc 1 90 0
+ 117:DS18B20.c     **** }
+ 240              		.loc 1 117 0
  241 0018 C046     		nop
  242 001a BD46     		mov	sp, r7
  243 001c 02B0     		add	sp, sp, #8
@@ -358,27 +388,24 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  250              		.align	2
  251              		.global	Temp_RequestTemp
  252              		.code	16
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 7
-
-
  253              		.thumb_func
  254              		.type	Temp_RequestTemp, %function
  255              	Temp_RequestTemp:
  256              	.LFB38:
-  91:DS18B20.c     **** 
-  92:DS18B20.c     **** /* ------------------------------------------------------------
-  93:DS18B20.c     ****  * Function: Temp_RequestTemp
-  94:DS18B20.c     ****  * ------------------------------------------------------------
-  95:DS18B20.c     ****  * Description: Issues a begin conversion command.  The line
-  96:DS18B20.c     ****  *              will go low until the conversion is complete.
-  97:DS18B20.c     ****  * 
-  98:DS18B20.c     ****  * Parameters:  Sensor number
-  99:DS18B20.c     ****  * 
- 100:DS18B20.c     ****  * Returns:     Nothing
- 101:DS18B20.c     ****  * ------------------------------------------------------------
- 102:DS18B20.c     **** */
- 103:DS18B20.c     **** void Temp_RequestTemp(uint8_t n) {
- 257              		.loc 1 103 0
+ 118:DS18B20.c     **** 
+ 119:DS18B20.c     **** /* ------------------------------------------------------------
+ 120:DS18B20.c     ****  * Function: Temp_RequestTemp
+ 121:DS18B20.c     ****  * ------------------------------------------------------------
+ 122:DS18B20.c     ****  * Description: Issues a begin conversion command.  The line
+ 123:DS18B20.c     ****  *              will go low until the conversion is complete.
+ 124:DS18B20.c     ****  * 
+ 125:DS18B20.c     ****  * Parameters:  Sensor number
+ 126:DS18B20.c     ****  * 
+ 127:DS18B20.c     ****  * Returns:     Nothing
+ 128:DS18B20.c     ****  * ------------------------------------------------------------
+ 129:DS18B20.c     **** */
+ 130:DS18B20.c     **** void Temp_RequestTemp(uint8_t n) {
+ 257              		.loc 1 130 0
  258              		.cfi_startproc
  259              		@ args = 0, pretend = 0, frame = 8
  260              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -391,73 +418,69 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  267 0004 00AF     		add	r7, sp, #0
  268              		.cfi_def_cfa_register 7
  269 0006 0200     		movs	r2, r0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 8
+
+
  270 0008 FB1D     		adds	r3, r7, #7
  271 000a 1A70     		strb	r2, [r3]
- 104:DS18B20.c     ****     
- 105:DS18B20.c     ****     Temp_Reset(n);
- 272              		.loc 1 105 0
+ 131:DS18B20.c     ****     
+ 132:DS18B20.c     ****     Temp_Reset(n);
+ 272              		.loc 1 132 0
  273 000c FB1D     		adds	r3, r7, #7
  274 000e 1B78     		ldrb	r3, [r3]
  275 0010 1800     		movs	r0, r3
  276 0012 FFF7FEFF 		bl	Temp_Reset
- 106:DS18B20.c     ****     Temp_ROMSkip(n);
- 277              		.loc 1 106 0
+ 133:DS18B20.c     ****     Temp_ROMSkip(n);
+ 277              		.loc 1 133 0
  278 0016 FB1D     		adds	r3, r7, #7
  279 0018 1B78     		ldrb	r3, [r3]
  280 001a 1800     		movs	r0, r3
  281 001c FFF7FEFF 		bl	Temp_ROMSkip
- 107:DS18B20.c     ****     Temp_Write(n,0x44);
- 282              		.loc 1 107 0
+ 134:DS18B20.c     ****     Temp_Write(n,STARTCONVO);
+ 282              		.loc 1 134 0
  283 0020 FB1D     		adds	r3, r7, #7
  284 0022 1B78     		ldrb	r3, [r3]
  285 0024 4421     		movs	r1, #68
  286 0026 1800     		movs	r0, r3
  287 0028 FFF7FEFF 		bl	Temp_Write
- 108:DS18B20.c     **** }
- 288              		.loc 1 108 0
+ 135:DS18B20.c     **** }
+ 288              		.loc 1 135 0
  289 002c C046     		nop
  290 002e BD46     		mov	sp, r7
  291 0030 02B0     		add	sp, sp, #8
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 8
-
-
  292              		@ sp needed
  293 0032 80BD     		pop	{r7, pc}
  294              		.cfi_endproc
  295              	.LFE38:
  296              		.size	Temp_RequestTemp, .-Temp_RequestTemp
- 297              		.section	.text.Temp_Write,"ax",%progbits
+ 297              		.section	.text.Temp_GetTempF,"ax",%progbits
  298              		.align	2
- 299              		.global	Temp_Write
+ 299              		.global	Temp_GetTempF
  300              		.code	16
  301              		.thumb_func
- 302              		.type	Temp_Write, %function
- 303              	Temp_Write:
+ 302              		.type	Temp_GetTempF, %function
+ 303              	Temp_GetTempF:
  304              	.LFB39:
- 109:DS18B20.c     **** 
- 110:DS18B20.c     **** /* ------------------------------------------------------------
- 111:DS18B20.c     ****  * MID-LEVEL DRIVERS
- 112:DS18B20.c     ****  * ------------------------------------------------------------
- 113:DS18B20.c     **** */
- 114:DS18B20.c     **** 
- 115:DS18B20.c     **** /* ------------------------------------------------------------
- 116:DS18B20.c     ****  * Function: Temp_Write
- 117:DS18B20.c     ****  * ------------------------------------------------------------
- 118:DS18B20.c     ****  * Description: Writes a byte to the selected sensor.  This does
- 119:DS18B20.c     ****  *              not use parasite power mode, pin goes tri-state
- 120:DS18B20.c     ****  *              at the end of the write.
- 121:DS18B20.c     ****  * 
- 122:DS18B20.c     ****  * Parameters:  Sensor number, value (0 or 1)
- 123:DS18B20.c     ****  * 
- 124:DS18B20.c     ****  * Returns:     Nothing
- 125:DS18B20.c     ****  * ------------------------------------------------------------
- 126:DS18B20.c     **** */
- 127:DS18B20.c     **** void Temp_Write(uint8_t n, uint8_t byte) {
- 305              		.loc 1 127 0
+ 136:DS18B20.c     **** 
+ 137:DS18B20.c     **** /* ------------------------------------------------------------
+ 138:DS18B20.c     ****  * Function: Temp_GetTempF
+ 139:DS18B20.c     ****  * ------------------------------------------------------------
+ 140:DS18B20.c     ****  * Description: Returns the current temperature in Fahrenheit
+ 141:DS18B20.c     ****  * 
+ 142:DS18B20.c     ****  * Parameters:  Sensor number
+ 143:DS18B20.c     ****  * 
+ 144:DS18B20.c     ****  * Returns:     Temperature in Fahrenheit
+ 145:DS18B20.c     ****  * ------------------------------------------------------------
+ 146:DS18B20.c     **** */
+ 147:DS18B20.c     **** float Temp_GetTempF(uint8_t n) {
+ 305              		.loc 1 147 0
  306              		.cfi_startproc
  307              		@ args = 0, pretend = 0, frame = 16
  308              		@ frame_needed = 1, uses_anonymous_args = 0
  309 0000 80B5     		push	{r7, lr}
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 9
+
+
  310              		.cfi_def_cfa_offset 8
  311              		.cfi_offset 7, -8
  312              		.cfi_offset 14, -4
@@ -468,1740 +491,2867 @@ ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 1
  317 0006 0200     		movs	r2, r0
  318 0008 FB1D     		adds	r3, r7, #7
  319 000a 1A70     		strb	r2, [r3]
- 320 000c BB1D     		adds	r3, r7, #6
- 321 000e 0A1C     		adds	r2, r1, #0
- 322 0010 1A70     		strb	r2, [r3]
- 128:DS18B20.c     ****     
- 129:DS18B20.c     ****     uint8_t bitMask;
- 130:DS18B20.c     ****     
- 131:DS18B20.c     ****     
- 132:DS18B20.c     ****     for (bitMask = 0x01; bitMask; bitMask <<= 1) {
- 323              		.loc 1 132 0
- 324 0012 0F23     		movs	r3, #15
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 9
-
-
- 325 0014 FB18     		adds	r3, r7, r3
- 326 0016 0122     		movs	r2, #1
- 327 0018 1A70     		strb	r2, [r3]
- 328 001a 23E0     		b	.L11
- 329              	.L12:
- 133:DS18B20.c     ****         Temp_WriteBit(n,(bitMask & byte)?1:0);
- 330              		.loc 1 133 0 discriminator 3
- 331 001c 0F23     		movs	r3, #15
- 332 001e FB18     		adds	r3, r7, r3
- 333 0020 BA1D     		adds	r2, r7, #6
- 334 0022 1B78     		ldrb	r3, [r3]
- 335 0024 1278     		ldrb	r2, [r2]
- 336 0026 1340     		ands	r3, r2
- 337 0028 DBB2     		uxtb	r3, r3
- 338 002a 5A1E     		subs	r2, r3, #1
- 339 002c 9341     		sbcs	r3, r3, r2
- 340 002e DBB2     		uxtb	r3, r3
- 341 0030 1A00     		movs	r2, r3
- 342 0032 FB1D     		adds	r3, r7, #7
- 343 0034 1B78     		ldrb	r3, [r3]
- 344 0036 1100     		movs	r1, r2
- 345 0038 1800     		movs	r0, r3
- 346 003a FFF7FEFF 		bl	Temp_WriteBit
- 134:DS18B20.c     ****         Temp_SetDriveMode(n,IN);
- 347              		.loc 1 134 0 discriminator 3
- 348 003e FB1D     		adds	r3, r7, #7
- 349 0040 1B78     		ldrb	r3, [r3]
- 350 0042 0021     		movs	r1, #0
- 351 0044 1800     		movs	r0, r3
- 352 0046 FFF7FEFF 		bl	Temp_SetDriveMode
- 135:DS18B20.c     ****         Temp_WritePin(n,0);
- 353              		.loc 1 135 0 discriminator 3
- 354 004a FB1D     		adds	r3, r7, #7
- 355 004c 1B78     		ldrb	r3, [r3]
- 356 004e 0021     		movs	r1, #0
- 357 0050 1800     		movs	r0, r3
- 358 0052 FFF7FEFF 		bl	Temp_WritePin
- 132:DS18B20.c     ****         Temp_WriteBit(n,(bitMask & byte)?1:0);
- 359              		.loc 1 132 0 discriminator 3
- 360 0056 0F23     		movs	r3, #15
- 361 0058 FA18     		adds	r2, r7, r3
- 362 005a 0F23     		movs	r3, #15
- 363 005c FB18     		adds	r3, r7, r3
- 364 005e 1B78     		ldrb	r3, [r3]
- 365 0060 DB18     		adds	r3, r3, r3
- 366 0062 1370     		strb	r3, [r2]
- 367              	.L11:
- 132:DS18B20.c     ****         Temp_WriteBit(n,(bitMask & byte)?1:0);
- 368              		.loc 1 132 0 is_stmt 0 discriminator 1
- 369 0064 0F23     		movs	r3, #15
- 370 0066 FB18     		adds	r3, r7, r3
- 371 0068 1B78     		ldrb	r3, [r3]
- 372 006a 002B     		cmp	r3, #0
- 373 006c D6D1     		bne	.L12
- 136:DS18B20.c     ****     }
- 137:DS18B20.c     **** }
- 374              		.loc 1 137 0 is_stmt 1
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 10
-
-
- 375 006e C046     		nop
- 376 0070 BD46     		mov	sp, r7
- 377 0072 04B0     		add	sp, sp, #16
- 378              		@ sp needed
- 379 0074 80BD     		pop	{r7, pc}
- 380              		.cfi_endproc
- 381              	.LFE39:
- 382              		.size	Temp_Write, .-Temp_Write
- 383 0076 C046     		.section	.text.Temp_Read,"ax",%progbits
- 384              		.align	2
- 385              		.global	Temp_Read
- 386              		.code	16
- 387              		.thumb_func
- 388              		.type	Temp_Read, %function
- 389              	Temp_Read:
- 390              	.LFB40:
- 138:DS18B20.c     **** 
- 139:DS18B20.c     **** /* ------------------------------------------------------------
- 140:DS18B20.c     ****  * Function: Temp_Read
- 141:DS18B20.c     ****  * ------------------------------------------------------------
- 142:DS18B20.c     ****  * Description: Reads a byte from the selected sensor.
- 143:DS18B20.c     ****  * 
- 144:DS18B20.c     ****  * Parameters:  Sensor number, value (0 or 1)
- 145:DS18B20.c     ****  * 
- 146:DS18B20.c     ****  * Returns:     Byte read
- 147:DS18B20.c     ****  * ------------------------------------------------------------
- 148:DS18B20.c     **** */
- 149:DS18B20.c     **** uint8_t Temp_Read(uint8_t n) {
- 391              		.loc 1 149 0
- 392              		.cfi_startproc
- 393              		@ args = 0, pretend = 0, frame = 16
- 394              		@ frame_needed = 1, uses_anonymous_args = 0
- 395 0000 80B5     		push	{r7, lr}
- 396              		.cfi_def_cfa_offset 8
- 397              		.cfi_offset 7, -8
- 398              		.cfi_offset 14, -4
- 399 0002 84B0     		sub	sp, sp, #16
- 400              		.cfi_def_cfa_offset 24
- 401 0004 00AF     		add	r7, sp, #0
- 402              		.cfi_def_cfa_register 7
- 403 0006 0200     		movs	r2, r0
- 404 0008 FB1D     		adds	r3, r7, #7
- 405 000a 1A70     		strb	r2, [r3]
+ 148:DS18B20.c     ****     
+ 149:DS18B20.c     ****     uint8_t scratchPad[8];
  150:DS18B20.c     ****     
- 151:DS18B20.c     ****     uint8_t bitMask;    
- 152:DS18B20.c     ****     uint8_t r;
- 153:DS18B20.c     ****     
- 154:DS18B20.c     ****     
- 155:DS18B20.c     ****     for (bitMask = 0x01; bitMask; bitMask <<=1) {
- 406              		.loc 1 155 0
- 407 000c 0F23     		movs	r3, #15
- 408 000e FB18     		adds	r3, r7, r3
- 409 0010 0122     		movs	r2, #1
- 410 0012 1A70     		strb	r2, [r3]
- 411 0014 17E0     		b	.L14
- 412              	.L16:
- 156:DS18B20.c     ****         if (Temp_ReadBit(n)) r |= bitMask;
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 11
+ 151:DS18B20.c     ****     
+ 152:DS18B20.c     ****     Temp_ReadScratchPad(n,scratchPad);
+ 320              		.loc 1 152 0
+ 321 000c 0823     		movs	r3, #8
+ 322 000e FA18     		adds	r2, r7, r3
+ 323 0010 FB1D     		adds	r3, r7, #7
+ 324 0012 1B78     		ldrb	r3, [r3]
+ 325 0014 1100     		movs	r1, r2
+ 326 0016 1800     		movs	r0, r3
+ 327 0018 FFF7FEFF 		bl	Temp_ReadScratchPad
+ 153:DS18B20.c     ****     return Temp_RawToFahrenheit(Temp_CalculateTemperature(scratchPad));
+ 328              		.loc 1 153 0
+ 329 001c 0823     		movs	r3, #8
+ 330 001e FB18     		adds	r3, r7, r3
+ 331 0020 1800     		movs	r0, r3
+ 332 0022 FFF7FEFF 		bl	Temp_CalculateTemperature
+ 333 0026 0300     		movs	r3, r0
+ 334 0028 9BB2     		uxth	r3, r3
+ 335 002a 1800     		movs	r0, r3
+ 336 002c FFF7FEFF 		bl	Temp_RawToFahrenheit
+ 337 0030 031C     		adds	r3, r0, #0
+ 154:DS18B20.c     **** }
+ 338              		.loc 1 154 0
+ 339 0032 181C     		adds	r0, r3, #0
+ 340 0034 BD46     		mov	sp, r7
+ 341 0036 04B0     		add	sp, sp, #16
+ 342              		@ sp needed
+ 343 0038 80BD     		pop	{r7, pc}
+ 344              		.cfi_endproc
+ 345              	.LFE39:
+ 346              		.size	Temp_GetTempF, .-Temp_GetTempF
+ 347 003a C046     		.section	.text.Temp_ReadScratchPad,"ax",%progbits
+ 348              		.align	2
+ 349              		.global	Temp_ReadScratchPad
+ 350              		.code	16
+ 351              		.thumb_func
+ 352              		.type	Temp_ReadScratchPad, %function
+ 353              	Temp_ReadScratchPad:
+ 354              	.LFB40:
+ 155:DS18B20.c     **** 
+ 156:DS18B20.c     **** /* ------------------------------------------------------------
+ 157:DS18B20.c     ****  * Function: Temp_ReadScratchPad
+ 158:DS18B20.c     ****  * ------------------------------------------------------------
+ 159:DS18B20.c     ****  * Description: Issues a read scratchpad command and stores the
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 10
 
 
- 413              		.loc 1 156 0
- 414 0016 FB1D     		adds	r3, r7, #7
- 415 0018 1B78     		ldrb	r3, [r3]
- 416 001a 1800     		movs	r0, r3
- 417 001c FFF7FEFF 		bl	Temp_ReadBit
- 418 0020 031E     		subs	r3, r0, #0
- 419 0022 09D0     		beq	.L15
- 420              		.loc 1 156 0 is_stmt 0 discriminator 1
- 421 0024 0E23     		movs	r3, #14
- 422 0026 FB18     		adds	r3, r7, r3
- 423 0028 0E22     		movs	r2, #14
- 424 002a B918     		adds	r1, r7, r2
- 425 002c 0F22     		movs	r2, #15
- 426 002e BA18     		adds	r2, r7, r2
- 427 0030 0978     		ldrb	r1, [r1]
- 428 0032 1278     		ldrb	r2, [r2]
- 429 0034 0A43     		orrs	r2, r1
- 430 0036 1A70     		strb	r2, [r3]
- 431              	.L15:
- 155:DS18B20.c     ****         if (Temp_ReadBit(n)) r |= bitMask;
- 432              		.loc 1 155 0 is_stmt 1 discriminator 2
- 433 0038 0F23     		movs	r3, #15
- 434 003a FA18     		adds	r2, r7, r3
- 435 003c 0F23     		movs	r3, #15
- 436 003e FB18     		adds	r3, r7, r3
- 437 0040 1B78     		ldrb	r3, [r3]
- 438 0042 DB18     		adds	r3, r3, r3
- 439 0044 1370     		strb	r3, [r2]
- 440              	.L14:
- 155:DS18B20.c     ****         if (Temp_ReadBit(n)) r |= bitMask;
- 441              		.loc 1 155 0 is_stmt 0 discriminator 1
- 442 0046 0F23     		movs	r3, #15
- 443 0048 FB18     		adds	r3, r7, r3
- 444 004a 1B78     		ldrb	r3, [r3]
- 445 004c 002B     		cmp	r3, #0
- 446 004e E2D1     		bne	.L16
- 157:DS18B20.c     ****     }
- 158:DS18B20.c     ****     return r;
- 447              		.loc 1 158 0 is_stmt 1
- 448 0050 0E23     		movs	r3, #14
- 449 0052 FB18     		adds	r3, r7, r3
- 450 0054 1B78     		ldrb	r3, [r3]
- 159:DS18B20.c     **** }
- 451              		.loc 1 159 0
- 452 0056 1800     		movs	r0, r3
- 453 0058 BD46     		mov	sp, r7
- 454 005a 04B0     		add	sp, sp, #16
- 455              		@ sp needed
- 456 005c 80BD     		pop	{r7, pc}
- 457              		.cfi_endproc
- 458              	.LFE40:
- 459              		.size	Temp_Read, .-Temp_Read
- 460 005e C046     		.section	.text.Temp_WriteBit,"ax",%progbits
- 461              		.align	2
- 462              		.global	Temp_WriteBit
- 463              		.code	16
- 464              		.thumb_func
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 12
+ 160:DS18B20.c     ****  *              received bytes in an array.
+ 161:DS18B20.c     ****  * 
+ 162:DS18B20.c     ****  * Parameters:  Sensor number, scratchpad
+ 163:DS18B20.c     ****  * 
+ 164:DS18B20.c     ****  * Returns:     true if successful, otherwise false
+ 165:DS18B20.c     ****  * ------------------------------------------------------------
+ 166:DS18B20.c     **** */
+ 167:DS18B20.c     **** bool Temp_ReadScratchPad(uint8_t n, uint8_t* scratchPad) {
+ 355              		.loc 1 167 0
+ 356              		.cfi_startproc
+ 357              		@ args = 0, pretend = 0, frame = 16
+ 358              		@ frame_needed = 1, uses_anonymous_args = 0
+ 359 0000 90B5     		push	{r4, r7, lr}
+ 360              		.cfi_def_cfa_offset 12
+ 361              		.cfi_offset 4, -12
+ 362              		.cfi_offset 7, -8
+ 363              		.cfi_offset 14, -4
+ 364 0002 85B0     		sub	sp, sp, #20
+ 365              		.cfi_def_cfa_offset 32
+ 366 0004 00AF     		add	r7, sp, #0
+ 367              		.cfi_def_cfa_register 7
+ 368 0006 0200     		movs	r2, r0
+ 369 0008 3960     		str	r1, [r7]
+ 370 000a FB1D     		adds	r3, r7, #7
+ 371 000c 1A70     		strb	r2, [r3]
+ 168:DS18B20.c     ****     
+ 169:DS18B20.c     ****     int b = Temp_Reset(n);
+ 372              		.loc 1 169 0
+ 373 000e FB1D     		adds	r3, r7, #7
+ 374 0010 1B78     		ldrb	r3, [r3]
+ 375 0012 1800     		movs	r0, r3
+ 376 0014 FFF7FEFF 		bl	Temp_Reset
+ 377 0018 0300     		movs	r3, r0
+ 378 001a BB60     		str	r3, [r7, #8]
+ 170:DS18B20.c     ****     if (b == 0) return false;
+ 379              		.loc 1 170 0
+ 380 001c BB68     		ldr	r3, [r7, #8]
+ 381 001e 002B     		cmp	r3, #0
+ 382 0020 01D1     		bne	.L13
+ 383              		.loc 1 170 0 is_stmt 0 discriminator 1
+ 384 0022 0023     		movs	r3, #0
+ 385 0024 33E0     		b	.L14
+ 386              	.L13:
+ 171:DS18B20.c     ****     
+ 172:DS18B20.c     ****     Temp_ROMSkip(n);
+ 387              		.loc 1 172 0 is_stmt 1
+ 388 0026 FB1D     		adds	r3, r7, #7
+ 389 0028 1B78     		ldrb	r3, [r3]
+ 390 002a 1800     		movs	r0, r3
+ 391 002c FFF7FEFF 		bl	Temp_ROMSkip
+ 173:DS18B20.c     ****     Temp_Write(n,READSCRATCH);
+ 392              		.loc 1 173 0
+ 393 0030 FB1D     		adds	r3, r7, #7
+ 394 0032 1B78     		ldrb	r3, [r3]
+ 395 0034 BE21     		movs	r1, #190
+ 396 0036 1800     		movs	r0, r3
+ 397 0038 FFF7FEFF 		bl	Temp_Write
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 11
 
 
- 465              		.type	Temp_WriteBit, %function
- 466              	Temp_WriteBit:
- 467              	.LFB41:
- 160:DS18B20.c     **** 
- 161:DS18B20.c     **** /* ------------------------------------------------------------
- 162:DS18B20.c     ****  * Function: Temp_WriteBit
- 163:DS18B20.c     ****  * ------------------------------------------------------------
- 164:DS18B20.c     ****  * Description: Writes a bit to the selected sensor.
- 165:DS18B20.c     ****  * 
- 166:DS18B20.c     ****  * Parameters:  Sensor number, value (0 or 1)
- 167:DS18B20.c     ****  * 
- 168:DS18B20.c     ****  * Returns:     Nothing
- 169:DS18B20.c     ****  * ------------------------------------------------------------
- 170:DS18B20.c     **** */
- 171:DS18B20.c     **** void Temp_WriteBit(uint8_t n, uint8_t b) {
- 468              		.loc 1 171 0
- 469              		.cfi_startproc
- 470              		@ args = 0, pretend = 0, frame = 8
- 471              		@ frame_needed = 1, uses_anonymous_args = 0
- 472 0000 80B5     		push	{r7, lr}
- 473              		.cfi_def_cfa_offset 8
- 474              		.cfi_offset 7, -8
- 475              		.cfi_offset 14, -4
- 476 0002 82B0     		sub	sp, sp, #8
- 477              		.cfi_def_cfa_offset 16
- 478 0004 00AF     		add	r7, sp, #0
- 479              		.cfi_def_cfa_register 7
- 480 0006 0200     		movs	r2, r0
- 481 0008 FB1D     		adds	r3, r7, #7
- 482 000a 1A70     		strb	r2, [r3]
- 483 000c BB1D     		adds	r3, r7, #6
- 484 000e 0A1C     		adds	r2, r1, #0
- 485 0010 1A70     		strb	r2, [r3]
- 172:DS18B20.c     ****     
- 173:DS18B20.c     ****     if (b == 1) {
- 486              		.loc 1 173 0
- 487 0012 BB1D     		adds	r3, r7, #6
- 488 0014 1B78     		ldrb	r3, [r3]
- 489 0016 012B     		cmp	r3, #1
- 490 0018 18D1     		bne	.L19
- 174:DS18B20.c     ****         Temp_WritePin(n,0);
- 491              		.loc 1 174 0
- 492 001a FB1D     		adds	r3, r7, #7
- 493 001c 1B78     		ldrb	r3, [r3]
- 494 001e 0021     		movs	r1, #0
- 495 0020 1800     		movs	r0, r3
- 496 0022 FFF7FEFF 		bl	Temp_WritePin
- 175:DS18B20.c     ****         Temp_SetDriveMode(n,OUT);   // drive output low
- 497              		.loc 1 175 0
- 498 0026 FB1D     		adds	r3, r7, #7
- 499 0028 1B78     		ldrb	r3, [r3]
- 500 002a 0121     		movs	r1, #1
- 501 002c 1800     		movs	r0, r3
- 502 002e FFF7FEFF 		bl	Temp_SetDriveMode
- 176:DS18B20.c     ****         CyDelayUs(10);
- 503              		.loc 1 176 0
- 504 0032 0A20     		movs	r0, #10
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 13
+ 398              	.LBB2:
+ 174:DS18B20.c     ****     
+ 175:DS18B20.c     ****     // Read all registers in a simple loop
+ 176:DS18B20.c     **** 	// byte 0: temperature LSB
+ 177:DS18B20.c     **** 	// byte 1: temperature MSB
+ 178:DS18B20.c     **** 	// byte 2: high alarm temp
+ 179:DS18B20.c     **** 	// byte 3: low alarm temp
+ 180:DS18B20.c     **** 	// byte 4: DS18S20: store for crc
+ 181:DS18B20.c     **** 	//         DS18B20 & DS1822: configuration register
+ 182:DS18B20.c     **** 	// byte 5: internal use & crc
+ 183:DS18B20.c     **** 	// byte 6: DS18S20: COUNT_REMAIN
+ 184:DS18B20.c     **** 	//         DS18B20 & DS1822: store for crc
+ 185:DS18B20.c     **** 	// byte 7: DS18S20: COUNT_PER_C
+ 186:DS18B20.c     **** 	//         DS18B20 & DS1822: store for crc
+ 187:DS18B20.c     **** 	// byte 8: SCRATCHPAD_CRC
+ 188:DS18B20.c     **** 	for (uint8_t i = 0; i < 9; i++) {
+ 399              		.loc 1 188 0
+ 400 003c 0F23     		movs	r3, #15
+ 401 003e FB18     		adds	r3, r7, r3
+ 402 0040 0022     		movs	r2, #0
+ 403 0042 1A70     		strb	r2, [r3]
+ 404 0044 12E0     		b	.L15
+ 405              	.L16:
+ 189:DS18B20.c     **** 		scratchPad[i] = Temp_Read(n);
+ 406              		.loc 1 189 0 discriminator 3
+ 407 0046 0F23     		movs	r3, #15
+ 408 0048 FB18     		adds	r3, r7, r3
+ 409 004a 1B78     		ldrb	r3, [r3]
+ 410 004c 3A68     		ldr	r2, [r7]
+ 411 004e D418     		adds	r4, r2, r3
+ 412 0050 FB1D     		adds	r3, r7, #7
+ 413 0052 1B78     		ldrb	r3, [r3]
+ 414 0054 1800     		movs	r0, r3
+ 415 0056 FFF7FEFF 		bl	Temp_Read
+ 416 005a 0300     		movs	r3, r0
+ 417 005c 2370     		strb	r3, [r4]
+ 188:DS18B20.c     **** 		scratchPad[i] = Temp_Read(n);
+ 418              		.loc 1 188 0 discriminator 3
+ 419 005e 0F23     		movs	r3, #15
+ 420 0060 FB18     		adds	r3, r7, r3
+ 421 0062 1A78     		ldrb	r2, [r3]
+ 422 0064 0F23     		movs	r3, #15
+ 423 0066 FB18     		adds	r3, r7, r3
+ 424 0068 0132     		adds	r2, r2, #1
+ 425 006a 1A70     		strb	r2, [r3]
+ 426              	.L15:
+ 188:DS18B20.c     **** 		scratchPad[i] = Temp_Read(n);
+ 427              		.loc 1 188 0 is_stmt 0 discriminator 1
+ 428 006c 0F23     		movs	r3, #15
+ 429 006e FB18     		adds	r3, r7, r3
+ 430 0070 1B78     		ldrb	r3, [r3]
+ 431 0072 082B     		cmp	r3, #8
+ 432 0074 E7D9     		bls	.L16
+ 433              	.LBE2:
+ 190:DS18B20.c     **** 	}
+ 191:DS18B20.c     **** 
+ 192:DS18B20.c     **** 	b = Temp_Reset(n);
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 12
 
 
- 505 0034 FFF7FEFF 		bl	CyDelayUs
- 177:DS18B20.c     ****         Temp_WritePin(n,1);         // drive output high
- 506              		.loc 1 177 0
- 507 0038 FB1D     		adds	r3, r7, #7
- 508 003a 1B78     		ldrb	r3, [r3]
- 509 003c 0121     		movs	r1, #1
- 510 003e 1800     		movs	r0, r3
- 511 0040 FFF7FEFF 		bl	Temp_WritePin
- 178:DS18B20.c     ****         CyDelayUs(55);
- 512              		.loc 1 178 0
- 513 0044 3720     		movs	r0, #55
- 514 0046 FFF7FEFF 		bl	CyDelayUs
- 179:DS18B20.c     ****     } else {
- 180:DS18B20.c     ****         Temp_WritePin(n,0);
- 181:DS18B20.c     ****         Temp_SetDriveMode(n,OUT);   // drive output low
- 182:DS18B20.c     ****         CyDelayUs(65);
- 183:DS18B20.c     ****         Temp_WritePin(n,1);         // drive output high
- 184:DS18B20.c     ****         CyDelayUs(5);       
- 185:DS18B20.c     ****     }
- 186:DS18B20.c     **** }
- 515              		.loc 1 186 0
- 516 004a 17E0     		b	.L21
- 517              	.L19:
- 180:DS18B20.c     ****         Temp_SetDriveMode(n,OUT);   // drive output low
- 518              		.loc 1 180 0
- 519 004c FB1D     		adds	r3, r7, #7
- 520 004e 1B78     		ldrb	r3, [r3]
- 521 0050 0021     		movs	r1, #0
- 522 0052 1800     		movs	r0, r3
- 523 0054 FFF7FEFF 		bl	Temp_WritePin
- 181:DS18B20.c     ****         CyDelayUs(65);
- 524              		.loc 1 181 0
- 525 0058 FB1D     		adds	r3, r7, #7
- 526 005a 1B78     		ldrb	r3, [r3]
- 527 005c 0121     		movs	r1, #1
- 528 005e 1800     		movs	r0, r3
- 529 0060 FFF7FEFF 		bl	Temp_SetDriveMode
- 182:DS18B20.c     ****         Temp_WritePin(n,1);         // drive output high
- 530              		.loc 1 182 0
- 531 0064 4120     		movs	r0, #65
- 532 0066 FFF7FEFF 		bl	CyDelayUs
- 183:DS18B20.c     ****         CyDelayUs(5);       
- 533              		.loc 1 183 0
- 534 006a FB1D     		adds	r3, r7, #7
- 535 006c 1B78     		ldrb	r3, [r3]
- 536 006e 0121     		movs	r1, #1
- 537 0070 1800     		movs	r0, r3
- 538 0072 FFF7FEFF 		bl	Temp_WritePin
- 184:DS18B20.c     ****     }
- 539              		.loc 1 184 0
- 540 0076 0520     		movs	r0, #5
- 541 0078 FFF7FEFF 		bl	CyDelayUs
- 542              	.L21:
- 543              		.loc 1 186 0
- 544 007c C046     		nop
- 545 007e BD46     		mov	sp, r7
- 546 0080 02B0     		add	sp, sp, #8
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 14
+ 434              		.loc 1 192 0 is_stmt 1
+ 435 0076 FB1D     		adds	r3, r7, #7
+ 436 0078 1B78     		ldrb	r3, [r3]
+ 437 007a 1800     		movs	r0, r3
+ 438 007c FFF7FEFF 		bl	Temp_Reset
+ 439 0080 0300     		movs	r3, r0
+ 440 0082 BB60     		str	r3, [r7, #8]
+ 193:DS18B20.c     **** 	return (b == 1);
+ 441              		.loc 1 193 0
+ 442 0084 BB68     		ldr	r3, [r7, #8]
+ 443 0086 013B     		subs	r3, r3, #1
+ 444 0088 5A42     		rsbs	r2, r3, #0
+ 445 008a 5341     		adcs	r3, r3, r2
+ 446 008c DBB2     		uxtb	r3, r3
+ 447              	.L14:
+ 194:DS18B20.c     **** }
+ 448              		.loc 1 194 0
+ 449 008e 1800     		movs	r0, r3
+ 450 0090 BD46     		mov	sp, r7
+ 451 0092 05B0     		add	sp, sp, #20
+ 452              		@ sp needed
+ 453 0094 90BD     		pop	{r4, r7, pc}
+ 454              		.cfi_endproc
+ 455              	.LFE40:
+ 456              		.size	Temp_ReadScratchPad, .-Temp_ReadScratchPad
+ 457 0096 C046     		.section	.text.Temp_CalculateTemperature,"ax",%progbits
+ 458              		.align	2
+ 459              		.global	Temp_CalculateTemperature
+ 460              		.code	16
+ 461              		.thumb_func
+ 462              		.type	Temp_CalculateTemperature, %function
+ 463              	Temp_CalculateTemperature:
+ 464              	.LFB41:
+ 195:DS18B20.c     **** 
+ 196:DS18B20.c     **** /* ------------------------------------------------------------
+ 197:DS18B20.c     ****  * Function: Temp_CalculateTemperature
+ 198:DS18B20.c     ****  * ------------------------------------------------------------
+ 199:DS18B20.c     ****  * Description: Reads the scratchpad and returns the fixed-point
+ 200:DS18B20.c     ****  *              temperature, scaling factor 2^-7
+ 201:DS18B20.c     ****  * 
+ 202:DS18B20.c     ****  * Parameters:  None
+ 203:DS18B20.c     ****  * 
+ 204:DS18B20.c     ****  * Returns:     Fixed-point temperature, scaling factor 2^-7
+ 205:DS18B20.c     ****  * ------------------------------------------------------------
+ 206:DS18B20.c     **** */
+ 207:DS18B20.c     **** int16_t Temp_CalculateTemperature(uint8_t* scratchPad) {
+ 465              		.loc 1 207 0
+ 466              		.cfi_startproc
+ 467              		@ args = 0, pretend = 0, frame = 16
+ 468              		@ frame_needed = 1, uses_anonymous_args = 0
+ 469 0000 80B5     		push	{r7, lr}
+ 470              		.cfi_def_cfa_offset 8
+ 471              		.cfi_offset 7, -8
+ 472              		.cfi_offset 14, -4
+ 473 0002 84B0     		sub	sp, sp, #16
+ 474              		.cfi_def_cfa_offset 24
+ 475 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 13
 
 
- 547              		@ sp needed
- 548 0082 80BD     		pop	{r7, pc}
- 549              		.cfi_endproc
- 550              	.LFE41:
- 551              		.size	Temp_WriteBit, .-Temp_WriteBit
- 552              		.section	.text.Temp_ReadBit,"ax",%progbits
- 553              		.align	2
- 554              		.global	Temp_ReadBit
- 555              		.code	16
- 556              		.thumb_func
- 557              		.type	Temp_ReadBit, %function
- 558              	Temp_ReadBit:
- 559              	.LFB42:
- 187:DS18B20.c     **** 
- 188:DS18B20.c     **** /* ------------------------------------------------------------
- 189:DS18B20.c     ****  * Function: Temp_ReadBit
- 190:DS18B20.c     ****  * ------------------------------------------------------------
- 191:DS18B20.c     ****  * Description: Writes a bit to the selected sensor.
- 192:DS18B20.c     ****  * 
- 193:DS18B20.c     ****  * Parameters:  Sensor number, value (0 or 1)
- 194:DS18B20.c     ****  * 
- 195:DS18B20.c     ****  * Returns:     Nothing
- 196:DS18B20.c     ****  * ------------------------------------------------------------
- 197:DS18B20.c     **** */
- 198:DS18B20.c     **** uint8_t Temp_ReadBit(uint8_t n) {
- 560              		.loc 1 198 0
- 561              		.cfi_startproc
- 562              		@ args = 0, pretend = 0, frame = 16
- 563              		@ frame_needed = 1, uses_anonymous_args = 0
- 564 0000 90B5     		push	{r4, r7, lr}
- 565              		.cfi_def_cfa_offset 12
- 566              		.cfi_offset 4, -12
- 567              		.cfi_offset 7, -8
- 568              		.cfi_offset 14, -4
- 569 0002 85B0     		sub	sp, sp, #20
- 570              		.cfi_def_cfa_offset 32
- 571 0004 00AF     		add	r7, sp, #0
- 572              		.cfi_def_cfa_register 7
- 573 0006 0200     		movs	r2, r0
- 574 0008 FB1D     		adds	r3, r7, #7
- 575 000a 1A70     		strb	r2, [r3]
- 199:DS18B20.c     ****     
- 200:DS18B20.c     ****     uint8_t r;
- 201:DS18B20.c     ****     
- 202:DS18B20.c     ****     
- 203:DS18B20.c     ****     Temp_WritePin(n,0);
- 576              		.loc 1 203 0
- 577 000c FB1D     		adds	r3, r7, #7
- 578 000e 1B78     		ldrb	r3, [r3]
- 579 0010 0021     		movs	r1, #0
- 580 0012 1800     		movs	r0, r3
- 581 0014 FFF7FEFF 		bl	Temp_WritePin
- 204:DS18B20.c     ****     Temp_SetDriveMode(n,OUT);
- 582              		.loc 1 204 0
- 583 0018 FB1D     		adds	r3, r7, #7
- 584 001a 1B78     		ldrb	r3, [r3]
- 585 001c 0121     		movs	r1, #1
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 15
+ 476              		.cfi_def_cfa_register 7
+ 477 0006 7860     		str	r0, [r7, #4]
+ 208:DS18B20.c     ****     
+ 209:DS18B20.c     ****     int16_t fpTemperature = (((int16_t) scratchPad[TEMP_MSB]) << 11)
+ 478              		.loc 1 209 0
+ 479 0008 7B68     		ldr	r3, [r7, #4]
+ 480 000a 0133     		adds	r3, r3, #1
+ 481 000c 1B78     		ldrb	r3, [r3]
+ 482 000e DB02     		lsls	r3, r3, #11
+ 483 0010 19B2     		sxth	r1, r3
+ 210:DS18B20.c     **** 			| (((int16_t) scratchPad[TEMP_LSB]) << 3);
+ 484              		.loc 1 210 0
+ 485 0012 7B68     		ldr	r3, [r7, #4]
+ 486 0014 1B78     		ldrb	r3, [r3]
+ 487 0016 DB00     		lsls	r3, r3, #3
+ 209:DS18B20.c     **** 			| (((int16_t) scratchPad[TEMP_LSB]) << 3);
+ 488              		.loc 1 209 0
+ 489 0018 1AB2     		sxth	r2, r3
+ 490 001a 0E23     		movs	r3, #14
+ 491 001c FB18     		adds	r3, r7, r3
+ 492 001e 0A43     		orrs	r2, r1
+ 493 0020 1A80     		strh	r2, [r3]
+ 211:DS18B20.c     ****             
+ 212:DS18B20.c     ****     /*
+ 213:DS18B20.c     **** 	 DS1820 and DS18S20 have a 9-bit temperature register.
+ 214:DS18B20.c     **** 	 Resolutions greater than 9-bit can be calculated using the data from
+ 215:DS18B20.c     **** 	 the temperature, and COUNT REMAIN and COUNT PER °C registers in the
+ 216:DS18B20.c     **** 	 scratchpad.  The resolution of the calculation depends on the model.
+ 217:DS18B20.c     **** 	 While the COUNT PER °C register is hard-wired to 16 (10h) in a
+ 218:DS18B20.c     **** 	 DS18S20, it changes with temperature in DS1820.
+ 219:DS18B20.c     **** 	 After reading the scratchpad, the TEMP_READ value is obtained by
+ 220:DS18B20.c     **** 	 truncating the 0.5°C bit (bit 0) from the temperature data. The
+ 221:DS18B20.c     **** 	 extended resolution temperature can then be calculated using the
+ 222:DS18B20.c     **** 	 following equation:
+ 223:DS18B20.c     **** 	 COUNT_PER_C - COUNT_REMAIN
+ 224:DS18B20.c     **** 	 TEMPERATURE = TEMP_READ - 0.25 + --------------------------
+ 225:DS18B20.c     **** 	 COUNT_PER_C
+ 226:DS18B20.c     **** 	 Hagai Shatz simplified this to integer arithmetic for a 12 bits
+ 227:DS18B20.c     **** 	 value for a DS18S20, and James Cameron added legacy DS1820 support.
+ 228:DS18B20.c     **** 	 See - http://myarduinotoy.blogspot.co.uk/2013/02/12bit-result-from-ds18s20.html
+ 229:DS18B20.c     **** 	 */
+ 230:DS18B20.c     **** 
+ 231:DS18B20.c     **** 	//if (deviceAddress[0] == DS18S20MODEL) {
+ 232:DS18B20.c     **** //		fpTemperature = ((fpTemperature & 0xfff0) << 3) - 16
+ 233:DS18B20.c     **** //				+ (((scratchPad[COUNT_PER_C] - scratchPad[COUNT_REMAIN]) << 7)
+ 234:DS18B20.c     **** //						/ scratchPad[COUNT_PER_C]);
+ 235:DS18B20.c     **** 	//}
+ 236:DS18B20.c     **** 
+ 237:DS18B20.c     **** 	return fpTemperature;
+ 494              		.loc 1 237 0
+ 495 0022 0E23     		movs	r3, #14
+ 496 0024 FB18     		adds	r3, r7, r3
+ 497 0026 0022     		movs	r2, #0
+ 498 0028 9B5E     		ldrsh	r3, [r3, r2]
+ 238:DS18B20.c     **** }
+ 499              		.loc 1 238 0
+ 500 002a 1800     		movs	r0, r3
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 14
 
 
- 586 001e 1800     		movs	r0, r3
- 587 0020 FFF7FEFF 		bl	Temp_SetDriveMode
- 205:DS18B20.c     ****     CyDelayUs(3);
- 588              		.loc 1 205 0
- 589 0024 0320     		movs	r0, #3
- 590 0026 FFF7FEFF 		bl	CyDelayUs
- 206:DS18B20.c     ****     Temp_SetDriveMode(n,IN);    // let pin float, pull-up will raise
- 591              		.loc 1 206 0
- 592 002a FB1D     		adds	r3, r7, #7
- 593 002c 1B78     		ldrb	r3, [r3]
- 594 002e 0021     		movs	r1, #0
- 595 0030 1800     		movs	r0, r3
- 596 0032 FFF7FEFF 		bl	Temp_SetDriveMode
- 207:DS18B20.c     ****     CyDelayUs(10); 
- 597              		.loc 1 207 0
- 598 0036 0A20     		movs	r0, #10
- 599 0038 FFF7FEFF 		bl	CyDelayUs
- 208:DS18B20.c     ****     r = Temp_ReadPin(n);
- 600              		.loc 1 208 0
- 601 003c 0F23     		movs	r3, #15
- 602 003e FC18     		adds	r4, r7, r3
- 603 0040 FB1D     		adds	r3, r7, #7
- 604 0042 1B78     		ldrb	r3, [r3]
- 605 0044 1800     		movs	r0, r3
- 606 0046 FFF7FEFF 		bl	Temp_ReadPin
- 607 004a 0300     		movs	r3, r0
- 608 004c 2370     		strb	r3, [r4]
- 209:DS18B20.c     ****     CyDelayUs(53);
- 609              		.loc 1 209 0
- 610 004e 3520     		movs	r0, #53
- 611 0050 FFF7FEFF 		bl	CyDelayUs
- 210:DS18B20.c     ****     return r;
- 612              		.loc 1 210 0
- 613 0054 0F23     		movs	r3, #15
- 614 0056 FB18     		adds	r3, r7, r3
- 615 0058 1B78     		ldrb	r3, [r3]
- 211:DS18B20.c     **** }
- 616              		.loc 1 211 0
- 617 005a 1800     		movs	r0, r3
- 618 005c BD46     		mov	sp, r7
- 619 005e 05B0     		add	sp, sp, #20
- 620              		@ sp needed
- 621 0060 90BD     		pop	{r4, r7, pc}
- 622              		.cfi_endproc
- 623              	.LFE42:
- 624              		.size	Temp_ReadBit, .-Temp_ReadBit
- 625 0062 C046     		.section	.text.Temp_SetDriveMode,"ax",%progbits
- 626              		.align	2
- 627              		.global	Temp_SetDriveMode
- 628              		.code	16
- 629              		.thumb_func
- 630              		.type	Temp_SetDriveMode, %function
- 631              	Temp_SetDriveMode:
- 632              	.LFB43:
- 212:DS18B20.c     **** 
- 213:DS18B20.c     **** /* ------------------------------------------------------------
- 214:DS18B20.c     ****  * LOW-LEVEL DRIVERS
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 16
+ 501 002c BD46     		mov	sp, r7
+ 502 002e 04B0     		add	sp, sp, #16
+ 503              		@ sp needed
+ 504 0030 80BD     		pop	{r7, pc}
+ 505              		.cfi_endproc
+ 506              	.LFE41:
+ 507              		.size	Temp_CalculateTemperature, .-Temp_CalculateTemperature
+ 508              		.global	__aeabi_ui2f
+ 509              		.global	__aeabi_f2d
+ 510              		.global	__aeabi_dmul
+ 511              		.global	__aeabi_dadd
+ 512              		.global	__aeabi_d2f
+ 513 0032 C046     		.section	.text.Temp_RawToFahrenheit,"ax",%progbits
+ 514              		.align	2
+ 515              		.global	Temp_RawToFahrenheit
+ 516              		.code	16
+ 517              		.thumb_func
+ 518              		.type	Temp_RawToFahrenheit, %function
+ 519              	Temp_RawToFahrenheit:
+ 520              	.LFB42:
+ 239:DS18B20.c     **** 
+ 240:DS18B20.c     **** /* ------------------------------------------------------------
+ 241:DS18B20.c     ****  * Function: Temp_RawToFahrenheit
+ 242:DS18B20.c     ****  * ------------------------------------------------------------
+ 243:DS18B20.c     ****  * Description: Converts raw temp to Fahrenheit
+ 244:DS18B20.c     ****  * 
+ 245:DS18B20.c     ****  * Parameters:  Raw temperature value
+ 246:DS18B20.c     ****  * 
+ 247:DS18B20.c     ****  * Returns:     Float temperature value
+ 248:DS18B20.c     ****  * ------------------------------------------------------------
+ 249:DS18B20.c     **** */
+ 250:DS18B20.c     **** float Temp_RawToFahrenheit(uint16_t raw) {
+ 521              		.loc 1 250 0
+ 522              		.cfi_startproc
+ 523              		@ args = 0, pretend = 0, frame = 8
+ 524              		@ frame_needed = 1, uses_anonymous_args = 0
+ 525 0000 90B5     		push	{r4, r7, lr}
+ 526              		.cfi_def_cfa_offset 12
+ 527              		.cfi_offset 4, -12
+ 528              		.cfi_offset 7, -8
+ 529              		.cfi_offset 14, -4
+ 530 0002 83B0     		sub	sp, sp, #12
+ 531              		.cfi_def_cfa_offset 24
+ 532 0004 00AF     		add	r7, sp, #0
+ 533              		.cfi_def_cfa_register 7
+ 534 0006 0200     		movs	r2, r0
+ 535 0008 BB1D     		adds	r3, r7, #6
+ 536 000a 1A80     		strh	r2, [r3]
+ 251:DS18B20.c     ****     
+ 252:DS18B20.c     ****     return ((float) raw * 0.0140625) + 32;
+ 537              		.loc 1 252 0
+ 538 000c BB1D     		adds	r3, r7, #6
+ 539 000e 1B88     		ldrh	r3, [r3]
+ 540 0010 1800     		movs	r0, r3
+ 541 0012 FFF7FEFF 		bl	__aeabi_ui2f
+ 542 0016 031C     		adds	r3, r0, #0
+ 543 0018 181C     		adds	r0, r3, #0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 15
 
 
- 215:DS18B20.c     ****  *
- 216:DS18B20.c     ****  * To be customized by user
- 217:DS18B20.c     ****  * ------------------------------------------------------------
- 218:DS18B20.c     **** */
- 219:DS18B20.c     **** 
- 220:DS18B20.c     **** /* ------------------------------------------------------------
- 221:DS18B20.c     ****  * Function: Temp_SetDriveMode
- 222:DS18B20.c     ****  * ------------------------------------------------------------
- 223:DS18B20.c     ****  * Description: Sets the pin drive mode for the selected sensor.
- 224:DS18B20.c     ****  *              This function needs configured by the developer
- 225:DS18B20.c     ****  *              by setting the corresponding read functions for 
- 226:DS18B20.c     ****  *              their environment and pins.
- 227:DS18B20.c     ****  * 
- 228:DS18B20.c     ****  * Parameters:  Sensor number, drive mode (0-out, 1-in)
- 229:DS18B20.c     ****  * 
- 230:DS18B20.c     ****  * Returns:     Nothing
- 231:DS18B20.c     ****  * ------------------------------------------------------------
- 232:DS18B20.c     **** */
- 233:DS18B20.c     **** void Temp_SetDriveMode(uint8_t n, uint8_t mode) {
- 633              		.loc 1 233 0
- 634              		.cfi_startproc
- 635              		@ args = 0, pretend = 0, frame = 8
- 636              		@ frame_needed = 1, uses_anonymous_args = 0
- 637 0000 80B5     		push	{r7, lr}
- 638              		.cfi_def_cfa_offset 8
- 639              		.cfi_offset 7, -8
- 640              		.cfi_offset 14, -4
- 641 0002 82B0     		sub	sp, sp, #8
- 642              		.cfi_def_cfa_offset 16
- 643 0004 00AF     		add	r7, sp, #0
- 644              		.cfi_def_cfa_register 7
- 645 0006 0200     		movs	r2, r0
- 646 0008 FB1D     		adds	r3, r7, #7
- 647 000a 1A70     		strb	r2, [r3]
- 648 000c BB1D     		adds	r3, r7, #6
- 649 000e 0A1C     		adds	r2, r1, #0
- 650 0010 1A70     		strb	r2, [r3]
- 234:DS18B20.c     ****     
- 235:DS18B20.c     ****     switch (n) {
- 651              		.loc 1 235 0
- 652 0012 FB1D     		adds	r3, r7, #7
- 653 0014 1B78     		ldrb	r3, [r3]
- 654 0016 012B     		cmp	r3, #1
- 655 0018 02D0     		beq	.L26
- 656 001a 022B     		cmp	r3, #2
- 657 001c 0CD0     		beq	.L27
- 236:DS18B20.c     ****         
- 237:DS18B20.c     ****         case 1:
- 238:DS18B20.c     ****             if (mode == IN) Temp1_SetDriveMode(Temp1_DM_DIG_HIZ);
- 239:DS18B20.c     ****             else Temp1_SetDriveMode(Temp1_DM_STRONG);
- 240:DS18B20.c     ****         break;
- 241:DS18B20.c     ****             
- 242:DS18B20.c     ****         case 2:
- 243:DS18B20.c     ****             if (mode == IN) Temp2_SetDriveMode(Temp2_DM_DIG_HIZ);
- 244:DS18B20.c     ****             else Temp2_SetDriveMode(Temp2_DM_STRONG);
- 245:DS18B20.c     ****         break;
- 246:DS18B20.c     ****             
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 17
+ 544 001a FFF7FEFF 		bl	__aeabi_f2d
+ 545 001e 0B4A     		ldr	r2, .L21
+ 546 0020 0B4B     		ldr	r3, .L21+4
+ 547 0022 FFF7FEFF 		bl	__aeabi_dmul
+ 548 0026 0300     		movs	r3, r0
+ 549 0028 0C00     		movs	r4, r1
+ 550 002a 1800     		movs	r0, r3
+ 551 002c 2100     		movs	r1, r4
+ 552 002e 0022     		movs	r2, #0
+ 553 0030 084B     		ldr	r3, .L21+8
+ 554 0032 FFF7FEFF 		bl	__aeabi_dadd
+ 555 0036 0300     		movs	r3, r0
+ 556 0038 0C00     		movs	r4, r1
+ 557 003a 1800     		movs	r0, r3
+ 558 003c 2100     		movs	r1, r4
+ 559 003e FFF7FEFF 		bl	__aeabi_d2f
+ 560 0042 031C     		adds	r3, r0, #0
+ 253:DS18B20.c     ****     //return (float) (raw * 0.0078125 * 1.8) + 32;
+ 254:DS18B20.c     **** }
+ 561              		.loc 1 254 0
+ 562 0044 181C     		adds	r0, r3, #0
+ 563 0046 BD46     		mov	sp, r7
+ 564 0048 03B0     		add	sp, sp, #12
+ 565              		@ sp needed
+ 566 004a 90BD     		pop	{r4, r7, pc}
+ 567              	.L22:
+ 568              		.align	2
+ 569              	.L21:
+ 570 004c CDCCCCCC 		.word	-858993459
+ 571 0050 CCCC8C3F 		.word	1066192076
+ 572 0054 00004040 		.word	1077936128
+ 573              		.cfi_endproc
+ 574              	.LFE42:
+ 575              		.size	Temp_RawToFahrenheit, .-Temp_RawToFahrenheit
+ 576              		.section	.text.Temp_CRC,"ax",%progbits
+ 577              		.align	2
+ 578              		.global	Temp_CRC
+ 579              		.code	16
+ 580              		.thumb_func
+ 581              		.type	Temp_CRC, %function
+ 582              	Temp_CRC:
+ 583              	.LFB43:
+ 255:DS18B20.c     **** 
+ 256:DS18B20.c     **** uint8_t Temp_CRC(uint8_t* scratchPad) {
+ 584              		.loc 1 256 0
+ 585              		.cfi_startproc
+ 586              		@ args = 0, pretend = 0, frame = 24
+ 587              		@ frame_needed = 1, uses_anonymous_args = 0
+ 588 0000 80B5     		push	{r7, lr}
+ 589              		.cfi_def_cfa_offset 8
+ 590              		.cfi_offset 7, -8
+ 591              		.cfi_offset 14, -4
+ 592 0002 86B0     		sub	sp, sp, #24
+ 593              		.cfi_def_cfa_offset 32
+ 594 0004 00AF     		add	r7, sp, #0
+ 595              		.cfi_def_cfa_register 7
+ 596 0006 7860     		str	r0, [r7, #4]
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 16
 
 
- 247:DS18B20.c     ****         default:
- 248:DS18B20.c     ****         break;
- 658              		.loc 1 248 0
- 659 001e 17E0     		b	.L30
- 660              	.L26:
- 238:DS18B20.c     ****             else Temp1_SetDriveMode(Temp1_DM_STRONG);
- 661              		.loc 1 238 0
- 662 0020 BB1D     		adds	r3, r7, #6
- 663 0022 1B78     		ldrb	r3, [r3]
- 664 0024 002B     		cmp	r3, #0
- 665 0026 03D1     		bne	.L28
- 238:DS18B20.c     ****             else Temp1_SetDriveMode(Temp1_DM_STRONG);
- 666              		.loc 1 238 0 is_stmt 0 discriminator 1
- 667 0028 0120     		movs	r0, #1
- 668 002a FFF7FEFF 		bl	Temp1_SetDriveMode
- 240:DS18B20.c     ****             
- 669              		.loc 1 240 0 is_stmt 1 discriminator 1
- 670 002e 0FE0     		b	.L30
- 671              	.L28:
- 239:DS18B20.c     ****         break;
- 672              		.loc 1 239 0
- 673 0030 0620     		movs	r0, #6
- 674 0032 FFF7FEFF 		bl	Temp1_SetDriveMode
- 240:DS18B20.c     ****             
- 675              		.loc 1 240 0
- 676 0036 0BE0     		b	.L30
- 677              	.L27:
- 243:DS18B20.c     ****             else Temp2_SetDriveMode(Temp2_DM_STRONG);
- 678              		.loc 1 243 0
- 679 0038 BB1D     		adds	r3, r7, #6
- 680 003a 1B78     		ldrb	r3, [r3]
- 681 003c 002B     		cmp	r3, #0
- 682 003e 03D1     		bne	.L31
- 243:DS18B20.c     ****             else Temp2_SetDriveMode(Temp2_DM_STRONG);
- 683              		.loc 1 243 0 is_stmt 0 discriminator 1
- 684 0040 0120     		movs	r0, #1
- 685 0042 FFF7FEFF 		bl	Temp2_SetDriveMode
- 245:DS18B20.c     ****             
- 686              		.loc 1 245 0 is_stmt 1 discriminator 1
- 687 0046 02E0     		b	.L33
- 688              	.L31:
- 244:DS18B20.c     ****         break;
- 689              		.loc 1 244 0
- 690 0048 0620     		movs	r0, #6
- 691 004a FFF7FEFF 		bl	Temp2_SetDriveMode
- 692              	.L33:
- 245:DS18B20.c     ****             
- 693              		.loc 1 245 0
- 694 004e C046     		nop
- 695              	.L30:
- 249:DS18B20.c     ****     }
- 250:DS18B20.c     **** }
- 696              		.loc 1 250 0
- 697 0050 C046     		nop
- 698 0052 BD46     		mov	sp, r7
- 699 0054 02B0     		add	sp, sp, #8
- 700              		@ sp needed
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 18
+ 257:DS18B20.c     **** 
+ 258:DS18B20.c     **** 	uint8_t crc = 0;
+ 597              		.loc 1 258 0
+ 598 0008 1723     		movs	r3, #23
+ 599 000a FB18     		adds	r3, r7, r3
+ 600 000c 0022     		movs	r2, #0
+ 601 000e 1A70     		strb	r2, [r3]
+ 259:DS18B20.c     ****     uint8_t* addr = scratchPad;
+ 602              		.loc 1 259 0
+ 603 0010 7B68     		ldr	r3, [r7, #4]
+ 604 0012 3B61     		str	r3, [r7, #16]
+ 260:DS18B20.c     ****     uint8_t len = 8;
+ 605              		.loc 1 260 0
+ 606 0014 0F23     		movs	r3, #15
+ 607 0016 FB18     		adds	r3, r7, r3
+ 608 0018 0822     		movs	r2, #8
+ 609 001a 1A70     		strb	r2, [r3]
+ 261:DS18B20.c     **** 
+ 262:DS18B20.c     ****     while (len--) {
+ 610              		.loc 1 262 0
+ 611 001c 40E0     		b	.L24
+ 612              	.L28:
+ 613              	.LBB3:
+ 263:DS18B20.c     **** 		uint8_t inbyte = *addr++;
+ 614              		.loc 1 263 0
+ 615 001e 3B69     		ldr	r3, [r7, #16]
+ 616 0020 5A1C     		adds	r2, r3, #1
+ 617 0022 3A61     		str	r2, [r7, #16]
+ 618 0024 0E22     		movs	r2, #14
+ 619 0026 BA18     		adds	r2, r7, r2
+ 620 0028 1B78     		ldrb	r3, [r3]
+ 621 002a 1370     		strb	r3, [r2]
+ 622              	.LBB4:
+ 264:DS18B20.c     **** 		for (uint8_t i = 8; i; i--) {
+ 623              		.loc 1 264 0
+ 624 002c 0D23     		movs	r3, #13
+ 625 002e FB18     		adds	r3, r7, r3
+ 626 0030 0822     		movs	r2, #8
+ 627 0032 1A70     		strb	r2, [r3]
+ 628 0034 2FE0     		b	.L25
+ 629              	.L27:
+ 630              	.LBB5:
+ 265:DS18B20.c     **** 			uint8_t mix = (crc ^ inbyte) & 0x01;
+ 631              		.loc 1 265 0
+ 632 0036 1723     		movs	r3, #23
+ 633 0038 FA18     		adds	r2, r7, r3
+ 634 003a 0E23     		movs	r3, #14
+ 635 003c FB18     		adds	r3, r7, r3
+ 636 003e 1278     		ldrb	r2, [r2]
+ 637 0040 1B78     		ldrb	r3, [r3]
+ 638 0042 5340     		eors	r3, r2
+ 639 0044 DAB2     		uxtb	r2, r3
+ 640 0046 0C23     		movs	r3, #12
+ 641 0048 FB18     		adds	r3, r7, r3
+ 642 004a 0121     		movs	r1, #1
+ 643 004c 0A40     		ands	r2, r1
+ 644 004e 1A70     		strb	r2, [r3]
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 17
 
 
- 701 0056 80BD     		pop	{r7, pc}
- 702              		.cfi_endproc
- 703              	.LFE43:
- 704              		.size	Temp_SetDriveMode, .-Temp_SetDriveMode
- 705              		.section	.text.Temp_ReadPin,"ax",%progbits
- 706              		.align	2
- 707              		.global	Temp_ReadPin
- 708              		.code	16
- 709              		.thumb_func
- 710              		.type	Temp_ReadPin, %function
- 711              	Temp_ReadPin:
- 712              	.LFB44:
- 251:DS18B20.c     **** 
- 252:DS18B20.c     **** /* ------------------------------------------------------------
- 253:DS18B20.c     ****  * Function: Temp_ReadPin
- 254:DS18B20.c     ****  * ------------------------------------------------------------
- 255:DS18B20.c     ****  * Description: Returns the logic value on the selected sensor.
- 256:DS18B20.c     ****  *              This function needs configured by the developer
- 257:DS18B20.c     ****  *              by setting the corresponding read functions for 
- 258:DS18B20.c     ****  *              their environment and pins.
- 259:DS18B20.c     ****  * 
- 260:DS18B20.c     ****  * Parameters:  Sensor number
- 261:DS18B20.c     ****  * 
- 262:DS18B20.c     ****  * Returns:     Digital value of the pin (0 or 1), 
- 263:DS18B20.c     ****  *              or 0xFF if an invalid sensor was selected.
- 264:DS18B20.c     ****  * ------------------------------------------------------------
- 265:DS18B20.c     **** */
- 266:DS18B20.c     **** uint8_t Temp_ReadPin(uint8_t n) {
- 713              		.loc 1 266 0
- 714              		.cfi_startproc
- 715              		@ args = 0, pretend = 0, frame = 8
- 716              		@ frame_needed = 1, uses_anonymous_args = 0
- 717 0000 80B5     		push	{r7, lr}
- 718              		.cfi_def_cfa_offset 8
- 719              		.cfi_offset 7, -8
- 720              		.cfi_offset 14, -4
- 721 0002 82B0     		sub	sp, sp, #8
- 722              		.cfi_def_cfa_offset 16
- 723 0004 00AF     		add	r7, sp, #0
- 724              		.cfi_def_cfa_register 7
- 725 0006 0200     		movs	r2, r0
- 726 0008 FB1D     		adds	r3, r7, #7
- 727 000a 1A70     		strb	r2, [r3]
- 267:DS18B20.c     ****     
- 268:DS18B20.c     ****     switch (n) {
- 728              		.loc 1 268 0
- 729 000c FB1D     		adds	r3, r7, #7
- 730 000e 1B78     		ldrb	r3, [r3]
- 731 0010 012B     		cmp	r3, #1
- 732 0012 02D0     		beq	.L36
- 733 0014 022B     		cmp	r3, #2
- 734 0016 04D0     		beq	.L37
- 735 0018 07E0     		b	.L39
- 736              	.L36:
- 269:DS18B20.c     ****         
- 270:DS18B20.c     ****         case 1:
- 271:DS18B20.c     ****             return Temp1_Read();
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 19
+ 266:DS18B20.c     **** 			crc >>= 1;
+ 645              		.loc 1 266 0
+ 646 0050 1723     		movs	r3, #23
+ 647 0052 FB18     		adds	r3, r7, r3
+ 648 0054 1722     		movs	r2, #23
+ 649 0056 BA18     		adds	r2, r7, r2
+ 650 0058 1278     		ldrb	r2, [r2]
+ 651 005a 5208     		lsrs	r2, r2, #1
+ 652 005c 1A70     		strb	r2, [r3]
+ 267:DS18B20.c     **** 			if (mix) crc ^= 0x8C;
+ 653              		.loc 1 267 0
+ 654 005e 0C23     		movs	r3, #12
+ 655 0060 FB18     		adds	r3, r7, r3
+ 656 0062 1B78     		ldrb	r3, [r3]
+ 657 0064 002B     		cmp	r3, #0
+ 658 0066 08D0     		beq	.L26
+ 659              		.loc 1 267 0 is_stmt 0 discriminator 1
+ 660 0068 1723     		movs	r3, #23
+ 661 006a FB18     		adds	r3, r7, r3
+ 662 006c 1722     		movs	r2, #23
+ 663 006e BA18     		adds	r2, r7, r2
+ 664 0070 1278     		ldrb	r2, [r2]
+ 665 0072 7421     		movs	r1, #116
+ 666 0074 4942     		rsbs	r1, r1, #0
+ 667 0076 4A40     		eors	r2, r1
+ 668 0078 1A70     		strb	r2, [r3]
+ 669              	.L26:
+ 268:DS18B20.c     **** 			inbyte >>= 1;
+ 670              		.loc 1 268 0 is_stmt 1 discriminator 2
+ 671 007a 0E23     		movs	r3, #14
+ 672 007c FB18     		adds	r3, r7, r3
+ 673 007e 0E22     		movs	r2, #14
+ 674 0080 BA18     		adds	r2, r7, r2
+ 675 0082 1278     		ldrb	r2, [r2]
+ 676 0084 5208     		lsrs	r2, r2, #1
+ 677 0086 1A70     		strb	r2, [r3]
+ 678              	.LBE5:
+ 264:DS18B20.c     **** 			uint8_t mix = (crc ^ inbyte) & 0x01;
+ 679              		.loc 1 264 0 discriminator 2
+ 680 0088 0D23     		movs	r3, #13
+ 681 008a FB18     		adds	r3, r7, r3
+ 682 008c 1A78     		ldrb	r2, [r3]
+ 683 008e 0D23     		movs	r3, #13
+ 684 0090 FB18     		adds	r3, r7, r3
+ 685 0092 013A     		subs	r2, r2, #1
+ 686 0094 1A70     		strb	r2, [r3]
+ 687              	.L25:
+ 264:DS18B20.c     **** 			uint8_t mix = (crc ^ inbyte) & 0x01;
+ 688              		.loc 1 264 0 is_stmt 0 discriminator 1
+ 689 0096 0D23     		movs	r3, #13
+ 690 0098 FB18     		adds	r3, r7, r3
+ 691 009a 1B78     		ldrb	r3, [r3]
+ 692 009c 002B     		cmp	r3, #0
+ 693 009e CAD1     		bne	.L27
+ 694              	.L24:
+ 695              	.LBE4:
+ 696              	.LBE3:
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 18
 
 
- 737              		.loc 1 271 0
- 738 001a FFF7FEFF 		bl	Temp1_Read
- 739 001e 0300     		movs	r3, r0
- 740 0020 04E0     		b	.L38
- 741              	.L37:
- 272:DS18B20.c     ****         break;
- 273:DS18B20.c     ****         
- 274:DS18B20.c     ****         case 2:
- 275:DS18B20.c     ****             return Temp2_Read();
- 742              		.loc 1 275 0
- 743 0022 FFF7FEFF 		bl	Temp2_Read
- 744 0026 0300     		movs	r3, r0
- 745 0028 00E0     		b	.L38
- 746              	.L39:
- 276:DS18B20.c     ****         break;
- 277:DS18B20.c     ****         
- 278:DS18B20.c     ****         default:
- 279:DS18B20.c     ****             return 0xFF;
- 747              		.loc 1 279 0
- 748 002a FF23     		movs	r3, #255
- 749              	.L38:
- 280:DS18B20.c     ****     }
- 281:DS18B20.c     **** }
- 750              		.loc 1 281 0
- 751 002c 1800     		movs	r0, r3
- 752 002e BD46     		mov	sp, r7
- 753 0030 02B0     		add	sp, sp, #8
- 754              		@ sp needed
- 755 0032 80BD     		pop	{r7, pc}
- 756              		.cfi_endproc
- 757              	.LFE44:
- 758              		.size	Temp_ReadPin, .-Temp_ReadPin
- 759              		.section	.text.Temp_WritePin,"ax",%progbits
- 760              		.align	2
- 761              		.global	Temp_WritePin
- 762              		.code	16
- 763              		.thumb_func
- 764              		.type	Temp_WritePin, %function
- 765              	Temp_WritePin:
- 766              	.LFB45:
- 282:DS18B20.c     **** 
- 283:DS18B20.c     **** /* ------------------------------------------------------------
- 284:DS18B20.c     ****  * Function: Temp_WritePin
- 285:DS18B20.c     ****  * ------------------------------------------------------------
- 286:DS18B20.c     ****  * Description: Writes the logic value to the selected sensor.
- 287:DS18B20.c     ****  *              This function needs configured by the developer
- 288:DS18B20.c     ****  *              by setting the corresponding read functions for 
- 289:DS18B20.c     ****  *              their environment and pins.
- 290:DS18B20.c     ****  * 
- 291:DS18B20.c     ****  * Parameters:  Sensor number, value to write (0 or 1)
- 292:DS18B20.c     ****  * 
- 293:DS18B20.c     ****  * Returns:     Nothing
- 294:DS18B20.c     ****  * ------------------------------------------------------------
- 295:DS18B20.c     **** */
- 296:DS18B20.c     **** void Temp_WritePin(uint8_t n, uint8_t value) {
- 767              		.loc 1 296 0
- 768              		.cfi_startproc
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 20
+ 262:DS18B20.c     **** 		uint8_t inbyte = *addr++;
+ 697              		.loc 1 262 0 is_stmt 1
+ 698 00a0 0F23     		movs	r3, #15
+ 699 00a2 FB18     		adds	r3, r7, r3
+ 700 00a4 1B78     		ldrb	r3, [r3]
+ 701 00a6 0F22     		movs	r2, #15
+ 702 00a8 BA18     		adds	r2, r7, r2
+ 703 00aa 591E     		subs	r1, r3, #1
+ 704 00ac 1170     		strb	r1, [r2]
+ 705 00ae 002B     		cmp	r3, #0
+ 706 00b0 B5D1     		bne	.L28
+ 269:DS18B20.c     **** 		}
+ 270:DS18B20.c     ****     }
+ 271:DS18B20.c     **** 	return crc;
+ 707              		.loc 1 271 0
+ 708 00b2 1723     		movs	r3, #23
+ 709 00b4 FB18     		adds	r3, r7, r3
+ 710 00b6 1B78     		ldrb	r3, [r3]
+ 272:DS18B20.c     **** }
+ 711              		.loc 1 272 0
+ 712 00b8 1800     		movs	r0, r3
+ 713 00ba BD46     		mov	sp, r7
+ 714 00bc 06B0     		add	sp, sp, #24
+ 715              		@ sp needed
+ 716 00be 80BD     		pop	{r7, pc}
+ 717              		.cfi_endproc
+ 718              	.LFE43:
+ 719              		.size	Temp_CRC, .-Temp_CRC
+ 720              		.section	.text.Temp_Write,"ax",%progbits
+ 721              		.align	2
+ 722              		.global	Temp_Write
+ 723              		.code	16
+ 724              		.thumb_func
+ 725              		.type	Temp_Write, %function
+ 726              	Temp_Write:
+ 727              	.LFB44:
+ 273:DS18B20.c     **** 
+ 274:DS18B20.c     **** /* ------------------------------------------------------------
+ 275:DS18B20.c     ****  * MID-LEVEL DRIVERS
+ 276:DS18B20.c     ****  * ------------------------------------------------------------
+ 277:DS18B20.c     **** */
+ 278:DS18B20.c     **** 
+ 279:DS18B20.c     **** /* ------------------------------------------------------------
+ 280:DS18B20.c     ****  * Function: Temp_Write
+ 281:DS18B20.c     ****  * ------------------------------------------------------------
+ 282:DS18B20.c     ****  * Description: Writes a byte to the selected sensor.  This does
+ 283:DS18B20.c     ****  *              not use parasite power mode, pin goes tri-state
+ 284:DS18B20.c     ****  *              at the end of the write.
+ 285:DS18B20.c     ****  * 
+ 286:DS18B20.c     ****  * Parameters:  Sensor number, value (0 or 1)
+ 287:DS18B20.c     ****  * 
+ 288:DS18B20.c     ****  * Returns:     Nothing
+ 289:DS18B20.c     ****  * ------------------------------------------------------------
+ 290:DS18B20.c     **** */
+ 291:DS18B20.c     **** void Temp_Write(uint8_t n, uint8_t byte) {
+ 728              		.loc 1 291 0
+ 729              		.cfi_startproc
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 19
 
 
- 769              		@ args = 0, pretend = 0, frame = 8
- 770              		@ frame_needed = 1, uses_anonymous_args = 0
- 771 0000 80B5     		push	{r7, lr}
- 772              		.cfi_def_cfa_offset 8
- 773              		.cfi_offset 7, -8
- 774              		.cfi_offset 14, -4
- 775 0002 82B0     		sub	sp, sp, #8
- 776              		.cfi_def_cfa_offset 16
- 777 0004 00AF     		add	r7, sp, #0
- 778              		.cfi_def_cfa_register 7
- 779 0006 0200     		movs	r2, r0
- 780 0008 FB1D     		adds	r3, r7, #7
- 781 000a 1A70     		strb	r2, [r3]
- 782 000c BB1D     		adds	r3, r7, #6
- 783 000e 0A1C     		adds	r2, r1, #0
- 784 0010 1A70     		strb	r2, [r3]
- 297:DS18B20.c     ****     
- 298:DS18B20.c     ****     switch (n) {
- 785              		.loc 1 298 0
- 786 0012 FB1D     		adds	r3, r7, #7
- 787 0014 1B78     		ldrb	r3, [r3]
- 788 0016 012B     		cmp	r3, #1
- 789 0018 02D0     		beq	.L42
- 790 001a 022B     		cmp	r3, #2
- 791 001c 10D0     		beq	.L43
- 299:DS18B20.c     ****         
- 300:DS18B20.c     ****         case 1:
- 301:DS18B20.c     ****             if (value == 0) Temp1_Write(0);
- 302:DS18B20.c     ****             else if (value == 1) Temp1_Write(1);
- 303:DS18B20.c     ****         break;
- 304:DS18B20.c     ****         
- 305:DS18B20.c     ****         case 2:
- 306:DS18B20.c     ****             if (value == 0) Temp2_Write(0);
- 307:DS18B20.c     ****             else if (value == 1) Temp2_Write(1);
- 308:DS18B20.c     ****         break;
- 309:DS18B20.c     ****         
- 310:DS18B20.c     ****         default:
- 311:DS18B20.c     ****         break;
- 792              		.loc 1 311 0
- 793 001e 22E0     		b	.L46
- 794              	.L42:
- 301:DS18B20.c     ****             else if (value == 1) Temp1_Write(1);
- 795              		.loc 1 301 0
- 796 0020 BB1D     		adds	r3, r7, #6
- 797 0022 1B78     		ldrb	r3, [r3]
- 798 0024 002B     		cmp	r3, #0
- 799 0026 03D1     		bne	.L44
- 301:DS18B20.c     ****             else if (value == 1) Temp1_Write(1);
- 800              		.loc 1 301 0 is_stmt 0 discriminator 1
- 801 0028 0020     		movs	r0, #0
- 802 002a FFF7FEFF 		bl	Temp1_Write
- 303:DS18B20.c     ****         
- 803              		.loc 1 303 0 is_stmt 1 discriminator 1
- 804 002e 17E0     		b	.L49
- 805              	.L44:
- 302:DS18B20.c     ****         break;
- 806              		.loc 1 302 0
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 21
+ 730              		@ args = 0, pretend = 0, frame = 16
+ 731              		@ frame_needed = 1, uses_anonymous_args = 0
+ 732 0000 80B5     		push	{r7, lr}
+ 733              		.cfi_def_cfa_offset 8
+ 734              		.cfi_offset 7, -8
+ 735              		.cfi_offset 14, -4
+ 736 0002 84B0     		sub	sp, sp, #16
+ 737              		.cfi_def_cfa_offset 24
+ 738 0004 00AF     		add	r7, sp, #0
+ 739              		.cfi_def_cfa_register 7
+ 740 0006 0200     		movs	r2, r0
+ 741 0008 FB1D     		adds	r3, r7, #7
+ 742 000a 1A70     		strb	r2, [r3]
+ 743 000c BB1D     		adds	r3, r7, #6
+ 744 000e 0A1C     		adds	r2, r1, #0
+ 745 0010 1A70     		strb	r2, [r3]
+ 292:DS18B20.c     ****     
+ 293:DS18B20.c     ****     uint8_t bitMask;
+ 294:DS18B20.c     ****     
+ 295:DS18B20.c     ****     
+ 296:DS18B20.c     ****     for (bitMask = 0x01; bitMask; bitMask <<= 1) {
+ 746              		.loc 1 296 0
+ 747 0012 0F23     		movs	r3, #15
+ 748 0014 FB18     		adds	r3, r7, r3
+ 749 0016 0122     		movs	r2, #1
+ 750 0018 1A70     		strb	r2, [r3]
+ 751 001a 23E0     		b	.L31
+ 752              	.L32:
+ 297:DS18B20.c     ****         Temp_WriteBit(n,(bitMask & byte)?1:0);
+ 753              		.loc 1 297 0 discriminator 3
+ 754 001c 0F23     		movs	r3, #15
+ 755 001e FB18     		adds	r3, r7, r3
+ 756 0020 BA1D     		adds	r2, r7, #6
+ 757 0022 1B78     		ldrb	r3, [r3]
+ 758 0024 1278     		ldrb	r2, [r2]
+ 759 0026 1340     		ands	r3, r2
+ 760 0028 DBB2     		uxtb	r3, r3
+ 761 002a 5A1E     		subs	r2, r3, #1
+ 762 002c 9341     		sbcs	r3, r3, r2
+ 763 002e DBB2     		uxtb	r3, r3
+ 764 0030 1A00     		movs	r2, r3
+ 765 0032 FB1D     		adds	r3, r7, #7
+ 766 0034 1B78     		ldrb	r3, [r3]
+ 767 0036 1100     		movs	r1, r2
+ 768 0038 1800     		movs	r0, r3
+ 769 003a FFF7FEFF 		bl	Temp_WriteBit
+ 298:DS18B20.c     ****         Temp_SetDriveMode(n,IN);
+ 770              		.loc 1 298 0 discriminator 3
+ 771 003e FB1D     		adds	r3, r7, #7
+ 772 0040 1B78     		ldrb	r3, [r3]
+ 773 0042 0021     		movs	r1, #0
+ 774 0044 1800     		movs	r0, r3
+ 775 0046 FFF7FEFF 		bl	Temp_SetDriveMode
+ 299:DS18B20.c     ****         Temp_WritePin(n,0);
+ 776              		.loc 1 299 0 discriminator 3
+ 777 004a FB1D     		adds	r3, r7, #7
+ 778 004c 1B78     		ldrb	r3, [r3]
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 20
 
 
- 807 0030 BB1D     		adds	r3, r7, #6
- 808 0032 1B78     		ldrb	r3, [r3]
- 809 0034 012B     		cmp	r3, #1
- 810 0036 13D1     		bne	.L49
- 302:DS18B20.c     ****         break;
- 811              		.loc 1 302 0 is_stmt 0 discriminator 1
- 812 0038 0120     		movs	r0, #1
- 813 003a FFF7FEFF 		bl	Temp1_Write
- 303:DS18B20.c     ****         
- 814              		.loc 1 303 0 is_stmt 1 discriminator 1
- 815 003e 0FE0     		b	.L49
- 816              	.L43:
- 306:DS18B20.c     ****             else if (value == 1) Temp2_Write(1);
- 817              		.loc 1 306 0
- 818 0040 BB1D     		adds	r3, r7, #6
- 819 0042 1B78     		ldrb	r3, [r3]
- 820 0044 002B     		cmp	r3, #0
- 821 0046 03D1     		bne	.L47
- 306:DS18B20.c     ****             else if (value == 1) Temp2_Write(1);
- 822              		.loc 1 306 0 is_stmt 0 discriminator 1
- 823 0048 0020     		movs	r0, #0
- 824 004a FFF7FEFF 		bl	Temp2_Write
- 308:DS18B20.c     ****         
- 825              		.loc 1 308 0 is_stmt 1 discriminator 1
- 826 004e 09E0     		b	.L50
- 827              	.L47:
- 307:DS18B20.c     ****         break;
- 828              		.loc 1 307 0
- 829 0050 BB1D     		adds	r3, r7, #6
- 830 0052 1B78     		ldrb	r3, [r3]
- 831 0054 012B     		cmp	r3, #1
- 832 0056 05D1     		bne	.L50
- 307:DS18B20.c     ****         break;
- 833              		.loc 1 307 0 is_stmt 0 discriminator 1
- 834 0058 0120     		movs	r0, #1
- 835 005a FFF7FEFF 		bl	Temp2_Write
- 308:DS18B20.c     ****         
- 836              		.loc 1 308 0 is_stmt 1 discriminator 1
- 837 005e 01E0     		b	.L50
- 838              	.L49:
- 303:DS18B20.c     ****         
- 839              		.loc 1 303 0
- 840 0060 C046     		nop
- 841 0062 00E0     		b	.L46
- 842              	.L50:
- 308:DS18B20.c     ****         
- 843              		.loc 1 308 0
- 844 0064 C046     		nop
- 845              	.L46:
- 312:DS18B20.c     ****     }
- 313:DS18B20.c     **** }
- 846              		.loc 1 313 0
- 847 0066 C046     		nop
- 848 0068 BD46     		mov	sp, r7
- 849 006a 02B0     		add	sp, sp, #8
- 850              		@ sp needed
- 851 006c 80BD     		pop	{r7, pc}
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 22
+ 779 004e 0021     		movs	r1, #0
+ 780 0050 1800     		movs	r0, r3
+ 781 0052 FFF7FEFF 		bl	Temp_WritePin
+ 296:DS18B20.c     ****         Temp_WriteBit(n,(bitMask & byte)?1:0);
+ 782              		.loc 1 296 0 discriminator 3
+ 783 0056 0F23     		movs	r3, #15
+ 784 0058 FA18     		adds	r2, r7, r3
+ 785 005a 0F23     		movs	r3, #15
+ 786 005c FB18     		adds	r3, r7, r3
+ 787 005e 1B78     		ldrb	r3, [r3]
+ 788 0060 DB18     		adds	r3, r3, r3
+ 789 0062 1370     		strb	r3, [r2]
+ 790              	.L31:
+ 296:DS18B20.c     ****         Temp_WriteBit(n,(bitMask & byte)?1:0);
+ 791              		.loc 1 296 0 is_stmt 0 discriminator 1
+ 792 0064 0F23     		movs	r3, #15
+ 793 0066 FB18     		adds	r3, r7, r3
+ 794 0068 1B78     		ldrb	r3, [r3]
+ 795 006a 002B     		cmp	r3, #0
+ 796 006c D6D1     		bne	.L32
+ 300:DS18B20.c     ****     }
+ 301:DS18B20.c     **** }
+ 797              		.loc 1 301 0 is_stmt 1
+ 798 006e C046     		nop
+ 799 0070 BD46     		mov	sp, r7
+ 800 0072 04B0     		add	sp, sp, #16
+ 801              		@ sp needed
+ 802 0074 80BD     		pop	{r7, pc}
+ 803              		.cfi_endproc
+ 804              	.LFE44:
+ 805              		.size	Temp_Write, .-Temp_Write
+ 806 0076 C046     		.section	.text.Temp_Read,"ax",%progbits
+ 807              		.align	2
+ 808              		.global	Temp_Read
+ 809              		.code	16
+ 810              		.thumb_func
+ 811              		.type	Temp_Read, %function
+ 812              	Temp_Read:
+ 813              	.LFB45:
+ 302:DS18B20.c     **** 
+ 303:DS18B20.c     **** /* ------------------------------------------------------------
+ 304:DS18B20.c     ****  * Function: Temp_Read
+ 305:DS18B20.c     ****  * ------------------------------------------------------------
+ 306:DS18B20.c     ****  * Description: Reads a byte from the selected sensor.
+ 307:DS18B20.c     ****  * 
+ 308:DS18B20.c     ****  * Parameters:  Sensor number, value (0 or 1)
+ 309:DS18B20.c     ****  * 
+ 310:DS18B20.c     ****  * Returns:     Byte read
+ 311:DS18B20.c     ****  * ------------------------------------------------------------
+ 312:DS18B20.c     **** */
+ 313:DS18B20.c     **** uint8_t Temp_Read(uint8_t n) {
+ 814              		.loc 1 313 0
+ 815              		.cfi_startproc
+ 816              		@ args = 0, pretend = 0, frame = 16
+ 817              		@ frame_needed = 1, uses_anonymous_args = 0
+ 818 0000 80B5     		push	{r7, lr}
+ 819              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 21
 
 
- 852              		.cfi_endproc
- 853              	.LFE45:
- 854              		.size	Temp_WritePin, .-Temp_WritePin
- 855 006e C046     		.text
- 856              	.Letext0:
- 857              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
- 858              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
- 859              		.section	.debug_info,"",%progbits
- 860              	.Ldebug_info0:
- 861 0000 D1020000 		.4byte	0x2d1
- 862 0004 0400     		.2byte	0x4
- 863 0006 00000000 		.4byte	.Ldebug_abbrev0
- 864 000a 04       		.byte	0x4
- 865 000b 01       		.uleb128 0x1
- 866 000c 0E010000 		.4byte	.LASF31
- 867 0010 0C       		.byte	0xc
- 868 0011 0B000000 		.4byte	.LASF32
- 869 0015 61000000 		.4byte	.LASF33
- 870 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 871 001d 00000000 		.4byte	0
- 872 0021 00000000 		.4byte	.Ldebug_line0
- 873 0025 02       		.uleb128 0x2
- 874 0026 01       		.byte	0x1
- 875 0027 06       		.byte	0x6
- 876 0028 78020000 		.4byte	.LASF0
- 877 002c 03       		.uleb128 0x3
- 878 002d 15000000 		.4byte	.LASF9
- 879 0031 02       		.byte	0x2
- 880 0032 1D       		.byte	0x1d
- 881 0033 37000000 		.4byte	0x37
- 882 0037 02       		.uleb128 0x2
- 883 0038 01       		.byte	0x1
- 884 0039 08       		.byte	0x8
- 885 003a DB000000 		.4byte	.LASF1
- 886 003e 02       		.uleb128 0x2
- 887 003f 02       		.byte	0x2
- 888 0040 05       		.byte	0x5
- 889 0041 3D020000 		.4byte	.LASF2
- 890 0045 02       		.uleb128 0x2
- 891 0046 02       		.byte	0x2
- 892 0047 07       		.byte	0x7
- 893 0048 FB000000 		.4byte	.LASF3
- 894 004c 02       		.uleb128 0x2
- 895 004d 04       		.byte	0x4
- 896 004e 05       		.byte	0x5
- 897 004f 63020000 		.4byte	.LASF4
- 898 0053 02       		.uleb128 0x2
- 899 0054 04       		.byte	0x4
- 900 0055 07       		.byte	0x7
- 901 0056 E9000000 		.4byte	.LASF5
- 902 005a 02       		.uleb128 0x2
- 903 005b 08       		.byte	0x8
- 904 005c 05       		.byte	0x5
- 905 005d 07020000 		.4byte	.LASF6
- 906 0061 02       		.uleb128 0x2
- 907 0062 08       		.byte	0x8
- 908 0063 07       		.byte	0x7
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 23
+ 820              		.cfi_offset 7, -8
+ 821              		.cfi_offset 14, -4
+ 822 0002 84B0     		sub	sp, sp, #16
+ 823              		.cfi_def_cfa_offset 24
+ 824 0004 00AF     		add	r7, sp, #0
+ 825              		.cfi_def_cfa_register 7
+ 826 0006 0200     		movs	r2, r0
+ 827 0008 FB1D     		adds	r3, r7, #7
+ 828 000a 1A70     		strb	r2, [r3]
+ 314:DS18B20.c     ****     
+ 315:DS18B20.c     ****     uint8_t bitMask;    
+ 316:DS18B20.c     ****     uint8_t r = 0;
+ 829              		.loc 1 316 0
+ 830 000c 0E23     		movs	r3, #14
+ 831 000e FB18     		adds	r3, r7, r3
+ 832 0010 0022     		movs	r2, #0
+ 833 0012 1A70     		strb	r2, [r3]
+ 317:DS18B20.c     ****     
+ 318:DS18B20.c     ****     
+ 319:DS18B20.c     ****     for (bitMask = 0x01; bitMask; bitMask <<=1) {
+ 834              		.loc 1 319 0
+ 835 0014 0F23     		movs	r3, #15
+ 836 0016 FB18     		adds	r3, r7, r3
+ 837 0018 0122     		movs	r2, #1
+ 838 001a 1A70     		strb	r2, [r3]
+ 839 001c 17E0     		b	.L34
+ 840              	.L36:
+ 320:DS18B20.c     ****         if (Temp_ReadBit(n)) r |= bitMask;
+ 841              		.loc 1 320 0
+ 842 001e FB1D     		adds	r3, r7, #7
+ 843 0020 1B78     		ldrb	r3, [r3]
+ 844 0022 1800     		movs	r0, r3
+ 845 0024 FFF7FEFF 		bl	Temp_ReadBit
+ 846 0028 031E     		subs	r3, r0, #0
+ 847 002a 09D0     		beq	.L35
+ 848              		.loc 1 320 0 is_stmt 0 discriminator 1
+ 849 002c 0E23     		movs	r3, #14
+ 850 002e FB18     		adds	r3, r7, r3
+ 851 0030 0E22     		movs	r2, #14
+ 852 0032 B918     		adds	r1, r7, r2
+ 853 0034 0F22     		movs	r2, #15
+ 854 0036 BA18     		adds	r2, r7, r2
+ 855 0038 0978     		ldrb	r1, [r1]
+ 856 003a 1278     		ldrb	r2, [r2]
+ 857 003c 0A43     		orrs	r2, r1
+ 858 003e 1A70     		strb	r2, [r3]
+ 859              	.L35:
+ 319:DS18B20.c     ****         if (Temp_ReadBit(n)) r |= bitMask;
+ 860              		.loc 1 319 0 is_stmt 1 discriminator 2
+ 861 0040 0F23     		movs	r3, #15
+ 862 0042 FA18     		adds	r2, r7, r3
+ 863 0044 0F23     		movs	r3, #15
+ 864 0046 FB18     		adds	r3, r7, r3
+ 865 0048 1B78     		ldrb	r3, [r3]
+ 866 004a DB18     		adds	r3, r3, r3
+ 867 004c 1370     		strb	r3, [r2]
+ 868              	.L34:
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 22
 
 
- 909 0064 38000000 		.4byte	.LASF7
- 910 0068 04       		.uleb128 0x4
- 911 0069 04       		.byte	0x4
- 912 006a 05       		.byte	0x5
- 913 006b 696E7400 		.ascii	"int\000"
- 914 006f 02       		.uleb128 0x2
- 915 0070 04       		.byte	0x4
- 916 0071 07       		.byte	0x7
- 917 0072 B1010000 		.4byte	.LASF8
- 918 0076 03       		.uleb128 0x3
- 919 0077 C3010000 		.4byte	.LASF10
- 920 007b 03       		.byte	0x3
- 921 007c 18       		.byte	0x18
- 922 007d 2C000000 		.4byte	0x2c
- 923 0081 02       		.uleb128 0x2
- 924 0082 04       		.byte	0x4
- 925 0083 04       		.byte	0x4
- 926 0084 32000000 		.4byte	.LASF11
- 927 0088 02       		.uleb128 0x2
- 928 0089 08       		.byte	0x8
- 929 008a 04       		.byte	0x4
- 930 008b AA010000 		.4byte	.LASF12
- 931 008f 02       		.uleb128 0x2
- 932 0090 01       		.byte	0x1
- 933 0091 08       		.byte	0x8
- 934 0092 BE010000 		.4byte	.LASF13
- 935 0096 02       		.uleb128 0x2
- 936 0097 08       		.byte	0x8
- 937 0098 04       		.byte	0x4
- 938 0099 6C020000 		.4byte	.LASF14
- 939 009d 02       		.uleb128 0x2
- 940 009e 04       		.byte	0x4
- 941 009f 07       		.byte	0x7
- 942 00a0 F3010000 		.4byte	.LASF15
- 943 00a4 05       		.uleb128 0x5
- 944 00a5 FC010000 		.4byte	.LASF23
- 945 00a9 01       		.byte	0x1
- 946 00aa 24       		.byte	0x24
- 947 00ab 76000000 		.4byte	0x76
- 948 00af 00000000 		.4byte	.LFB35
- 949 00b3 B4000000 		.4byte	.LFE35-.LFB35
- 950 00b7 01       		.uleb128 0x1
- 951 00b8 9C       		.byte	0x9c
- 952 00b9 E4000000 		.4byte	0xe4
- 953 00bd 06       		.uleb128 0x6
- 954 00be 6E00     		.ascii	"n\000"
- 955 00c0 01       		.byte	0x1
- 956 00c1 24       		.byte	0x24
- 957 00c2 76000000 		.4byte	0x76
- 958 00c6 02       		.uleb128 0x2
- 959 00c7 91       		.byte	0x91
- 960 00c8 6F       		.sleb128 -17
- 961 00c9 07       		.uleb128 0x7
- 962 00ca 7200     		.ascii	"r\000"
- 963 00cc 01       		.byte	0x1
- 964 00cd 26       		.byte	0x26
- 965 00ce 76000000 		.4byte	0x76
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 24
+ 319:DS18B20.c     ****         if (Temp_ReadBit(n)) r |= bitMask;
+ 869              		.loc 1 319 0 is_stmt 0 discriminator 1
+ 870 004e 0F23     		movs	r3, #15
+ 871 0050 FB18     		adds	r3, r7, r3
+ 872 0052 1B78     		ldrb	r3, [r3]
+ 873 0054 002B     		cmp	r3, #0
+ 874 0056 E2D1     		bne	.L36
+ 321:DS18B20.c     ****     }
+ 322:DS18B20.c     ****     return r;
+ 875              		.loc 1 322 0 is_stmt 1
+ 876 0058 0E23     		movs	r3, #14
+ 877 005a FB18     		adds	r3, r7, r3
+ 878 005c 1B78     		ldrb	r3, [r3]
+ 323:DS18B20.c     **** }
+ 879              		.loc 1 323 0
+ 880 005e 1800     		movs	r0, r3
+ 881 0060 BD46     		mov	sp, r7
+ 882 0062 04B0     		add	sp, sp, #16
+ 883              		@ sp needed
+ 884 0064 80BD     		pop	{r7, pc}
+ 885              		.cfi_endproc
+ 886              	.LFE45:
+ 887              		.size	Temp_Read, .-Temp_Read
+ 888 0066 C046     		.section	.text.Temp_WriteBit,"ax",%progbits
+ 889              		.align	2
+ 890              		.global	Temp_WriteBit
+ 891              		.code	16
+ 892              		.thumb_func
+ 893              		.type	Temp_WriteBit, %function
+ 894              	Temp_WriteBit:
+ 895              	.LFB46:
+ 324:DS18B20.c     **** 
+ 325:DS18B20.c     **** /* ------------------------------------------------------------
+ 326:DS18B20.c     ****  * Function: Temp_WriteBit
+ 327:DS18B20.c     ****  * ------------------------------------------------------------
+ 328:DS18B20.c     ****  * Description: Writes a bit to the selected sensor.
+ 329:DS18B20.c     ****  * 
+ 330:DS18B20.c     ****  * Parameters:  Sensor number, value (0 or 1)
+ 331:DS18B20.c     ****  * 
+ 332:DS18B20.c     ****  * Returns:     Nothing
+ 333:DS18B20.c     ****  * ------------------------------------------------------------
+ 334:DS18B20.c     **** */
+ 335:DS18B20.c     **** void Temp_WriteBit(uint8_t n, uint8_t b) {
+ 896              		.loc 1 335 0
+ 897              		.cfi_startproc
+ 898              		@ args = 0, pretend = 0, frame = 8
+ 899              		@ frame_needed = 1, uses_anonymous_args = 0
+ 900 0000 80B5     		push	{r7, lr}
+ 901              		.cfi_def_cfa_offset 8
+ 902              		.cfi_offset 7, -8
+ 903              		.cfi_offset 14, -4
+ 904 0002 82B0     		sub	sp, sp, #8
+ 905              		.cfi_def_cfa_offset 16
+ 906 0004 00AF     		add	r7, sp, #0
+ 907              		.cfi_def_cfa_register 7
+ 908 0006 0200     		movs	r2, r0
+ 909 0008 FB1D     		adds	r3, r7, #7
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 23
 
 
- 966 00d2 02       		.uleb128 0x2
- 967 00d3 91       		.byte	0x91
- 968 00d4 76       		.sleb128 -10
- 969 00d5 08       		.uleb128 0x8
- 970 00d6 2A000000 		.4byte	.LASF16
- 971 00da 01       		.byte	0x1
- 972 00db 27       		.byte	0x27
- 973 00dc 76000000 		.4byte	0x76
- 974 00e0 02       		.uleb128 0x2
- 975 00e1 91       		.byte	0x91
- 976 00e2 77       		.sleb128 -9
- 977 00e3 00       		.byte	0
- 978 00e4 09       		.uleb128 0x9
- 979 00e5 26020000 		.4byte	.LASF17
- 980 00e9 01       		.byte	0x1
- 981 00ea 44       		.byte	0x44
- 982 00eb 00000000 		.4byte	.LFB36
- 983 00ef 5C000000 		.4byte	.LFE36-.LFB36
- 984 00f3 01       		.uleb128 0x1
- 985 00f4 9C       		.byte	0x9c
- 986 00f5 20010000 		.4byte	0x120
- 987 00f9 06       		.uleb128 0x6
- 988 00fa 6E00     		.ascii	"n\000"
- 989 00fc 01       		.byte	0x1
- 990 00fd 44       		.byte	0x44
- 991 00fe 76000000 		.4byte	0x76
- 992 0102 02       		.uleb128 0x2
- 993 0103 91       		.byte	0x91
- 994 0104 6F       		.sleb128 -17
- 995 0105 06       		.uleb128 0x6
- 996 0106 726F6D00 		.ascii	"rom\000"
- 997 010a 01       		.byte	0x1
- 998 010b 44       		.byte	0x44
- 999 010c 20010000 		.4byte	0x120
- 1000 0110 02       		.uleb128 0x2
- 1001 0111 91       		.byte	0x91
- 1002 0112 68       		.sleb128 -24
- 1003 0113 07       		.uleb128 0x7
- 1004 0114 6900     		.ascii	"i\000"
- 1005 0116 01       		.byte	0x1
- 1006 0117 46       		.byte	0x46
- 1007 0118 76000000 		.4byte	0x76
- 1008 011c 02       		.uleb128 0x2
- 1009 011d 91       		.byte	0x91
- 1010 011e 77       		.sleb128 -9
- 1011 011f 00       		.byte	0
- 1012 0120 0A       		.uleb128 0xa
- 1013 0121 04       		.byte	0x4
- 1014 0122 26010000 		.4byte	0x126
- 1015 0126 0B       		.uleb128 0xb
- 1016 0127 76000000 		.4byte	0x76
- 1017 012b 09       		.uleb128 0x9
- 1018 012c D9010000 		.4byte	.LASF18
- 1019 0130 01       		.byte	0x1
- 1020 0131 57       		.byte	0x57
- 1021 0132 00000000 		.4byte	.LFB37
- 1022 0136 20000000 		.4byte	.LFE37-.LFB37
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 25
+ 910 000a 1A70     		strb	r2, [r3]
+ 911 000c BB1D     		adds	r3, r7, #6
+ 912 000e 0A1C     		adds	r2, r1, #0
+ 913 0010 1A70     		strb	r2, [r3]
+ 336:DS18B20.c     ****     
+ 337:DS18B20.c     ****     if (b == 1) {
+ 914              		.loc 1 337 0
+ 915 0012 BB1D     		adds	r3, r7, #6
+ 916 0014 1B78     		ldrb	r3, [r3]
+ 917 0016 012B     		cmp	r3, #1
+ 918 0018 18D1     		bne	.L39
+ 338:DS18B20.c     ****         Temp_WritePin(n,0);
+ 919              		.loc 1 338 0
+ 920 001a FB1D     		adds	r3, r7, #7
+ 921 001c 1B78     		ldrb	r3, [r3]
+ 922 001e 0021     		movs	r1, #0
+ 923 0020 1800     		movs	r0, r3
+ 924 0022 FFF7FEFF 		bl	Temp_WritePin
+ 339:DS18B20.c     ****         Temp_SetDriveMode(n,OUT);   // drive output low
+ 925              		.loc 1 339 0
+ 926 0026 FB1D     		adds	r3, r7, #7
+ 927 0028 1B78     		ldrb	r3, [r3]
+ 928 002a 0121     		movs	r1, #1
+ 929 002c 1800     		movs	r0, r3
+ 930 002e FFF7FEFF 		bl	Temp_SetDriveMode
+ 340:DS18B20.c     ****         CyDelayUs(10);
+ 931              		.loc 1 340 0
+ 932 0032 0A20     		movs	r0, #10
+ 933 0034 FFF7FEFF 		bl	CyDelayUs
+ 341:DS18B20.c     ****         Temp_WritePin(n,1);         // drive output high
+ 934              		.loc 1 341 0
+ 935 0038 FB1D     		adds	r3, r7, #7
+ 936 003a 1B78     		ldrb	r3, [r3]
+ 937 003c 0121     		movs	r1, #1
+ 938 003e 1800     		movs	r0, r3
+ 939 0040 FFF7FEFF 		bl	Temp_WritePin
+ 342:DS18B20.c     ****         CyDelayUs(55);
+ 940              		.loc 1 342 0
+ 941 0044 3720     		movs	r0, #55
+ 942 0046 FFF7FEFF 		bl	CyDelayUs
+ 343:DS18B20.c     ****     } else {
+ 344:DS18B20.c     ****         Temp_WritePin(n,0);
+ 345:DS18B20.c     ****         Temp_SetDriveMode(n,OUT);   // drive output low
+ 346:DS18B20.c     ****         CyDelayUs(65);
+ 347:DS18B20.c     ****         Temp_WritePin(n,1);         // drive output high
+ 348:DS18B20.c     ****         CyDelayUs(5);       
+ 349:DS18B20.c     ****     }
+ 350:DS18B20.c     **** }
+ 943              		.loc 1 350 0
+ 944 004a 17E0     		b	.L41
+ 945              	.L39:
+ 344:DS18B20.c     ****         Temp_SetDriveMode(n,OUT);   // drive output low
+ 946              		.loc 1 344 0
+ 947 004c FB1D     		adds	r3, r7, #7
+ 948 004e 1B78     		ldrb	r3, [r3]
+ 949 0050 0021     		movs	r1, #0
+ 950 0052 1800     		movs	r0, r3
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 24
 
 
- 1023 013a 01       		.uleb128 0x1
- 1024 013b 9C       		.byte	0x9c
- 1025 013c 4D010000 		.4byte	0x14d
- 1026 0140 06       		.uleb128 0x6
- 1027 0141 6E00     		.ascii	"n\000"
- 1028 0143 01       		.byte	0x1
- 1029 0144 57       		.byte	0x57
- 1030 0145 76000000 		.4byte	0x76
- 1031 0149 02       		.uleb128 0x2
- 1032 014a 91       		.byte	0x91
- 1033 014b 77       		.sleb128 -9
- 1034 014c 00       		.byte	0
- 1035 014d 09       		.uleb128 0x9
- 1036 014e 15020000 		.4byte	.LASF19
- 1037 0152 01       		.byte	0x1
- 1038 0153 67       		.byte	0x67
- 1039 0154 00000000 		.4byte	.LFB38
- 1040 0158 34000000 		.4byte	.LFE38-.LFB38
- 1041 015c 01       		.uleb128 0x1
- 1042 015d 9C       		.byte	0x9c
- 1043 015e 6F010000 		.4byte	0x16f
- 1044 0162 06       		.uleb128 0x6
- 1045 0163 6E00     		.ascii	"n\000"
- 1046 0165 01       		.byte	0x1
- 1047 0166 67       		.byte	0x67
- 1048 0167 76000000 		.4byte	0x76
- 1049 016b 02       		.uleb128 0x2
- 1050 016c 91       		.byte	0x91
- 1051 016d 77       		.sleb128 -9
- 1052 016e 00       		.byte	0
- 1053 016f 09       		.uleb128 0x9
- 1054 0170 00000000 		.4byte	.LASF20
- 1055 0174 01       		.byte	0x1
- 1056 0175 7F       		.byte	0x7f
- 1057 0176 00000000 		.4byte	.LFB39
- 1058 017a 76000000 		.4byte	.LFE39-.LFB39
- 1059 017e 01       		.uleb128 0x1
- 1060 017f 9C       		.byte	0x9c
- 1061 0180 AD010000 		.4byte	0x1ad
- 1062 0184 06       		.uleb128 0x6
- 1063 0185 6E00     		.ascii	"n\000"
- 1064 0187 01       		.byte	0x1
- 1065 0188 7F       		.byte	0x7f
- 1066 0189 76000000 		.4byte	0x76
- 1067 018d 02       		.uleb128 0x2
- 1068 018e 91       		.byte	0x91
- 1069 018f 6F       		.sleb128 -17
- 1070 0190 0C       		.uleb128 0xc
- 1071 0191 25000000 		.4byte	.LASF21
- 1072 0195 01       		.byte	0x1
- 1073 0196 7F       		.byte	0x7f
- 1074 0197 76000000 		.4byte	0x76
- 1075 019b 02       		.uleb128 0x2
- 1076 019c 91       		.byte	0x91
- 1077 019d 6E       		.sleb128 -18
- 1078 019e 08       		.uleb128 0x8
- 1079 019f 35020000 		.4byte	.LASF22
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 26
+ 951 0054 FFF7FEFF 		bl	Temp_WritePin
+ 345:DS18B20.c     ****         CyDelayUs(65);
+ 952              		.loc 1 345 0
+ 953 0058 FB1D     		adds	r3, r7, #7
+ 954 005a 1B78     		ldrb	r3, [r3]
+ 955 005c 0121     		movs	r1, #1
+ 956 005e 1800     		movs	r0, r3
+ 957 0060 FFF7FEFF 		bl	Temp_SetDriveMode
+ 346:DS18B20.c     ****         Temp_WritePin(n,1);         // drive output high
+ 958              		.loc 1 346 0
+ 959 0064 4120     		movs	r0, #65
+ 960 0066 FFF7FEFF 		bl	CyDelayUs
+ 347:DS18B20.c     ****         CyDelayUs(5);       
+ 961              		.loc 1 347 0
+ 962 006a FB1D     		adds	r3, r7, #7
+ 963 006c 1B78     		ldrb	r3, [r3]
+ 964 006e 0121     		movs	r1, #1
+ 965 0070 1800     		movs	r0, r3
+ 966 0072 FFF7FEFF 		bl	Temp_WritePin
+ 348:DS18B20.c     ****     }
+ 967              		.loc 1 348 0
+ 968 0076 0520     		movs	r0, #5
+ 969 0078 FFF7FEFF 		bl	CyDelayUs
+ 970              	.L41:
+ 971              		.loc 1 350 0
+ 972 007c C046     		nop
+ 973 007e BD46     		mov	sp, r7
+ 974 0080 02B0     		add	sp, sp, #8
+ 975              		@ sp needed
+ 976 0082 80BD     		pop	{r7, pc}
+ 977              		.cfi_endproc
+ 978              	.LFE46:
+ 979              		.size	Temp_WriteBit, .-Temp_WriteBit
+ 980              		.section	.text.Temp_ReadBit,"ax",%progbits
+ 981              		.align	2
+ 982              		.global	Temp_ReadBit
+ 983              		.code	16
+ 984              		.thumb_func
+ 985              		.type	Temp_ReadBit, %function
+ 986              	Temp_ReadBit:
+ 987              	.LFB47:
+ 351:DS18B20.c     **** 
+ 352:DS18B20.c     **** /* ------------------------------------------------------------
+ 353:DS18B20.c     ****  * Function: Temp_ReadBit
+ 354:DS18B20.c     ****  * ------------------------------------------------------------
+ 355:DS18B20.c     ****  * Description: Writes a bit to the selected sensor.
+ 356:DS18B20.c     ****  * 
+ 357:DS18B20.c     ****  * Parameters:  Sensor number, value (0 or 1)
+ 358:DS18B20.c     ****  * 
+ 359:DS18B20.c     ****  * Returns:     Nothing
+ 360:DS18B20.c     ****  * ------------------------------------------------------------
+ 361:DS18B20.c     **** */
+ 362:DS18B20.c     **** uint8_t Temp_ReadBit(uint8_t n) {
+ 988              		.loc 1 362 0
+ 989              		.cfi_startproc
+ 990              		@ args = 0, pretend = 0, frame = 16
+ 991              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 25
 
 
- 1080 01a3 01       		.byte	0x1
- 1081 01a4 81       		.byte	0x81
- 1082 01a5 76000000 		.4byte	0x76
- 1083 01a9 02       		.uleb128 0x2
- 1084 01aa 91       		.byte	0x91
- 1085 01ab 77       		.sleb128 -9
- 1086 01ac 00       		.byte	0
- 1087 01ad 05       		.uleb128 0x5
- 1088 01ae 4C020000 		.4byte	.LASF24
- 1089 01b2 01       		.byte	0x1
- 1090 01b3 95       		.byte	0x95
- 1091 01b4 76000000 		.4byte	0x76
- 1092 01b8 00000000 		.4byte	.LFB40
- 1093 01bc 5E000000 		.4byte	.LFE40-.LFB40
- 1094 01c0 01       		.uleb128 0x1
- 1095 01c1 9C       		.byte	0x9c
- 1096 01c2 ED010000 		.4byte	0x1ed
- 1097 01c6 06       		.uleb128 0x6
- 1098 01c7 6E00     		.ascii	"n\000"
- 1099 01c9 01       		.byte	0x1
- 1100 01ca 95       		.byte	0x95
- 1101 01cb 76000000 		.4byte	0x76
- 1102 01cf 02       		.uleb128 0x2
- 1103 01d0 91       		.byte	0x91
- 1104 01d1 6F       		.sleb128 -17
- 1105 01d2 08       		.uleb128 0x8
- 1106 01d3 35020000 		.4byte	.LASF22
- 1107 01d7 01       		.byte	0x1
- 1108 01d8 97       		.byte	0x97
- 1109 01d9 76000000 		.4byte	0x76
- 1110 01dd 02       		.uleb128 0x2
- 1111 01de 91       		.byte	0x91
- 1112 01df 77       		.sleb128 -9
- 1113 01e0 07       		.uleb128 0x7
- 1114 01e1 7200     		.ascii	"r\000"
- 1115 01e3 01       		.byte	0x1
- 1116 01e4 98       		.byte	0x98
- 1117 01e5 76000000 		.4byte	0x76
- 1118 01e9 02       		.uleb128 0x2
- 1119 01ea 91       		.byte	0x91
- 1120 01eb 76       		.sleb128 -10
- 1121 01ec 00       		.byte	0
- 1122 01ed 09       		.uleb128 0x9
- 1123 01ee CB010000 		.4byte	.LASF25
- 1124 01f2 01       		.byte	0x1
- 1125 01f3 AB       		.byte	0xab
- 1126 01f4 00000000 		.4byte	.LFB41
- 1127 01f8 84000000 		.4byte	.LFE41-.LFB41
- 1128 01fc 01       		.uleb128 0x1
- 1129 01fd 9C       		.byte	0x9c
- 1130 01fe 1B020000 		.4byte	0x21b
- 1131 0202 06       		.uleb128 0x6
- 1132 0203 6E00     		.ascii	"n\000"
- 1133 0205 01       		.byte	0x1
- 1134 0206 AB       		.byte	0xab
- 1135 0207 76000000 		.4byte	0x76
- 1136 020b 02       		.uleb128 0x2
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 27
+ 992 0000 90B5     		push	{r4, r7, lr}
+ 993              		.cfi_def_cfa_offset 12
+ 994              		.cfi_offset 4, -12
+ 995              		.cfi_offset 7, -8
+ 996              		.cfi_offset 14, -4
+ 997 0002 85B0     		sub	sp, sp, #20
+ 998              		.cfi_def_cfa_offset 32
+ 999 0004 00AF     		add	r7, sp, #0
+ 1000              		.cfi_def_cfa_register 7
+ 1001 0006 0200     		movs	r2, r0
+ 1002 0008 FB1D     		adds	r3, r7, #7
+ 1003 000a 1A70     		strb	r2, [r3]
+ 363:DS18B20.c     ****     
+ 364:DS18B20.c     ****     uint8_t r;
+ 365:DS18B20.c     ****     
+ 366:DS18B20.c     ****     
+ 367:DS18B20.c     ****     Temp_WritePin(n,0);
+ 1004              		.loc 1 367 0
+ 1005 000c FB1D     		adds	r3, r7, #7
+ 1006 000e 1B78     		ldrb	r3, [r3]
+ 1007 0010 0021     		movs	r1, #0
+ 1008 0012 1800     		movs	r0, r3
+ 1009 0014 FFF7FEFF 		bl	Temp_WritePin
+ 368:DS18B20.c     ****     Temp_SetDriveMode(n,OUT);
+ 1010              		.loc 1 368 0
+ 1011 0018 FB1D     		adds	r3, r7, #7
+ 1012 001a 1B78     		ldrb	r3, [r3]
+ 1013 001c 0121     		movs	r1, #1
+ 1014 001e 1800     		movs	r0, r3
+ 1015 0020 FFF7FEFF 		bl	Temp_SetDriveMode
+ 369:DS18B20.c     ****     CyDelayUs(3);
+ 1016              		.loc 1 369 0
+ 1017 0024 0320     		movs	r0, #3
+ 1018 0026 FFF7FEFF 		bl	CyDelayUs
+ 370:DS18B20.c     ****     Temp_SetDriveMode(n,IN);    // let pin float, pull-up will raise
+ 1019              		.loc 1 370 0
+ 1020 002a FB1D     		adds	r3, r7, #7
+ 1021 002c 1B78     		ldrb	r3, [r3]
+ 1022 002e 0021     		movs	r1, #0
+ 1023 0030 1800     		movs	r0, r3
+ 1024 0032 FFF7FEFF 		bl	Temp_SetDriveMode
+ 371:DS18B20.c     ****     //CyDelayUs(10);
+ 372:DS18B20.c     ****     CyDelayUs(2);
+ 1025              		.loc 1 372 0
+ 1026 0036 0220     		movs	r0, #2
+ 1027 0038 FFF7FEFF 		bl	CyDelayUs
+ 373:DS18B20.c     ****     r = Temp_ReadPin(n);
+ 1028              		.loc 1 373 0
+ 1029 003c 0F23     		movs	r3, #15
+ 1030 003e FC18     		adds	r4, r7, r3
+ 1031 0040 FB1D     		adds	r3, r7, #7
+ 1032 0042 1B78     		ldrb	r3, [r3]
+ 1033 0044 1800     		movs	r0, r3
+ 1034 0046 FFF7FEFF 		bl	Temp_ReadPin
+ 1035 004a 0300     		movs	r3, r0
+ 1036 004c 2370     		strb	r3, [r4]
+ 374:DS18B20.c     ****     CyDelayUs(53);
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 26
 
 
- 1137 020c 91       		.byte	0x91
- 1138 020d 77       		.sleb128 -9
- 1139 020e 06       		.uleb128 0x6
- 1140 020f 6200     		.ascii	"b\000"
- 1141 0211 01       		.byte	0x1
- 1142 0212 AB       		.byte	0xab
- 1143 0213 76000000 		.4byte	0x76
- 1144 0217 02       		.uleb128 0x2
- 1145 0218 91       		.byte	0x91
- 1146 0219 76       		.sleb128 -10
- 1147 021a 00       		.byte	0
- 1148 021b 05       		.uleb128 0x5
- 1149 021c 56020000 		.4byte	.LASF26
- 1150 0220 01       		.byte	0x1
- 1151 0221 C6       		.byte	0xc6
- 1152 0222 76000000 		.4byte	0x76
- 1153 0226 00000000 		.4byte	.LFB42
- 1154 022a 62000000 		.4byte	.LFE42-.LFB42
- 1155 022e 01       		.uleb128 0x1
- 1156 022f 9C       		.byte	0x9c
- 1157 0230 4D020000 		.4byte	0x24d
- 1158 0234 06       		.uleb128 0x6
- 1159 0235 6E00     		.ascii	"n\000"
- 1160 0237 01       		.byte	0x1
- 1161 0238 C6       		.byte	0xc6
- 1162 0239 76000000 		.4byte	0x76
- 1163 023d 02       		.uleb128 0x2
- 1164 023e 91       		.byte	0x91
- 1165 023f 67       		.sleb128 -25
- 1166 0240 07       		.uleb128 0x7
- 1167 0241 7200     		.ascii	"r\000"
- 1168 0243 01       		.byte	0x1
- 1169 0244 C8       		.byte	0xc8
- 1170 0245 76000000 		.4byte	0x76
- 1171 0249 02       		.uleb128 0x2
- 1172 024a 91       		.byte	0x91
- 1173 024b 6F       		.sleb128 -17
- 1174 024c 00       		.byte	0
- 1175 024d 09       		.uleb128 0x9
- 1176 024e 4F000000 		.4byte	.LASF27
- 1177 0252 01       		.byte	0x1
- 1178 0253 E9       		.byte	0xe9
- 1179 0254 00000000 		.4byte	.LFB43
- 1180 0258 58000000 		.4byte	.LFE43-.LFB43
- 1181 025c 01       		.uleb128 0x1
- 1182 025d 9C       		.byte	0x9c
- 1183 025e 7D020000 		.4byte	0x27d
- 1184 0262 06       		.uleb128 0x6
- 1185 0263 6E00     		.ascii	"n\000"
- 1186 0265 01       		.byte	0x1
- 1187 0266 E9       		.byte	0xe9
- 1188 0267 76000000 		.4byte	0x76
- 1189 026b 02       		.uleb128 0x2
- 1190 026c 91       		.byte	0x91
- 1191 026d 77       		.sleb128 -9
- 1192 026e 0C       		.uleb128 0xc
- 1193 026f 47020000 		.4byte	.LASF28
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 28
+ 1037              		.loc 1 374 0
+ 1038 004e 3520     		movs	r0, #53
+ 1039 0050 FFF7FEFF 		bl	CyDelayUs
+ 375:DS18B20.c     ****     return r;
+ 1040              		.loc 1 375 0
+ 1041 0054 0F23     		movs	r3, #15
+ 1042 0056 FB18     		adds	r3, r7, r3
+ 1043 0058 1B78     		ldrb	r3, [r3]
+ 376:DS18B20.c     **** }
+ 1044              		.loc 1 376 0
+ 1045 005a 1800     		movs	r0, r3
+ 1046 005c BD46     		mov	sp, r7
+ 1047 005e 05B0     		add	sp, sp, #20
+ 1048              		@ sp needed
+ 1049 0060 90BD     		pop	{r4, r7, pc}
+ 1050              		.cfi_endproc
+ 1051              	.LFE47:
+ 1052              		.size	Temp_ReadBit, .-Temp_ReadBit
+ 1053 0062 C046     		.section	.text.Temp_SetDriveMode,"ax",%progbits
+ 1054              		.align	2
+ 1055              		.global	Temp_SetDriveMode
+ 1056              		.code	16
+ 1057              		.thumb_func
+ 1058              		.type	Temp_SetDriveMode, %function
+ 1059              	Temp_SetDriveMode:
+ 1060              	.LFB48:
+ 377:DS18B20.c     **** 
+ 378:DS18B20.c     **** /* ------------------------------------------------------------
+ 379:DS18B20.c     ****  * LOW-LEVEL DRIVERS
+ 380:DS18B20.c     ****  *
+ 381:DS18B20.c     ****  * To be customized by user
+ 382:DS18B20.c     ****  * ------------------------------------------------------------
+ 383:DS18B20.c     **** */
+ 384:DS18B20.c     **** 
+ 385:DS18B20.c     **** /* ------------------------------------------------------------
+ 386:DS18B20.c     ****  * Function: Temp_SetDriveMode
+ 387:DS18B20.c     ****  * ------------------------------------------------------------
+ 388:DS18B20.c     ****  * Description: Sets the pin drive mode for the selected sensor.
+ 389:DS18B20.c     ****  *              This function needs configured by the developer
+ 390:DS18B20.c     ****  *              by setting the corresponding read functions for 
+ 391:DS18B20.c     ****  *              their environment and pins.
+ 392:DS18B20.c     ****  * 
+ 393:DS18B20.c     ****  * Parameters:  Sensor number, drive mode (0-out, 1-in)
+ 394:DS18B20.c     ****  * 
+ 395:DS18B20.c     ****  * Returns:     Nothing
+ 396:DS18B20.c     ****  * ------------------------------------------------------------
+ 397:DS18B20.c     **** */
+ 398:DS18B20.c     **** void Temp_SetDriveMode(uint8_t n, uint8_t mode) {
+ 1061              		.loc 1 398 0
+ 1062              		.cfi_startproc
+ 1063              		@ args = 0, pretend = 0, frame = 8
+ 1064              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1065 0000 80B5     		push	{r7, lr}
+ 1066              		.cfi_def_cfa_offset 8
+ 1067              		.cfi_offset 7, -8
+ 1068              		.cfi_offset 14, -4
+ 1069 0002 82B0     		sub	sp, sp, #8
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 27
 
 
- 1194 0273 01       		.byte	0x1
- 1195 0274 E9       		.byte	0xe9
- 1196 0275 76000000 		.4byte	0x76
- 1197 0279 02       		.uleb128 0x2
- 1198 027a 91       		.byte	0x91
- 1199 027b 76       		.sleb128 -10
- 1200 027c 00       		.byte	0
- 1201 027d 0D       		.uleb128 0xd
- 1202 027e E6010000 		.4byte	.LASF29
- 1203 0282 01       		.byte	0x1
- 1204 0283 0A01     		.2byte	0x10a
- 1205 0285 76000000 		.4byte	0x76
- 1206 0289 00000000 		.4byte	.LFB44
- 1207 028d 34000000 		.4byte	.LFE44-.LFB44
- 1208 0291 01       		.uleb128 0x1
- 1209 0292 9C       		.byte	0x9c
- 1210 0293 A5020000 		.4byte	0x2a5
- 1211 0297 0E       		.uleb128 0xe
- 1212 0298 6E00     		.ascii	"n\000"
- 1213 029a 01       		.byte	0x1
- 1214 029b 0A01     		.2byte	0x10a
- 1215 029d 76000000 		.4byte	0x76
- 1216 02a1 02       		.uleb128 0x2
- 1217 02a2 91       		.byte	0x91
- 1218 02a3 77       		.sleb128 -9
- 1219 02a4 00       		.byte	0
- 1220 02a5 0F       		.uleb128 0xf
- 1221 02a6 9C010000 		.4byte	.LASF34
- 1222 02aa 01       		.byte	0x1
- 1223 02ab 2801     		.2byte	0x128
- 1224 02ad 00000000 		.4byte	.LFB45
- 1225 02b1 6E000000 		.4byte	.LFE45-.LFB45
- 1226 02b5 01       		.uleb128 0x1
- 1227 02b6 9C       		.byte	0x9c
- 1228 02b7 0E       		.uleb128 0xe
- 1229 02b8 6E00     		.ascii	"n\000"
- 1230 02ba 01       		.byte	0x1
- 1231 02bb 2801     		.2byte	0x128
- 1232 02bd 76000000 		.4byte	0x76
- 1233 02c1 02       		.uleb128 0x2
- 1234 02c2 91       		.byte	0x91
- 1235 02c3 77       		.sleb128 -9
- 1236 02c4 10       		.uleb128 0x10
- 1237 02c5 1F000000 		.4byte	.LASF30
- 1238 02c9 01       		.byte	0x1
- 1239 02ca 2801     		.2byte	0x128
- 1240 02cc 76000000 		.4byte	0x76
- 1241 02d0 02       		.uleb128 0x2
- 1242 02d1 91       		.byte	0x91
- 1243 02d2 76       		.sleb128 -10
- 1244 02d3 00       		.byte	0
- 1245 02d4 00       		.byte	0
- 1246              		.section	.debug_abbrev,"",%progbits
- 1247              	.Ldebug_abbrev0:
- 1248 0000 01       		.uleb128 0x1
- 1249 0001 11       		.uleb128 0x11
- 1250 0002 01       		.byte	0x1
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 29
+ 1070              		.cfi_def_cfa_offset 16
+ 1071 0004 00AF     		add	r7, sp, #0
+ 1072              		.cfi_def_cfa_register 7
+ 1073 0006 0200     		movs	r2, r0
+ 1074 0008 FB1D     		adds	r3, r7, #7
+ 1075 000a 1A70     		strb	r2, [r3]
+ 1076 000c BB1D     		adds	r3, r7, #6
+ 1077 000e 0A1C     		adds	r2, r1, #0
+ 1078 0010 1A70     		strb	r2, [r3]
+ 399:DS18B20.c     ****     
+ 400:DS18B20.c     ****     switch (n) {
+ 1079              		.loc 1 400 0
+ 1080 0012 FB1D     		adds	r3, r7, #7
+ 1081 0014 1B78     		ldrb	r3, [r3]
+ 1082 0016 012B     		cmp	r3, #1
+ 1083 0018 02D0     		beq	.L46
+ 1084 001a 022B     		cmp	r3, #2
+ 1085 001c 0CD0     		beq	.L47
+ 401:DS18B20.c     ****         
+ 402:DS18B20.c     ****         case 1:
+ 403:DS18B20.c     ****             if (mode == IN) Temp1_SetDriveMode(Temp1_DM_DIG_HIZ);
+ 404:DS18B20.c     ****             else Temp1_SetDriveMode(Temp1_DM_STRONG);
+ 405:DS18B20.c     ****         break;
+ 406:DS18B20.c     ****             
+ 407:DS18B20.c     ****         case 2:
+ 408:DS18B20.c     ****             if (mode == IN) Temp2_SetDriveMode(Temp2_DM_DIG_HIZ);
+ 409:DS18B20.c     ****             else Temp2_SetDriveMode(Temp2_DM_STRONG);
+ 410:DS18B20.c     ****         break;
+ 411:DS18B20.c     ****             
+ 412:DS18B20.c     ****         default:
+ 413:DS18B20.c     ****         break;
+ 1086              		.loc 1 413 0
+ 1087 001e 17E0     		b	.L50
+ 1088              	.L46:
+ 403:DS18B20.c     ****             else Temp1_SetDriveMode(Temp1_DM_STRONG);
+ 1089              		.loc 1 403 0
+ 1090 0020 BB1D     		adds	r3, r7, #6
+ 1091 0022 1B78     		ldrb	r3, [r3]
+ 1092 0024 002B     		cmp	r3, #0
+ 1093 0026 03D1     		bne	.L48
+ 403:DS18B20.c     ****             else Temp1_SetDriveMode(Temp1_DM_STRONG);
+ 1094              		.loc 1 403 0 is_stmt 0 discriminator 1
+ 1095 0028 0120     		movs	r0, #1
+ 1096 002a FFF7FEFF 		bl	Temp1_SetDriveMode
+ 405:DS18B20.c     ****             
+ 1097              		.loc 1 405 0 is_stmt 1 discriminator 1
+ 1098 002e 0FE0     		b	.L50
+ 1099              	.L48:
+ 404:DS18B20.c     ****         break;
+ 1100              		.loc 1 404 0
+ 1101 0030 0620     		movs	r0, #6
+ 1102 0032 FFF7FEFF 		bl	Temp1_SetDriveMode
+ 405:DS18B20.c     ****             
+ 1103              		.loc 1 405 0
+ 1104 0036 0BE0     		b	.L50
+ 1105              	.L47:
+ 408:DS18B20.c     ****             else Temp2_SetDriveMode(Temp2_DM_STRONG);
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 28
 
 
- 1251 0003 25       		.uleb128 0x25
- 1252 0004 0E       		.uleb128 0xe
- 1253 0005 13       		.uleb128 0x13
- 1254 0006 0B       		.uleb128 0xb
- 1255 0007 03       		.uleb128 0x3
- 1256 0008 0E       		.uleb128 0xe
- 1257 0009 1B       		.uleb128 0x1b
- 1258 000a 0E       		.uleb128 0xe
- 1259 000b 55       		.uleb128 0x55
- 1260 000c 17       		.uleb128 0x17
- 1261 000d 11       		.uleb128 0x11
- 1262 000e 01       		.uleb128 0x1
- 1263 000f 10       		.uleb128 0x10
- 1264 0010 17       		.uleb128 0x17
- 1265 0011 00       		.byte	0
- 1266 0012 00       		.byte	0
- 1267 0013 02       		.uleb128 0x2
- 1268 0014 24       		.uleb128 0x24
- 1269 0015 00       		.byte	0
- 1270 0016 0B       		.uleb128 0xb
- 1271 0017 0B       		.uleb128 0xb
- 1272 0018 3E       		.uleb128 0x3e
- 1273 0019 0B       		.uleb128 0xb
- 1274 001a 03       		.uleb128 0x3
- 1275 001b 0E       		.uleb128 0xe
- 1276 001c 00       		.byte	0
- 1277 001d 00       		.byte	0
- 1278 001e 03       		.uleb128 0x3
- 1279 001f 16       		.uleb128 0x16
- 1280 0020 00       		.byte	0
- 1281 0021 03       		.uleb128 0x3
- 1282 0022 0E       		.uleb128 0xe
- 1283 0023 3A       		.uleb128 0x3a
- 1284 0024 0B       		.uleb128 0xb
- 1285 0025 3B       		.uleb128 0x3b
- 1286 0026 0B       		.uleb128 0xb
- 1287 0027 49       		.uleb128 0x49
- 1288 0028 13       		.uleb128 0x13
- 1289 0029 00       		.byte	0
- 1290 002a 00       		.byte	0
- 1291 002b 04       		.uleb128 0x4
- 1292 002c 24       		.uleb128 0x24
- 1293 002d 00       		.byte	0
- 1294 002e 0B       		.uleb128 0xb
- 1295 002f 0B       		.uleb128 0xb
- 1296 0030 3E       		.uleb128 0x3e
- 1297 0031 0B       		.uleb128 0xb
- 1298 0032 03       		.uleb128 0x3
- 1299 0033 08       		.uleb128 0x8
- 1300 0034 00       		.byte	0
- 1301 0035 00       		.byte	0
- 1302 0036 05       		.uleb128 0x5
- 1303 0037 2E       		.uleb128 0x2e
- 1304 0038 01       		.byte	0x1
- 1305 0039 3F       		.uleb128 0x3f
- 1306 003a 19       		.uleb128 0x19
- 1307 003b 03       		.uleb128 0x3
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 30
+ 1106              		.loc 1 408 0
+ 1107 0038 BB1D     		adds	r3, r7, #6
+ 1108 003a 1B78     		ldrb	r3, [r3]
+ 1109 003c 002B     		cmp	r3, #0
+ 1110 003e 03D1     		bne	.L51
+ 408:DS18B20.c     ****             else Temp2_SetDriveMode(Temp2_DM_STRONG);
+ 1111              		.loc 1 408 0 is_stmt 0 discriminator 1
+ 1112 0040 0120     		movs	r0, #1
+ 1113 0042 FFF7FEFF 		bl	Temp2_SetDriveMode
+ 410:DS18B20.c     ****             
+ 1114              		.loc 1 410 0 is_stmt 1 discriminator 1
+ 1115 0046 02E0     		b	.L53
+ 1116              	.L51:
+ 409:DS18B20.c     ****         break;
+ 1117              		.loc 1 409 0
+ 1118 0048 0620     		movs	r0, #6
+ 1119 004a FFF7FEFF 		bl	Temp2_SetDriveMode
+ 1120              	.L53:
+ 410:DS18B20.c     ****             
+ 1121              		.loc 1 410 0
+ 1122 004e C046     		nop
+ 1123              	.L50:
+ 414:DS18B20.c     ****     }
+ 415:DS18B20.c     **** }
+ 1124              		.loc 1 415 0
+ 1125 0050 C046     		nop
+ 1126 0052 BD46     		mov	sp, r7
+ 1127 0054 02B0     		add	sp, sp, #8
+ 1128              		@ sp needed
+ 1129 0056 80BD     		pop	{r7, pc}
+ 1130              		.cfi_endproc
+ 1131              	.LFE48:
+ 1132              		.size	Temp_SetDriveMode, .-Temp_SetDriveMode
+ 1133              		.section	.text.Temp_ReadPin,"ax",%progbits
+ 1134              		.align	2
+ 1135              		.global	Temp_ReadPin
+ 1136              		.code	16
+ 1137              		.thumb_func
+ 1138              		.type	Temp_ReadPin, %function
+ 1139              	Temp_ReadPin:
+ 1140              	.LFB49:
+ 416:DS18B20.c     **** 
+ 417:DS18B20.c     **** /* ------------------------------------------------------------
+ 418:DS18B20.c     ****  * Function: Temp_ReadPin
+ 419:DS18B20.c     ****  * ------------------------------------------------------------
+ 420:DS18B20.c     ****  * Description: Returns the logic value on the selected sensor.
+ 421:DS18B20.c     ****  *              This function needs configured by the developer
+ 422:DS18B20.c     ****  *              by setting the corresponding read functions for 
+ 423:DS18B20.c     ****  *              their environment and pins.
+ 424:DS18B20.c     ****  * 
+ 425:DS18B20.c     ****  * Parameters:  Sensor number
+ 426:DS18B20.c     ****  * 
+ 427:DS18B20.c     ****  * Returns:     Digital value of the pin (0 or 1), 
+ 428:DS18B20.c     ****  *              or 0xFF if an invalid sensor was selected.
+ 429:DS18B20.c     ****  * ------------------------------------------------------------
+ 430:DS18B20.c     **** */
+ 431:DS18B20.c     **** uint8_t Temp_ReadPin(uint8_t n) {
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 29
 
 
- 1308 003c 0E       		.uleb128 0xe
- 1309 003d 3A       		.uleb128 0x3a
- 1310 003e 0B       		.uleb128 0xb
- 1311 003f 3B       		.uleb128 0x3b
- 1312 0040 0B       		.uleb128 0xb
- 1313 0041 27       		.uleb128 0x27
- 1314 0042 19       		.uleb128 0x19
- 1315 0043 49       		.uleb128 0x49
- 1316 0044 13       		.uleb128 0x13
- 1317 0045 11       		.uleb128 0x11
- 1318 0046 01       		.uleb128 0x1
- 1319 0047 12       		.uleb128 0x12
- 1320 0048 06       		.uleb128 0x6
- 1321 0049 40       		.uleb128 0x40
- 1322 004a 18       		.uleb128 0x18
- 1323 004b 9642     		.uleb128 0x2116
- 1324 004d 19       		.uleb128 0x19
- 1325 004e 01       		.uleb128 0x1
- 1326 004f 13       		.uleb128 0x13
- 1327 0050 00       		.byte	0
- 1328 0051 00       		.byte	0
- 1329 0052 06       		.uleb128 0x6
- 1330 0053 05       		.uleb128 0x5
- 1331 0054 00       		.byte	0
- 1332 0055 03       		.uleb128 0x3
- 1333 0056 08       		.uleb128 0x8
- 1334 0057 3A       		.uleb128 0x3a
- 1335 0058 0B       		.uleb128 0xb
- 1336 0059 3B       		.uleb128 0x3b
- 1337 005a 0B       		.uleb128 0xb
- 1338 005b 49       		.uleb128 0x49
- 1339 005c 13       		.uleb128 0x13
- 1340 005d 02       		.uleb128 0x2
- 1341 005e 18       		.uleb128 0x18
- 1342 005f 00       		.byte	0
- 1343 0060 00       		.byte	0
- 1344 0061 07       		.uleb128 0x7
- 1345 0062 34       		.uleb128 0x34
- 1346 0063 00       		.byte	0
- 1347 0064 03       		.uleb128 0x3
- 1348 0065 08       		.uleb128 0x8
- 1349 0066 3A       		.uleb128 0x3a
- 1350 0067 0B       		.uleb128 0xb
- 1351 0068 3B       		.uleb128 0x3b
- 1352 0069 0B       		.uleb128 0xb
- 1353 006a 49       		.uleb128 0x49
- 1354 006b 13       		.uleb128 0x13
- 1355 006c 02       		.uleb128 0x2
- 1356 006d 18       		.uleb128 0x18
- 1357 006e 00       		.byte	0
- 1358 006f 00       		.byte	0
- 1359 0070 08       		.uleb128 0x8
- 1360 0071 34       		.uleb128 0x34
- 1361 0072 00       		.byte	0
- 1362 0073 03       		.uleb128 0x3
- 1363 0074 0E       		.uleb128 0xe
- 1364 0075 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 31
+ 1141              		.loc 1 431 0
+ 1142              		.cfi_startproc
+ 1143              		@ args = 0, pretend = 0, frame = 8
+ 1144              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1145 0000 80B5     		push	{r7, lr}
+ 1146              		.cfi_def_cfa_offset 8
+ 1147              		.cfi_offset 7, -8
+ 1148              		.cfi_offset 14, -4
+ 1149 0002 82B0     		sub	sp, sp, #8
+ 1150              		.cfi_def_cfa_offset 16
+ 1151 0004 00AF     		add	r7, sp, #0
+ 1152              		.cfi_def_cfa_register 7
+ 1153 0006 0200     		movs	r2, r0
+ 1154 0008 FB1D     		adds	r3, r7, #7
+ 1155 000a 1A70     		strb	r2, [r3]
+ 432:DS18B20.c     ****     
+ 433:DS18B20.c     ****     switch (n) {
+ 1156              		.loc 1 433 0
+ 1157 000c FB1D     		adds	r3, r7, #7
+ 1158 000e 1B78     		ldrb	r3, [r3]
+ 1159 0010 012B     		cmp	r3, #1
+ 1160 0012 02D0     		beq	.L56
+ 1161 0014 022B     		cmp	r3, #2
+ 1162 0016 04D0     		beq	.L57
+ 1163 0018 07E0     		b	.L59
+ 1164              	.L56:
+ 434:DS18B20.c     ****         
+ 435:DS18B20.c     ****         case 1:
+ 436:DS18B20.c     ****             return Temp1_Read();
+ 1165              		.loc 1 436 0
+ 1166 001a FFF7FEFF 		bl	Temp1_Read
+ 1167 001e 0300     		movs	r3, r0
+ 1168 0020 04E0     		b	.L58
+ 1169              	.L57:
+ 437:DS18B20.c     ****         break;
+ 438:DS18B20.c     ****         
+ 439:DS18B20.c     ****         case 2:
+ 440:DS18B20.c     ****             return Temp2_Read();
+ 1170              		.loc 1 440 0
+ 1171 0022 FFF7FEFF 		bl	Temp2_Read
+ 1172 0026 0300     		movs	r3, r0
+ 1173 0028 00E0     		b	.L58
+ 1174              	.L59:
+ 441:DS18B20.c     ****         break;
+ 442:DS18B20.c     ****         
+ 443:DS18B20.c     ****         default:
+ 444:DS18B20.c     ****             return 0xFF;
+ 1175              		.loc 1 444 0
+ 1176 002a FF23     		movs	r3, #255
+ 1177              	.L58:
+ 445:DS18B20.c     ****     }
+ 446:DS18B20.c     **** }
+ 1178              		.loc 1 446 0
+ 1179 002c 1800     		movs	r0, r3
+ 1180 002e BD46     		mov	sp, r7
+ 1181 0030 02B0     		add	sp, sp, #8
+ 1182              		@ sp needed
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 30
 
 
- 1365 0076 0B       		.uleb128 0xb
- 1366 0077 3B       		.uleb128 0x3b
- 1367 0078 0B       		.uleb128 0xb
- 1368 0079 49       		.uleb128 0x49
- 1369 007a 13       		.uleb128 0x13
- 1370 007b 02       		.uleb128 0x2
- 1371 007c 18       		.uleb128 0x18
- 1372 007d 00       		.byte	0
- 1373 007e 00       		.byte	0
- 1374 007f 09       		.uleb128 0x9
- 1375 0080 2E       		.uleb128 0x2e
- 1376 0081 01       		.byte	0x1
- 1377 0082 3F       		.uleb128 0x3f
- 1378 0083 19       		.uleb128 0x19
- 1379 0084 03       		.uleb128 0x3
- 1380 0085 0E       		.uleb128 0xe
- 1381 0086 3A       		.uleb128 0x3a
- 1382 0087 0B       		.uleb128 0xb
- 1383 0088 3B       		.uleb128 0x3b
- 1384 0089 0B       		.uleb128 0xb
- 1385 008a 27       		.uleb128 0x27
- 1386 008b 19       		.uleb128 0x19
- 1387 008c 11       		.uleb128 0x11
- 1388 008d 01       		.uleb128 0x1
- 1389 008e 12       		.uleb128 0x12
- 1390 008f 06       		.uleb128 0x6
- 1391 0090 40       		.uleb128 0x40
- 1392 0091 18       		.uleb128 0x18
- 1393 0092 9642     		.uleb128 0x2116
- 1394 0094 19       		.uleb128 0x19
- 1395 0095 01       		.uleb128 0x1
- 1396 0096 13       		.uleb128 0x13
- 1397 0097 00       		.byte	0
- 1398 0098 00       		.byte	0
- 1399 0099 0A       		.uleb128 0xa
- 1400 009a 0F       		.uleb128 0xf
- 1401 009b 00       		.byte	0
- 1402 009c 0B       		.uleb128 0xb
- 1403 009d 0B       		.uleb128 0xb
- 1404 009e 49       		.uleb128 0x49
- 1405 009f 13       		.uleb128 0x13
- 1406 00a0 00       		.byte	0
- 1407 00a1 00       		.byte	0
- 1408 00a2 0B       		.uleb128 0xb
- 1409 00a3 26       		.uleb128 0x26
- 1410 00a4 00       		.byte	0
- 1411 00a5 49       		.uleb128 0x49
- 1412 00a6 13       		.uleb128 0x13
- 1413 00a7 00       		.byte	0
- 1414 00a8 00       		.byte	0
- 1415 00a9 0C       		.uleb128 0xc
- 1416 00aa 05       		.uleb128 0x5
- 1417 00ab 00       		.byte	0
- 1418 00ac 03       		.uleb128 0x3
- 1419 00ad 0E       		.uleb128 0xe
- 1420 00ae 3A       		.uleb128 0x3a
- 1421 00af 0B       		.uleb128 0xb
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 32
+ 1183 0032 80BD     		pop	{r7, pc}
+ 1184              		.cfi_endproc
+ 1185              	.LFE49:
+ 1186              		.size	Temp_ReadPin, .-Temp_ReadPin
+ 1187              		.section	.text.Temp_WritePin,"ax",%progbits
+ 1188              		.align	2
+ 1189              		.global	Temp_WritePin
+ 1190              		.code	16
+ 1191              		.thumb_func
+ 1192              		.type	Temp_WritePin, %function
+ 1193              	Temp_WritePin:
+ 1194              	.LFB50:
+ 447:DS18B20.c     **** 
+ 448:DS18B20.c     **** /* ------------------------------------------------------------
+ 449:DS18B20.c     ****  * Function: Temp_WritePin
+ 450:DS18B20.c     ****  * ------------------------------------------------------------
+ 451:DS18B20.c     ****  * Description: Writes the logic value to the selected sensor.
+ 452:DS18B20.c     ****  *              This function needs configured by the developer
+ 453:DS18B20.c     ****  *              by setting the corresponding read functions for 
+ 454:DS18B20.c     ****  *              their environment and pins.
+ 455:DS18B20.c     ****  * 
+ 456:DS18B20.c     ****  * Parameters:  Sensor number, value to write (0 or 1)
+ 457:DS18B20.c     ****  * 
+ 458:DS18B20.c     ****  * Returns:     Nothing
+ 459:DS18B20.c     ****  * ------------------------------------------------------------
+ 460:DS18B20.c     **** */
+ 461:DS18B20.c     **** void Temp_WritePin(uint8_t n, uint8_t value) {
+ 1195              		.loc 1 461 0
+ 1196              		.cfi_startproc
+ 1197              		@ args = 0, pretend = 0, frame = 8
+ 1198              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1199 0000 80B5     		push	{r7, lr}
+ 1200              		.cfi_def_cfa_offset 8
+ 1201              		.cfi_offset 7, -8
+ 1202              		.cfi_offset 14, -4
+ 1203 0002 82B0     		sub	sp, sp, #8
+ 1204              		.cfi_def_cfa_offset 16
+ 1205 0004 00AF     		add	r7, sp, #0
+ 1206              		.cfi_def_cfa_register 7
+ 1207 0006 0200     		movs	r2, r0
+ 1208 0008 FB1D     		adds	r3, r7, #7
+ 1209 000a 1A70     		strb	r2, [r3]
+ 1210 000c BB1D     		adds	r3, r7, #6
+ 1211 000e 0A1C     		adds	r2, r1, #0
+ 1212 0010 1A70     		strb	r2, [r3]
+ 462:DS18B20.c     ****     
+ 463:DS18B20.c     ****     switch (n) {
+ 1213              		.loc 1 463 0
+ 1214 0012 FB1D     		adds	r3, r7, #7
+ 1215 0014 1B78     		ldrb	r3, [r3]
+ 1216 0016 012B     		cmp	r3, #1
+ 1217 0018 02D0     		beq	.L62
+ 1218 001a 022B     		cmp	r3, #2
+ 1219 001c 10D0     		beq	.L63
+ 464:DS18B20.c     ****         
+ 465:DS18B20.c     ****         case 1:
+ 466:DS18B20.c     ****             if (value == 0) Temp1_Write(0);
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 31
 
 
- 1422 00b0 3B       		.uleb128 0x3b
- 1423 00b1 0B       		.uleb128 0xb
- 1424 00b2 49       		.uleb128 0x49
- 1425 00b3 13       		.uleb128 0x13
- 1426 00b4 02       		.uleb128 0x2
- 1427 00b5 18       		.uleb128 0x18
- 1428 00b6 00       		.byte	0
- 1429 00b7 00       		.byte	0
- 1430 00b8 0D       		.uleb128 0xd
- 1431 00b9 2E       		.uleb128 0x2e
- 1432 00ba 01       		.byte	0x1
- 1433 00bb 3F       		.uleb128 0x3f
- 1434 00bc 19       		.uleb128 0x19
- 1435 00bd 03       		.uleb128 0x3
- 1436 00be 0E       		.uleb128 0xe
- 1437 00bf 3A       		.uleb128 0x3a
- 1438 00c0 0B       		.uleb128 0xb
- 1439 00c1 3B       		.uleb128 0x3b
- 1440 00c2 05       		.uleb128 0x5
- 1441 00c3 27       		.uleb128 0x27
- 1442 00c4 19       		.uleb128 0x19
- 1443 00c5 49       		.uleb128 0x49
- 1444 00c6 13       		.uleb128 0x13
- 1445 00c7 11       		.uleb128 0x11
- 1446 00c8 01       		.uleb128 0x1
- 1447 00c9 12       		.uleb128 0x12
- 1448 00ca 06       		.uleb128 0x6
- 1449 00cb 40       		.uleb128 0x40
- 1450 00cc 18       		.uleb128 0x18
- 1451 00cd 9642     		.uleb128 0x2116
- 1452 00cf 19       		.uleb128 0x19
- 1453 00d0 01       		.uleb128 0x1
- 1454 00d1 13       		.uleb128 0x13
- 1455 00d2 00       		.byte	0
- 1456 00d3 00       		.byte	0
- 1457 00d4 0E       		.uleb128 0xe
- 1458 00d5 05       		.uleb128 0x5
- 1459 00d6 00       		.byte	0
- 1460 00d7 03       		.uleb128 0x3
- 1461 00d8 08       		.uleb128 0x8
- 1462 00d9 3A       		.uleb128 0x3a
- 1463 00da 0B       		.uleb128 0xb
- 1464 00db 3B       		.uleb128 0x3b
- 1465 00dc 05       		.uleb128 0x5
- 1466 00dd 49       		.uleb128 0x49
- 1467 00de 13       		.uleb128 0x13
- 1468 00df 02       		.uleb128 0x2
- 1469 00e0 18       		.uleb128 0x18
- 1470 00e1 00       		.byte	0
- 1471 00e2 00       		.byte	0
- 1472 00e3 0F       		.uleb128 0xf
- 1473 00e4 2E       		.uleb128 0x2e
- 1474 00e5 01       		.byte	0x1
- 1475 00e6 3F       		.uleb128 0x3f
- 1476 00e7 19       		.uleb128 0x19
- 1477 00e8 03       		.uleb128 0x3
- 1478 00e9 0E       		.uleb128 0xe
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 33
+ 467:DS18B20.c     ****             else if (value == 1) Temp1_Write(1);
+ 468:DS18B20.c     ****         break;
+ 469:DS18B20.c     ****         
+ 470:DS18B20.c     ****         case 2:
+ 471:DS18B20.c     ****             if (value == 0) Temp2_Write(0);
+ 472:DS18B20.c     ****             else if (value == 1) Temp2_Write(1);
+ 473:DS18B20.c     ****         break;
+ 474:DS18B20.c     ****         
+ 475:DS18B20.c     ****         default:
+ 476:DS18B20.c     ****         break;
+ 1220              		.loc 1 476 0
+ 1221 001e 22E0     		b	.L66
+ 1222              	.L62:
+ 466:DS18B20.c     ****             else if (value == 1) Temp1_Write(1);
+ 1223              		.loc 1 466 0
+ 1224 0020 BB1D     		adds	r3, r7, #6
+ 1225 0022 1B78     		ldrb	r3, [r3]
+ 1226 0024 002B     		cmp	r3, #0
+ 1227 0026 03D1     		bne	.L64
+ 466:DS18B20.c     ****             else if (value == 1) Temp1_Write(1);
+ 1228              		.loc 1 466 0 is_stmt 0 discriminator 1
+ 1229 0028 0020     		movs	r0, #0
+ 1230 002a FFF7FEFF 		bl	Temp1_Write
+ 468:DS18B20.c     ****         
+ 1231              		.loc 1 468 0 is_stmt 1 discriminator 1
+ 1232 002e 17E0     		b	.L69
+ 1233              	.L64:
+ 467:DS18B20.c     ****         break;
+ 1234              		.loc 1 467 0
+ 1235 0030 BB1D     		adds	r3, r7, #6
+ 1236 0032 1B78     		ldrb	r3, [r3]
+ 1237 0034 012B     		cmp	r3, #1
+ 1238 0036 13D1     		bne	.L69
+ 467:DS18B20.c     ****         break;
+ 1239              		.loc 1 467 0 is_stmt 0 discriminator 1
+ 1240 0038 0120     		movs	r0, #1
+ 1241 003a FFF7FEFF 		bl	Temp1_Write
+ 468:DS18B20.c     ****         
+ 1242              		.loc 1 468 0 is_stmt 1 discriminator 1
+ 1243 003e 0FE0     		b	.L69
+ 1244              	.L63:
+ 471:DS18B20.c     ****             else if (value == 1) Temp2_Write(1);
+ 1245              		.loc 1 471 0
+ 1246 0040 BB1D     		adds	r3, r7, #6
+ 1247 0042 1B78     		ldrb	r3, [r3]
+ 1248 0044 002B     		cmp	r3, #0
+ 1249 0046 03D1     		bne	.L67
+ 471:DS18B20.c     ****             else if (value == 1) Temp2_Write(1);
+ 1250              		.loc 1 471 0 is_stmt 0 discriminator 1
+ 1251 0048 0020     		movs	r0, #0
+ 1252 004a FFF7FEFF 		bl	Temp2_Write
+ 473:DS18B20.c     ****         
+ 1253              		.loc 1 473 0 is_stmt 1 discriminator 1
+ 1254 004e 09E0     		b	.L70
+ 1255              	.L67:
+ 472:DS18B20.c     ****         break;
+ 1256              		.loc 1 472 0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 32
 
 
- 1479 00ea 3A       		.uleb128 0x3a
- 1480 00eb 0B       		.uleb128 0xb
- 1481 00ec 3B       		.uleb128 0x3b
- 1482 00ed 05       		.uleb128 0x5
- 1483 00ee 27       		.uleb128 0x27
- 1484 00ef 19       		.uleb128 0x19
- 1485 00f0 11       		.uleb128 0x11
- 1486 00f1 01       		.uleb128 0x1
- 1487 00f2 12       		.uleb128 0x12
- 1488 00f3 06       		.uleb128 0x6
- 1489 00f4 40       		.uleb128 0x40
- 1490 00f5 18       		.uleb128 0x18
- 1491 00f6 9642     		.uleb128 0x2116
- 1492 00f8 19       		.uleb128 0x19
- 1493 00f9 00       		.byte	0
- 1494 00fa 00       		.byte	0
- 1495 00fb 10       		.uleb128 0x10
- 1496 00fc 05       		.uleb128 0x5
- 1497 00fd 00       		.byte	0
- 1498 00fe 03       		.uleb128 0x3
- 1499 00ff 0E       		.uleb128 0xe
- 1500 0100 3A       		.uleb128 0x3a
- 1501 0101 0B       		.uleb128 0xb
- 1502 0102 3B       		.uleb128 0x3b
- 1503 0103 05       		.uleb128 0x5
- 1504 0104 49       		.uleb128 0x49
- 1505 0105 13       		.uleb128 0x13
- 1506 0106 02       		.uleb128 0x2
- 1507 0107 18       		.uleb128 0x18
- 1508 0108 00       		.byte	0
- 1509 0109 00       		.byte	0
- 1510 010a 00       		.byte	0
- 1511              		.section	.debug_aranges,"",%progbits
- 1512 0000 6C000000 		.4byte	0x6c
- 1513 0004 0200     		.2byte	0x2
- 1514 0006 00000000 		.4byte	.Ldebug_info0
- 1515 000a 04       		.byte	0x4
- 1516 000b 00       		.byte	0
- 1517 000c 0000     		.2byte	0
- 1518 000e 0000     		.2byte	0
- 1519 0010 00000000 		.4byte	.LFB35
- 1520 0014 B4000000 		.4byte	.LFE35-.LFB35
- 1521 0018 00000000 		.4byte	.LFB36
- 1522 001c 5C000000 		.4byte	.LFE36-.LFB36
- 1523 0020 00000000 		.4byte	.LFB37
- 1524 0024 20000000 		.4byte	.LFE37-.LFB37
- 1525 0028 00000000 		.4byte	.LFB38
- 1526 002c 34000000 		.4byte	.LFE38-.LFB38
- 1527 0030 00000000 		.4byte	.LFB39
- 1528 0034 76000000 		.4byte	.LFE39-.LFB39
- 1529 0038 00000000 		.4byte	.LFB40
- 1530 003c 5E000000 		.4byte	.LFE40-.LFB40
- 1531 0040 00000000 		.4byte	.LFB41
- 1532 0044 84000000 		.4byte	.LFE41-.LFB41
- 1533 0048 00000000 		.4byte	.LFB42
- 1534 004c 62000000 		.4byte	.LFE42-.LFB42
- 1535 0050 00000000 		.4byte	.LFB43
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 34
+ 1257 0050 BB1D     		adds	r3, r7, #6
+ 1258 0052 1B78     		ldrb	r3, [r3]
+ 1259 0054 012B     		cmp	r3, #1
+ 1260 0056 05D1     		bne	.L70
+ 472:DS18B20.c     ****         break;
+ 1261              		.loc 1 472 0 is_stmt 0 discriminator 1
+ 1262 0058 0120     		movs	r0, #1
+ 1263 005a FFF7FEFF 		bl	Temp2_Write
+ 473:DS18B20.c     ****         
+ 1264              		.loc 1 473 0 is_stmt 1 discriminator 1
+ 1265 005e 01E0     		b	.L70
+ 1266              	.L69:
+ 468:DS18B20.c     ****         
+ 1267              		.loc 1 468 0
+ 1268 0060 C046     		nop
+ 1269 0062 00E0     		b	.L66
+ 1270              	.L70:
+ 473:DS18B20.c     ****         
+ 1271              		.loc 1 473 0
+ 1272 0064 C046     		nop
+ 1273              	.L66:
+ 477:DS18B20.c     ****     }
+ 478:DS18B20.c     **** }
+ 1274              		.loc 1 478 0
+ 1275 0066 C046     		nop
+ 1276 0068 BD46     		mov	sp, r7
+ 1277 006a 02B0     		add	sp, sp, #8
+ 1278              		@ sp needed
+ 1279 006c 80BD     		pop	{r7, pc}
+ 1280              		.cfi_endproc
+ 1281              	.LFE50:
+ 1282              		.size	Temp_WritePin, .-Temp_WritePin
+ 1283 006e C046     		.text
+ 1284              	.Letext0:
+ 1285              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 1286              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 1287              		.file 4 "DS18B20.h"
+ 1288              		.section	.debug_info,"",%progbits
+ 1289              	.Ldebug_info0:
+ 1290 0000 D0040000 		.4byte	0x4d0
+ 1291 0004 0400     		.2byte	0x4
+ 1292 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1293 000a 04       		.byte	0x4
+ 1294 000b 01       		.uleb128 0x1
+ 1295 000c 4A010000 		.4byte	.LASF47
+ 1296 0010 0C       		.byte	0xc
+ 1297 0011 10000000 		.4byte	.LASF48
+ 1298 0015 9D000000 		.4byte	.LASF49
+ 1299 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1300 001d 00000000 		.4byte	0
+ 1301 0021 00000000 		.4byte	.Ldebug_line0
+ 1302 0025 02       		.uleb128 0x2
+ 1303 0026 01       		.byte	0x1
+ 1304 0027 06       		.byte	0x6
+ 1305 0028 1A030000 		.4byte	.LASF0
+ 1306 002c 03       		.uleb128 0x3
+ 1307 002d 1A000000 		.4byte	.LASF2
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 33
 
 
- 1536 0054 58000000 		.4byte	.LFE43-.LFB43
- 1537 0058 00000000 		.4byte	.LFB44
- 1538 005c 34000000 		.4byte	.LFE44-.LFB44
- 1539 0060 00000000 		.4byte	.LFB45
- 1540 0064 6E000000 		.4byte	.LFE45-.LFB45
- 1541 0068 00000000 		.4byte	0
- 1542 006c 00000000 		.4byte	0
- 1543              		.section	.debug_ranges,"",%progbits
- 1544              	.Ldebug_ranges0:
- 1545 0000 00000000 		.4byte	.LFB35
- 1546 0004 B4000000 		.4byte	.LFE35
- 1547 0008 00000000 		.4byte	.LFB36
- 1548 000c 5C000000 		.4byte	.LFE36
- 1549 0010 00000000 		.4byte	.LFB37
- 1550 0014 20000000 		.4byte	.LFE37
- 1551 0018 00000000 		.4byte	.LFB38
- 1552 001c 34000000 		.4byte	.LFE38
- 1553 0020 00000000 		.4byte	.LFB39
- 1554 0024 76000000 		.4byte	.LFE39
- 1555 0028 00000000 		.4byte	.LFB40
- 1556 002c 5E000000 		.4byte	.LFE40
- 1557 0030 00000000 		.4byte	.LFB41
- 1558 0034 84000000 		.4byte	.LFE41
- 1559 0038 00000000 		.4byte	.LFB42
- 1560 003c 62000000 		.4byte	.LFE42
- 1561 0040 00000000 		.4byte	.LFB43
- 1562 0044 58000000 		.4byte	.LFE43
- 1563 0048 00000000 		.4byte	.LFB44
- 1564 004c 34000000 		.4byte	.LFE44
- 1565 0050 00000000 		.4byte	.LFB45
- 1566 0054 6E000000 		.4byte	.LFE45
- 1567 0058 00000000 		.4byte	0
- 1568 005c 00000000 		.4byte	0
- 1569              		.section	.debug_line,"",%progbits
- 1570              	.Ldebug_line0:
- 1571 0000 B1020000 		.section	.debug_str,"MS",%progbits,1
- 1571      02001D01 
- 1571      00000201 
- 1571      FB0E0D00 
- 1571      01010101 
- 1572              	.LASF20:
- 1573 0000 54656D70 		.ascii	"Temp_Write\000"
- 1573      5F577269 
- 1573      746500
- 1574              	.LASF32:
- 1575 000b 44533138 		.ascii	"DS18B20.c\000"
- 1575      4232302E 
- 1575      6300
- 1576              	.LASF9:
- 1577 0015 5F5F7569 		.ascii	"__uint8_t\000"
- 1577      6E74385F 
- 1577      7400
- 1578              	.LASF30:
- 1579 001f 76616C75 		.ascii	"value\000"
- 1579      6500
- 1580              	.LASF21:
- 1581 0025 62797465 		.ascii	"byte\000"
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 35
+ 1308 0031 02       		.byte	0x2
+ 1309 0032 1D       		.byte	0x1d
+ 1310 0033 37000000 		.4byte	0x37
+ 1311 0037 02       		.uleb128 0x2
+ 1312 0038 01       		.byte	0x1
+ 1313 0039 08       		.byte	0x8
+ 1314 003a 17010000 		.4byte	.LASF1
+ 1315 003e 03       		.uleb128 0x3
+ 1316 003f 24000000 		.4byte	.LASF3
+ 1317 0043 02       		.byte	0x2
+ 1318 0044 29       		.byte	0x29
+ 1319 0045 49000000 		.4byte	0x49
+ 1320 0049 02       		.uleb128 0x2
+ 1321 004a 02       		.byte	0x2
+ 1322 004b 05       		.byte	0x5
+ 1323 004c CF020000 		.4byte	.LASF4
+ 1324 0050 03       		.uleb128 0x3
+ 1325 0051 E6010000 		.4byte	.LASF5
+ 1326 0055 02       		.byte	0x2
+ 1327 0056 2B       		.byte	0x2b
+ 1328 0057 5B000000 		.4byte	0x5b
+ 1329 005b 02       		.uleb128 0x2
+ 1330 005c 02       		.byte	0x2
+ 1331 005d 07       		.byte	0x7
+ 1332 005e 26030000 		.4byte	.LASF6
+ 1333 0062 02       		.uleb128 0x2
+ 1334 0063 04       		.byte	0x4
+ 1335 0064 05       		.byte	0x5
+ 1336 0065 FE020000 		.4byte	.LASF7
+ 1337 0069 02       		.uleb128 0x2
+ 1338 006a 04       		.byte	0x4
+ 1339 006b 07       		.byte	0x7
+ 1340 006c 33010000 		.4byte	.LASF8
+ 1341 0070 02       		.uleb128 0x2
+ 1342 0071 08       		.byte	0x8
+ 1343 0072 05       		.byte	0x5
+ 1344 0073 99020000 		.4byte	.LASF9
+ 1345 0077 02       		.uleb128 0x2
+ 1346 0078 08       		.byte	0x8
+ 1347 0079 07       		.byte	0x7
+ 1348 007a 74000000 		.4byte	.LASF10
+ 1349 007e 04       		.uleb128 0x4
+ 1350 007f 04       		.byte	0x4
+ 1351 0080 05       		.byte	0x5
+ 1352 0081 696E7400 		.ascii	"int\000"
+ 1353 0085 02       		.uleb128 0x2
+ 1354 0086 04       		.byte	0x4
+ 1355 0087 07       		.byte	0x7
+ 1356 0088 21020000 		.4byte	.LASF11
+ 1357 008c 03       		.uleb128 0x3
+ 1358 008d 33020000 		.4byte	.LASF12
+ 1359 0091 03       		.byte	0x3
+ 1360 0092 18       		.byte	0x18
+ 1361 0093 2C000000 		.4byte	0x2c
+ 1362 0097 03       		.uleb128 0x3
+ 1363 0098 70020000 		.4byte	.LASF13
+ 1364 009c 03       		.byte	0x3
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 34
 
 
- 1581      00
- 1582              	.LASF16:
- 1583 002a 72657472 		.ascii	"retries\000"
- 1583      69657300 
- 1584              	.LASF11:
- 1585 0032 666C6F61 		.ascii	"float\000"
- 1585      7400
- 1586              	.LASF7:
- 1587 0038 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1587      206C6F6E 
- 1587      6720756E 
- 1587      7369676E 
- 1587      65642069 
- 1588              	.LASF27:
- 1589 004f 54656D70 		.ascii	"Temp_SetDriveMode\000"
- 1589      5F536574 
- 1589      44726976 
- 1589      654D6F64 
- 1589      6500
- 1590              	.LASF33:
- 1591 0061 433A5C55 		.ascii	"C:\\Users\\megan\\Google Drive\\College\\S11 - Spri"
- 1591      73657273 
- 1591      5C6D6567 
- 1591      616E5C47 
- 1591      6F6F676C 
- 1592 008f 6E672032 		.ascii	"ng 2018\\ECEN 4990\\Github\\ECEN4990-CapstoneII\\Ca"
- 1592      3031385C 
- 1592      4543454E 
- 1592      20343939 
- 1592      305C4769 
- 1593 00be 7073746F 		.ascii	"pstoneII\\PeripheralBLE.cydsn\000"
- 1593      6E654949 
- 1593      5C506572 
- 1593      69706865 
- 1593      72616C42 
- 1594              	.LASF1:
- 1595 00db 756E7369 		.ascii	"unsigned char\000"
- 1595      676E6564 
- 1595      20636861 
- 1595      7200
- 1596              	.LASF5:
- 1597 00e9 6C6F6E67 		.ascii	"long unsigned int\000"
- 1597      20756E73 
- 1597      69676E65 
- 1597      6420696E 
- 1597      7400
- 1598              	.LASF3:
- 1599 00fb 73686F72 		.ascii	"short unsigned int\000"
- 1599      7420756E 
- 1599      7369676E 
- 1599      65642069 
- 1599      6E7400
- 1600              	.LASF31:
- 1601 010e 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 1601      43313120 
- 1601      352E342E 
- 1601      31203230 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 36
+ 1365 009d 20       		.byte	0x20
+ 1366 009e 3E000000 		.4byte	0x3e
+ 1367 00a2 03       		.uleb128 0x3
+ 1368 00a3 D9020000 		.4byte	.LASF14
+ 1369 00a7 03       		.byte	0x3
+ 1370 00a8 24       		.byte	0x24
+ 1371 00a9 50000000 		.4byte	0x50
+ 1372 00ad 02       		.uleb128 0x2
+ 1373 00ae 04       		.byte	0x4
+ 1374 00af 04       		.byte	0x4
+ 1375 00b0 2E000000 		.4byte	.LASF15
+ 1376 00b4 02       		.uleb128 0x2
+ 1377 00b5 08       		.byte	0x8
+ 1378 00b6 04       		.byte	0x4
+ 1379 00b7 F1010000 		.4byte	.LASF16
+ 1380 00bb 02       		.uleb128 0x2
+ 1381 00bc 01       		.byte	0x1
+ 1382 00bd 08       		.byte	0x8
+ 1383 00be 2E020000 		.4byte	.LASF17
+ 1384 00c2 02       		.uleb128 0x2
+ 1385 00c3 08       		.byte	0x8
+ 1386 00c4 04       		.byte	0x4
+ 1387 00c5 0E030000 		.4byte	.LASF18
+ 1388 00c9 02       		.uleb128 0x2
+ 1389 00ca 04       		.byte	0x4
+ 1390 00cb 07       		.byte	0x7
+ 1391 00cc 85020000 		.4byte	.LASF19
+ 1392 00d0 05       		.uleb128 0x5
+ 1393 00d1 01       		.byte	0x1
+ 1394 00d2 37000000 		.4byte	0x37
+ 1395 00d6 04       		.byte	0x4
+ 1396 00d7 10       		.byte	0x10
+ 1397 00d8 E9000000 		.4byte	0xe9
+ 1398 00dc 06       		.uleb128 0x6
+ 1399 00dd 6E000000 		.4byte	.LASF20
+ 1400 00e1 00       		.byte	0
+ 1401 00e2 06       		.uleb128 0x6
+ 1402 00e3 00000000 		.4byte	.LASF21
+ 1403 00e7 01       		.byte	0x1
+ 1404 00e8 00       		.byte	0
+ 1405 00e9 03       		.uleb128 0x3
+ 1406 00ea 3A000000 		.4byte	.LASF22
+ 1407 00ee 04       		.byte	0x4
+ 1408 00ef 10       		.byte	0x10
+ 1409 00f0 D0000000 		.4byte	0xd0
+ 1410 00f4 07       		.uleb128 0x7
+ 1411 00f5 8E020000 		.4byte	.LASF27
+ 1412 00f9 01       		.byte	0x1
+ 1413 00fa 3F       		.byte	0x3f
+ 1414 00fb 8C000000 		.4byte	0x8c
+ 1415 00ff 00000000 		.4byte	.LFB35
+ 1416 0103 B4000000 		.4byte	.LFE35-.LFB35
+ 1417 0107 01       		.uleb128 0x1
+ 1418 0108 9C       		.byte	0x9c
+ 1419 0109 34010000 		.4byte	0x134
+ 1420 010d 08       		.uleb128 0x8
+ 1421 010e 6E00     		.ascii	"n\000"
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 35
 
 
- 1601      31363036 
- 1602 0141 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
- 1602      20726576 
- 1602      6973696F 
- 1602      6E203233 
- 1602      37373135 
- 1603 0174 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
- 1603      66756E63 
- 1603      74696F6E 
- 1603      2D736563 
- 1603      74696F6E 
- 1604              	.LASF34:
- 1605 019c 54656D70 		.ascii	"Temp_WritePin\000"
- 1605      5F577269 
- 1605      74655069 
- 1605      6E00
- 1606              	.LASF12:
- 1607 01aa 646F7562 		.ascii	"double\000"
- 1607      6C6500
- 1608              	.LASF8:
- 1609 01b1 756E7369 		.ascii	"unsigned int\000"
- 1609      676E6564 
- 1609      20696E74 
- 1609      00
- 1610              	.LASF13:
- 1611 01be 63686172 		.ascii	"char\000"
- 1611      00
- 1612              	.LASF10:
- 1613 01c3 75696E74 		.ascii	"uint8_t\000"
- 1613      385F7400 
- 1614              	.LASF25:
- 1615 01cb 54656D70 		.ascii	"Temp_WriteBit\000"
- 1615      5F577269 
- 1615      74654269 
- 1615      7400
- 1616              	.LASF18:
- 1617 01d9 54656D70 		.ascii	"Temp_ROMSkip\000"
- 1617      5F524F4D 
- 1617      536B6970 
- 1617      00
- 1618              	.LASF29:
- 1619 01e6 54656D70 		.ascii	"Temp_ReadPin\000"
- 1619      5F526561 
- 1619      6450696E 
- 1619      00
- 1620              	.LASF15:
- 1621 01f3 73697A65 		.ascii	"sizetype\000"
- 1621      74797065 
- 1621      00
- 1622              	.LASF23:
- 1623 01fc 54656D70 		.ascii	"Temp_Reset\000"
- 1623      5F526573 
- 1623      657400
- 1624              	.LASF6:
- 1625 0207 6C6F6E67 		.ascii	"long long int\000"
- 1625      206C6F6E 
- 1625      6720696E 
-ARM GAS  C:\Users\megan\AppData\Local\Temp\ccGi9qko.s 			page 37
+ 1422 0110 01       		.byte	0x1
+ 1423 0111 3F       		.byte	0x3f
+ 1424 0112 8C000000 		.4byte	0x8c
+ 1425 0116 02       		.uleb128 0x2
+ 1426 0117 91       		.byte	0x91
+ 1427 0118 6F       		.sleb128 -17
+ 1428 0119 09       		.uleb128 0x9
+ 1429 011a 7200     		.ascii	"r\000"
+ 1430 011c 01       		.byte	0x1
+ 1431 011d 41       		.byte	0x41
+ 1432 011e 8C000000 		.4byte	0x8c
+ 1433 0122 02       		.uleb128 0x2
+ 1434 0123 91       		.byte	0x91
+ 1435 0124 76       		.sleb128 -10
+ 1436 0125 0A       		.uleb128 0xa
+ 1437 0126 58000000 		.4byte	.LASF23
+ 1438 012a 01       		.byte	0x1
+ 1439 012b 42       		.byte	0x42
+ 1440 012c 8C000000 		.4byte	0x8c
+ 1441 0130 02       		.uleb128 0x2
+ 1442 0131 91       		.byte	0x91
+ 1443 0132 77       		.sleb128 -9
+ 1444 0133 00       		.byte	0
+ 1445 0134 0B       		.uleb128 0xb
+ 1446 0135 B8020000 		.4byte	.LASF24
+ 1447 0139 01       		.byte	0x1
+ 1448 013a 5F       		.byte	0x5f
+ 1449 013b 00000000 		.4byte	.LFB36
+ 1450 013f 5C000000 		.4byte	.LFE36-.LFB36
+ 1451 0143 01       		.uleb128 0x1
+ 1452 0144 9C       		.byte	0x9c
+ 1453 0145 70010000 		.4byte	0x170
+ 1454 0149 08       		.uleb128 0x8
+ 1455 014a 6E00     		.ascii	"n\000"
+ 1456 014c 01       		.byte	0x1
+ 1457 014d 5F       		.byte	0x5f
+ 1458 014e 8C000000 		.4byte	0x8c
+ 1459 0152 02       		.uleb128 0x2
+ 1460 0153 91       		.byte	0x91
+ 1461 0154 6F       		.sleb128 -17
+ 1462 0155 08       		.uleb128 0x8
+ 1463 0156 726F6D00 		.ascii	"rom\000"
+ 1464 015a 01       		.byte	0x1
+ 1465 015b 5F       		.byte	0x5f
+ 1466 015c 70010000 		.4byte	0x170
+ 1467 0160 02       		.uleb128 0x2
+ 1468 0161 91       		.byte	0x91
+ 1469 0162 68       		.sleb128 -24
+ 1470 0163 09       		.uleb128 0x9
+ 1471 0164 6900     		.ascii	"i\000"
+ 1472 0166 01       		.byte	0x1
+ 1473 0167 61       		.byte	0x61
+ 1474 0168 8C000000 		.4byte	0x8c
+ 1475 016c 02       		.uleb128 0x2
+ 1476 016d 91       		.byte	0x91
+ 1477 016e 77       		.sleb128 -9
+ 1478 016f 00       		.byte	0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 36
 
 
- 1625      7400
- 1626              	.LASF19:
- 1627 0215 54656D70 		.ascii	"Temp_RequestTemp\000"
- 1627      5F526571 
- 1627      75657374 
- 1627      54656D70 
- 1627      00
- 1628              	.LASF17:
- 1629 0226 54656D70 		.ascii	"Temp_ROMSelect\000"
- 1629      5F524F4D 
- 1629      53656C65 
- 1629      637400
- 1630              	.LASF22:
- 1631 0235 6269744D 		.ascii	"bitMask\000"
- 1631      61736B00 
- 1632              	.LASF2:
- 1633 023d 73686F72 		.ascii	"short int\000"
- 1633      7420696E 
- 1633      7400
- 1634              	.LASF28:
- 1635 0247 6D6F6465 		.ascii	"mode\000"
- 1635      00
- 1636              	.LASF24:
- 1637 024c 54656D70 		.ascii	"Temp_Read\000"
- 1637      5F526561 
- 1637      6400
- 1638              	.LASF26:
- 1639 0256 54656D70 		.ascii	"Temp_ReadBit\000"
- 1639      5F526561 
- 1639      64426974 
- 1639      00
- 1640              	.LASF4:
- 1641 0263 6C6F6E67 		.ascii	"long int\000"
- 1641      20696E74 
- 1641      00
- 1642              	.LASF14:
- 1643 026c 6C6F6E67 		.ascii	"long double\000"
- 1643      20646F75 
- 1643      626C6500 
- 1644              	.LASF0:
- 1645 0278 7369676E 		.ascii	"signed char\000"
- 1645      65642063 
- 1645      68617200 
- 1646              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 1479 0170 0C       		.uleb128 0xc
+ 1480 0171 04       		.byte	0x4
+ 1481 0172 76010000 		.4byte	0x176
+ 1482 0176 0D       		.uleb128 0xd
+ 1483 0177 8C000000 		.4byte	0x8c
+ 1484 017b 0B       		.uleb128 0xb
+ 1485 017c 49020000 		.4byte	.LASF25
+ 1486 0180 01       		.byte	0x1
+ 1487 0181 72       		.byte	0x72
+ 1488 0182 00000000 		.4byte	.LFB37
+ 1489 0186 20000000 		.4byte	.LFE37-.LFB37
+ 1490 018a 01       		.uleb128 0x1
+ 1491 018b 9C       		.byte	0x9c
+ 1492 018c 9D010000 		.4byte	0x19d
+ 1493 0190 08       		.uleb128 0x8
+ 1494 0191 6E00     		.ascii	"n\000"
+ 1495 0193 01       		.byte	0x1
+ 1496 0194 72       		.byte	0x72
+ 1497 0195 8C000000 		.4byte	0x8c
+ 1498 0199 02       		.uleb128 0x2
+ 1499 019a 91       		.byte	0x91
+ 1500 019b 77       		.sleb128 -9
+ 1501 019c 00       		.byte	0
+ 1502 019d 0B       		.uleb128 0xb
+ 1503 019e A7020000 		.4byte	.LASF26
+ 1504 01a2 01       		.byte	0x1
+ 1505 01a3 82       		.byte	0x82
+ 1506 01a4 00000000 		.4byte	.LFB38
+ 1507 01a8 34000000 		.4byte	.LFE38-.LFB38
+ 1508 01ac 01       		.uleb128 0x1
+ 1509 01ad 9C       		.byte	0x9c
+ 1510 01ae BF010000 		.4byte	0x1bf
+ 1511 01b2 08       		.uleb128 0x8
+ 1512 01b3 6E00     		.ascii	"n\000"
+ 1513 01b5 01       		.byte	0x1
+ 1514 01b6 82       		.byte	0x82
+ 1515 01b7 8C000000 		.4byte	0x8c
+ 1516 01bb 02       		.uleb128 0x2
+ 1517 01bc 91       		.byte	0x91
+ 1518 01bd 77       		.sleb128 -9
+ 1519 01be 00       		.byte	0
+ 1520 01bf 07       		.uleb128 0x7
+ 1521 01c0 25010000 		.4byte	.LASF28
+ 1522 01c4 01       		.byte	0x1
+ 1523 01c5 93       		.byte	0x93
+ 1524 01c6 AD000000 		.4byte	0xad
+ 1525 01ca 00000000 		.4byte	.LFB39
+ 1526 01ce 3A000000 		.4byte	.LFE39-.LFB39
+ 1527 01d2 01       		.uleb128 0x1
+ 1528 01d3 9C       		.byte	0x9c
+ 1529 01d4 F3010000 		.4byte	0x1f3
+ 1530 01d8 08       		.uleb128 0x8
+ 1531 01d9 6E00     		.ascii	"n\000"
+ 1532 01db 01       		.byte	0x1
+ 1533 01dc 93       		.byte	0x93
+ 1534 01dd 8C000000 		.4byte	0x8c
+ 1535 01e1 02       		.uleb128 0x2
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 37
+
+
+ 1536 01e2 91       		.byte	0x91
+ 1537 01e3 6F       		.sleb128 -17
+ 1538 01e4 0A       		.uleb128 0xa
+ 1539 01e5 F8010000 		.4byte	.LASF29
+ 1540 01e9 01       		.byte	0x1
+ 1541 01ea 95       		.byte	0x95
+ 1542 01eb F3010000 		.4byte	0x1f3
+ 1543 01ef 02       		.uleb128 0x2
+ 1544 01f0 91       		.byte	0x91
+ 1545 01f1 70       		.sleb128 -16
+ 1546 01f2 00       		.byte	0
+ 1547 01f3 0E       		.uleb128 0xe
+ 1548 01f4 8C000000 		.4byte	0x8c
+ 1549 01f8 03020000 		.4byte	0x203
+ 1550 01fc 0F       		.uleb128 0xf
+ 1551 01fd C9000000 		.4byte	0xc9
+ 1552 0201 07       		.byte	0x7
+ 1553 0202 00       		.byte	0
+ 1554 0203 07       		.uleb128 0x7
+ 1555 0204 3F000000 		.4byte	.LASF30
+ 1556 0208 01       		.byte	0x1
+ 1557 0209 A7       		.byte	0xa7
+ 1558 020a E9000000 		.4byte	0xe9
+ 1559 020e 00000000 		.4byte	.LFB40
+ 1560 0212 96000000 		.4byte	.LFE40-.LFB40
+ 1561 0216 01       		.uleb128 0x1
+ 1562 0217 9C       		.byte	0x9c
+ 1563 0218 59020000 		.4byte	0x259
+ 1564 021c 08       		.uleb128 0x8
+ 1565 021d 6E00     		.ascii	"n\000"
+ 1566 021f 01       		.byte	0x1
+ 1567 0220 A7       		.byte	0xa7
+ 1568 0221 8C000000 		.4byte	0x8c
+ 1569 0225 02       		.uleb128 0x2
+ 1570 0226 91       		.byte	0x91
+ 1571 0227 67       		.sleb128 -25
+ 1572 0228 10       		.uleb128 0x10
+ 1573 0229 F8010000 		.4byte	.LASF29
+ 1574 022d 01       		.byte	0x1
+ 1575 022e A7       		.byte	0xa7
+ 1576 022f 59020000 		.4byte	0x259
+ 1577 0233 02       		.uleb128 0x2
+ 1578 0234 91       		.byte	0x91
+ 1579 0235 60       		.sleb128 -32
+ 1580 0236 09       		.uleb128 0x9
+ 1581 0237 6200     		.ascii	"b\000"
+ 1582 0239 01       		.byte	0x1
+ 1583 023a A9       		.byte	0xa9
+ 1584 023b 7E000000 		.4byte	0x7e
+ 1585 023f 02       		.uleb128 0x2
+ 1586 0240 91       		.byte	0x91
+ 1587 0241 68       		.sleb128 -24
+ 1588 0242 11       		.uleb128 0x11
+ 1589 0243 3C000000 		.4byte	.LBB2
+ 1590 0247 3A000000 		.4byte	.LBE2-.LBB2
+ 1591 024b 09       		.uleb128 0x9
+ 1592 024c 6900     		.ascii	"i\000"
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 38
+
+
+ 1593 024e 01       		.byte	0x1
+ 1594 024f BC       		.byte	0xbc
+ 1595 0250 8C000000 		.4byte	0x8c
+ 1596 0254 02       		.uleb128 0x2
+ 1597 0255 91       		.byte	0x91
+ 1598 0256 6F       		.sleb128 -17
+ 1599 0257 00       		.byte	0
+ 1600 0258 00       		.byte	0
+ 1601 0259 0C       		.uleb128 0xc
+ 1602 025a 04       		.byte	0x4
+ 1603 025b 8C000000 		.4byte	0x8c
+ 1604 025f 12       		.uleb128 0x12
+ 1605 0260 56020000 		.4byte	.LASF31
+ 1606 0264 01       		.byte	0x1
+ 1607 0265 CF       		.byte	0xcf
+ 1608 0266 97000000 		.4byte	0x97
+ 1609 026a 00000000 		.4byte	.LFB41
+ 1610 026e 32000000 		.4byte	.LFE41-.LFB41
+ 1611 0272 01       		.uleb128 0x1
+ 1612 0273 9C       		.byte	0x9c
+ 1613 0274 95020000 		.4byte	0x295
+ 1614 0278 10       		.uleb128 0x10
+ 1615 0279 F8010000 		.4byte	.LASF29
+ 1616 027d 01       		.byte	0x1
+ 1617 027e CF       		.byte	0xcf
+ 1618 027f 59020000 		.4byte	0x259
+ 1619 0283 02       		.uleb128 0x2
+ 1620 0284 91       		.byte	0x91
+ 1621 0285 6C       		.sleb128 -20
+ 1622 0286 0A       		.uleb128 0xa
+ 1623 0287 60000000 		.4byte	.LASF32
+ 1624 028b 01       		.byte	0x1
+ 1625 028c D1       		.byte	0xd1
+ 1626 028d 97000000 		.4byte	0x97
+ 1627 0291 02       		.uleb128 0x2
+ 1628 0292 91       		.byte	0x91
+ 1629 0293 76       		.sleb128 -10
+ 1630 0294 00       		.byte	0
+ 1631 0295 07       		.uleb128 0x7
+ 1632 0296 0C020000 		.4byte	.LASF33
+ 1633 029a 01       		.byte	0x1
+ 1634 029b FA       		.byte	0xfa
+ 1635 029c AD000000 		.4byte	0xad
+ 1636 02a0 00000000 		.4byte	.LFB42
+ 1637 02a4 58000000 		.4byte	.LFE42-.LFB42
+ 1638 02a8 01       		.uleb128 0x1
+ 1639 02a9 9C       		.byte	0x9c
+ 1640 02aa BD020000 		.4byte	0x2bd
+ 1641 02ae 08       		.uleb128 0x8
+ 1642 02af 72617700 		.ascii	"raw\000"
+ 1643 02b3 01       		.byte	0x1
+ 1644 02b4 FA       		.byte	0xfa
+ 1645 02b5 A2000000 		.4byte	0xa2
+ 1646 02b9 02       		.uleb128 0x2
+ 1647 02ba 91       		.byte	0x91
+ 1648 02bb 6E       		.sleb128 -18
+ 1649 02bc 00       		.byte	0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 39
+
+
+ 1650 02bd 13       		.uleb128 0x13
+ 1651 02be 03020000 		.4byte	.LASF34
+ 1652 02c2 01       		.byte	0x1
+ 1653 02c3 0001     		.2byte	0x100
+ 1654 02c5 8C000000 		.4byte	0x8c
+ 1655 02c9 00000000 		.4byte	.LFB43
+ 1656 02cd C0000000 		.4byte	.LFE43-.LFB43
+ 1657 02d1 01       		.uleb128 0x1
+ 1658 02d2 9C       		.byte	0x9c
+ 1659 02d3 5D030000 		.4byte	0x35d
+ 1660 02d7 14       		.uleb128 0x14
+ 1661 02d8 F8010000 		.4byte	.LASF29
+ 1662 02dc 01       		.byte	0x1
+ 1663 02dd 0001     		.2byte	0x100
+ 1664 02df 59020000 		.4byte	0x259
+ 1665 02e3 02       		.uleb128 0x2
+ 1666 02e4 91       		.byte	0x91
+ 1667 02e5 64       		.sleb128 -28
+ 1668 02e6 15       		.uleb128 0x15
+ 1669 02e7 63726300 		.ascii	"crc\000"
+ 1670 02eb 01       		.byte	0x1
+ 1671 02ec 0201     		.2byte	0x102
+ 1672 02ee 8C000000 		.4byte	0x8c
+ 1673 02f2 02       		.uleb128 0x2
+ 1674 02f3 91       		.byte	0x91
+ 1675 02f4 77       		.sleb128 -9
+ 1676 02f5 16       		.uleb128 0x16
+ 1677 02f6 45010000 		.4byte	.LASF35
+ 1678 02fa 01       		.byte	0x1
+ 1679 02fb 0301     		.2byte	0x103
+ 1680 02fd 59020000 		.4byte	0x259
+ 1681 0301 02       		.uleb128 0x2
+ 1682 0302 91       		.byte	0x91
+ 1683 0303 70       		.sleb128 -16
+ 1684 0304 15       		.uleb128 0x15
+ 1685 0305 6C656E00 		.ascii	"len\000"
+ 1686 0309 01       		.byte	0x1
+ 1687 030a 0401     		.2byte	0x104
+ 1688 030c 8C000000 		.4byte	0x8c
+ 1689 0310 02       		.uleb128 0x2
+ 1690 0311 91       		.byte	0x91
+ 1691 0312 6F       		.sleb128 -17
+ 1692 0313 11       		.uleb128 0x11
+ 1693 0314 1E000000 		.4byte	.LBB3
+ 1694 0318 82000000 		.4byte	.LBE3-.LBB3
+ 1695 031c 16       		.uleb128 0x16
+ 1696 031d 07030000 		.4byte	.LASF36
+ 1697 0321 01       		.byte	0x1
+ 1698 0322 0701     		.2byte	0x107
+ 1699 0324 8C000000 		.4byte	0x8c
+ 1700 0328 02       		.uleb128 0x2
+ 1701 0329 91       		.byte	0x91
+ 1702 032a 6E       		.sleb128 -18
+ 1703 032b 11       		.uleb128 0x11
+ 1704 032c 2C000000 		.4byte	.LBB4
+ 1705 0330 74000000 		.4byte	.LBE4-.LBB4
+ 1706 0334 15       		.uleb128 0x15
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 40
+
+
+ 1707 0335 6900     		.ascii	"i\000"
+ 1708 0337 01       		.byte	0x1
+ 1709 0338 0801     		.2byte	0x108
+ 1710 033a 8C000000 		.4byte	0x8c
+ 1711 033e 02       		.uleb128 0x2
+ 1712 033f 91       		.byte	0x91
+ 1713 0340 6D       		.sleb128 -19
+ 1714 0341 11       		.uleb128 0x11
+ 1715 0342 36000000 		.4byte	.LBB5
+ 1716 0346 52000000 		.4byte	.LBE5-.LBB5
+ 1717 034a 15       		.uleb128 0x15
+ 1718 034b 6D697800 		.ascii	"mix\000"
+ 1719 034f 01       		.byte	0x1
+ 1720 0350 0901     		.2byte	0x109
+ 1721 0352 8C000000 		.4byte	0x8c
+ 1722 0356 02       		.uleb128 0x2
+ 1723 0357 91       		.byte	0x91
+ 1724 0358 6C       		.sleb128 -20
+ 1725 0359 00       		.byte	0
+ 1726 035a 00       		.byte	0
+ 1727 035b 00       		.byte	0
+ 1728 035c 00       		.byte	0
+ 1729 035d 17       		.uleb128 0x17
+ 1730 035e 05000000 		.4byte	.LASF37
+ 1731 0362 01       		.byte	0x1
+ 1732 0363 2301     		.2byte	0x123
+ 1733 0365 00000000 		.4byte	.LFB44
+ 1734 0369 76000000 		.4byte	.LFE44-.LFB44
+ 1735 036d 01       		.uleb128 0x1
+ 1736 036e 9C       		.byte	0x9c
+ 1737 036f 9F030000 		.4byte	0x39f
+ 1738 0373 18       		.uleb128 0x18
+ 1739 0374 6E00     		.ascii	"n\000"
+ 1740 0376 01       		.byte	0x1
+ 1741 0377 2301     		.2byte	0x123
+ 1742 0379 8C000000 		.4byte	0x8c
+ 1743 037d 02       		.uleb128 0x2
+ 1744 037e 91       		.byte	0x91
+ 1745 037f 6F       		.sleb128 -17
+ 1746 0380 14       		.uleb128 0x14
+ 1747 0381 53000000 		.4byte	.LASF38
+ 1748 0385 01       		.byte	0x1
+ 1749 0386 2301     		.2byte	0x123
+ 1750 0388 8C000000 		.4byte	0x8c
+ 1751 038c 02       		.uleb128 0x2
+ 1752 038d 91       		.byte	0x91
+ 1753 038e 6E       		.sleb128 -18
+ 1754 038f 16       		.uleb128 0x16
+ 1755 0390 C7020000 		.4byte	.LASF39
+ 1756 0394 01       		.byte	0x1
+ 1757 0395 2501     		.2byte	0x125
+ 1758 0397 8C000000 		.4byte	0x8c
+ 1759 039b 02       		.uleb128 0x2
+ 1760 039c 91       		.byte	0x91
+ 1761 039d 77       		.sleb128 -9
+ 1762 039e 00       		.byte	0
+ 1763 039f 19       		.uleb128 0x19
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 41
+
+
+ 1764 03a0 E7020000 		.4byte	.LASF40
+ 1765 03a4 01       		.byte	0x1
+ 1766 03a5 3901     		.2byte	0x139
+ 1767 03a7 8C000000 		.4byte	0x8c
+ 1768 03ab 00000000 		.4byte	.LFB45
+ 1769 03af 66000000 		.4byte	.LFE45-.LFB45
+ 1770 03b3 01       		.uleb128 0x1
+ 1771 03b4 9C       		.byte	0x9c
+ 1772 03b5 E3030000 		.4byte	0x3e3
+ 1773 03b9 18       		.uleb128 0x18
+ 1774 03ba 6E00     		.ascii	"n\000"
+ 1775 03bc 01       		.byte	0x1
+ 1776 03bd 3901     		.2byte	0x139
+ 1777 03bf 8C000000 		.4byte	0x8c
+ 1778 03c3 02       		.uleb128 0x2
+ 1779 03c4 91       		.byte	0x91
+ 1780 03c5 6F       		.sleb128 -17
+ 1781 03c6 16       		.uleb128 0x16
+ 1782 03c7 C7020000 		.4byte	.LASF39
+ 1783 03cb 01       		.byte	0x1
+ 1784 03cc 3B01     		.2byte	0x13b
+ 1785 03ce 8C000000 		.4byte	0x8c
+ 1786 03d2 02       		.uleb128 0x2
+ 1787 03d3 91       		.byte	0x91
+ 1788 03d4 77       		.sleb128 -9
+ 1789 03d5 15       		.uleb128 0x15
+ 1790 03d6 7200     		.ascii	"r\000"
+ 1791 03d8 01       		.byte	0x1
+ 1792 03d9 3C01     		.2byte	0x13c
+ 1793 03db 8C000000 		.4byte	0x8c
+ 1794 03df 02       		.uleb128 0x2
+ 1795 03e0 91       		.byte	0x91
+ 1796 03e1 76       		.sleb128 -10
+ 1797 03e2 00       		.byte	0
+ 1798 03e3 17       		.uleb128 0x17
+ 1799 03e4 3B020000 		.4byte	.LASF41
+ 1800 03e8 01       		.byte	0x1
+ 1801 03e9 4F01     		.2byte	0x14f
+ 1802 03eb 00000000 		.4byte	.LFB46
+ 1803 03ef 84000000 		.4byte	.LFE46-.LFB46
+ 1804 03f3 01       		.uleb128 0x1
+ 1805 03f4 9C       		.byte	0x9c
+ 1806 03f5 14040000 		.4byte	0x414
+ 1807 03f9 18       		.uleb128 0x18
+ 1808 03fa 6E00     		.ascii	"n\000"
+ 1809 03fc 01       		.byte	0x1
+ 1810 03fd 4F01     		.2byte	0x14f
+ 1811 03ff 8C000000 		.4byte	0x8c
+ 1812 0403 02       		.uleb128 0x2
+ 1813 0404 91       		.byte	0x91
+ 1814 0405 77       		.sleb128 -9
+ 1815 0406 18       		.uleb128 0x18
+ 1816 0407 6200     		.ascii	"b\000"
+ 1817 0409 01       		.byte	0x1
+ 1818 040a 4F01     		.2byte	0x14f
+ 1819 040c 8C000000 		.4byte	0x8c
+ 1820 0410 02       		.uleb128 0x2
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 42
+
+
+ 1821 0411 91       		.byte	0x91
+ 1822 0412 76       		.sleb128 -10
+ 1823 0413 00       		.byte	0
+ 1824 0414 19       		.uleb128 0x19
+ 1825 0415 F1020000 		.4byte	.LASF42
+ 1826 0419 01       		.byte	0x1
+ 1827 041a 6A01     		.2byte	0x16a
+ 1828 041c 8C000000 		.4byte	0x8c
+ 1829 0420 00000000 		.4byte	.LFB47
+ 1830 0424 62000000 		.4byte	.LFE47-.LFB47
+ 1831 0428 01       		.uleb128 0x1
+ 1832 0429 9C       		.byte	0x9c
+ 1833 042a 49040000 		.4byte	0x449
+ 1834 042e 18       		.uleb128 0x18
+ 1835 042f 6E00     		.ascii	"n\000"
+ 1836 0431 01       		.byte	0x1
+ 1837 0432 6A01     		.2byte	0x16a
+ 1838 0434 8C000000 		.4byte	0x8c
+ 1839 0438 02       		.uleb128 0x2
+ 1840 0439 91       		.byte	0x91
+ 1841 043a 67       		.sleb128 -25
+ 1842 043b 15       		.uleb128 0x15
+ 1843 043c 7200     		.ascii	"r\000"
+ 1844 043e 01       		.byte	0x1
+ 1845 043f 6C01     		.2byte	0x16c
+ 1846 0441 8C000000 		.4byte	0x8c
+ 1847 0445 02       		.uleb128 0x2
+ 1848 0446 91       		.byte	0x91
+ 1849 0447 6F       		.sleb128 -17
+ 1850 0448 00       		.byte	0
+ 1851 0449 17       		.uleb128 0x17
+ 1852 044a 8B000000 		.4byte	.LASF43
+ 1853 044e 01       		.byte	0x1
+ 1854 044f 8E01     		.2byte	0x18e
+ 1855 0451 00000000 		.4byte	.LFB48
+ 1856 0455 58000000 		.4byte	.LFE48-.LFB48
+ 1857 0459 01       		.uleb128 0x1
+ 1858 045a 9C       		.byte	0x9c
+ 1859 045b 7C040000 		.4byte	0x47c
+ 1860 045f 18       		.uleb128 0x18
+ 1861 0460 6E00     		.ascii	"n\000"
+ 1862 0462 01       		.byte	0x1
+ 1863 0463 8E01     		.2byte	0x18e
+ 1864 0465 8C000000 		.4byte	0x8c
+ 1865 0469 02       		.uleb128 0x2
+ 1866 046a 91       		.byte	0x91
+ 1867 046b 77       		.sleb128 -9
+ 1868 046c 14       		.uleb128 0x14
+ 1869 046d E2020000 		.4byte	.LASF44
+ 1870 0471 01       		.byte	0x1
+ 1871 0472 8E01     		.2byte	0x18e
+ 1872 0474 8C000000 		.4byte	0x8c
+ 1873 0478 02       		.uleb128 0x2
+ 1874 0479 91       		.byte	0x91
+ 1875 047a 76       		.sleb128 -10
+ 1876 047b 00       		.byte	0
+ 1877 047c 19       		.uleb128 0x19
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 43
+
+
+ 1878 047d 78020000 		.4byte	.LASF45
+ 1879 0481 01       		.byte	0x1
+ 1880 0482 AF01     		.2byte	0x1af
+ 1881 0484 8C000000 		.4byte	0x8c
+ 1882 0488 00000000 		.4byte	.LFB49
+ 1883 048c 34000000 		.4byte	.LFE49-.LFB49
+ 1884 0490 01       		.uleb128 0x1
+ 1885 0491 9C       		.byte	0x9c
+ 1886 0492 A4040000 		.4byte	0x4a4
+ 1887 0496 18       		.uleb128 0x18
+ 1888 0497 6E00     		.ascii	"n\000"
+ 1889 0499 01       		.byte	0x1
+ 1890 049a AF01     		.2byte	0x1af
+ 1891 049c 8C000000 		.4byte	0x8c
+ 1892 04a0 02       		.uleb128 0x2
+ 1893 04a1 91       		.byte	0x91
+ 1894 04a2 77       		.sleb128 -9
+ 1895 04a3 00       		.byte	0
+ 1896 04a4 1A       		.uleb128 0x1a
+ 1897 04a5 D8010000 		.4byte	.LASF50
+ 1898 04a9 01       		.byte	0x1
+ 1899 04aa CD01     		.2byte	0x1cd
+ 1900 04ac 00000000 		.4byte	.LFB50
+ 1901 04b0 6E000000 		.4byte	.LFE50-.LFB50
+ 1902 04b4 01       		.uleb128 0x1
+ 1903 04b5 9C       		.byte	0x9c
+ 1904 04b6 18       		.uleb128 0x18
+ 1905 04b7 6E00     		.ascii	"n\000"
+ 1906 04b9 01       		.byte	0x1
+ 1907 04ba CD01     		.2byte	0x1cd
+ 1908 04bc 8C000000 		.4byte	0x8c
+ 1909 04c0 02       		.uleb128 0x2
+ 1910 04c1 91       		.byte	0x91
+ 1911 04c2 77       		.sleb128 -9
+ 1912 04c3 14       		.uleb128 0x14
+ 1913 04c4 34000000 		.4byte	.LASF46
+ 1914 04c8 01       		.byte	0x1
+ 1915 04c9 CD01     		.2byte	0x1cd
+ 1916 04cb 8C000000 		.4byte	0x8c
+ 1917 04cf 02       		.uleb128 0x2
+ 1918 04d0 91       		.byte	0x91
+ 1919 04d1 76       		.sleb128 -10
+ 1920 04d2 00       		.byte	0
+ 1921 04d3 00       		.byte	0
+ 1922              		.section	.debug_abbrev,"",%progbits
+ 1923              	.Ldebug_abbrev0:
+ 1924 0000 01       		.uleb128 0x1
+ 1925 0001 11       		.uleb128 0x11
+ 1926 0002 01       		.byte	0x1
+ 1927 0003 25       		.uleb128 0x25
+ 1928 0004 0E       		.uleb128 0xe
+ 1929 0005 13       		.uleb128 0x13
+ 1930 0006 0B       		.uleb128 0xb
+ 1931 0007 03       		.uleb128 0x3
+ 1932 0008 0E       		.uleb128 0xe
+ 1933 0009 1B       		.uleb128 0x1b
+ 1934 000a 0E       		.uleb128 0xe
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 44
+
+
+ 1935 000b 55       		.uleb128 0x55
+ 1936 000c 17       		.uleb128 0x17
+ 1937 000d 11       		.uleb128 0x11
+ 1938 000e 01       		.uleb128 0x1
+ 1939 000f 10       		.uleb128 0x10
+ 1940 0010 17       		.uleb128 0x17
+ 1941 0011 00       		.byte	0
+ 1942 0012 00       		.byte	0
+ 1943 0013 02       		.uleb128 0x2
+ 1944 0014 24       		.uleb128 0x24
+ 1945 0015 00       		.byte	0
+ 1946 0016 0B       		.uleb128 0xb
+ 1947 0017 0B       		.uleb128 0xb
+ 1948 0018 3E       		.uleb128 0x3e
+ 1949 0019 0B       		.uleb128 0xb
+ 1950 001a 03       		.uleb128 0x3
+ 1951 001b 0E       		.uleb128 0xe
+ 1952 001c 00       		.byte	0
+ 1953 001d 00       		.byte	0
+ 1954 001e 03       		.uleb128 0x3
+ 1955 001f 16       		.uleb128 0x16
+ 1956 0020 00       		.byte	0
+ 1957 0021 03       		.uleb128 0x3
+ 1958 0022 0E       		.uleb128 0xe
+ 1959 0023 3A       		.uleb128 0x3a
+ 1960 0024 0B       		.uleb128 0xb
+ 1961 0025 3B       		.uleb128 0x3b
+ 1962 0026 0B       		.uleb128 0xb
+ 1963 0027 49       		.uleb128 0x49
+ 1964 0028 13       		.uleb128 0x13
+ 1965 0029 00       		.byte	0
+ 1966 002a 00       		.byte	0
+ 1967 002b 04       		.uleb128 0x4
+ 1968 002c 24       		.uleb128 0x24
+ 1969 002d 00       		.byte	0
+ 1970 002e 0B       		.uleb128 0xb
+ 1971 002f 0B       		.uleb128 0xb
+ 1972 0030 3E       		.uleb128 0x3e
+ 1973 0031 0B       		.uleb128 0xb
+ 1974 0032 03       		.uleb128 0x3
+ 1975 0033 08       		.uleb128 0x8
+ 1976 0034 00       		.byte	0
+ 1977 0035 00       		.byte	0
+ 1978 0036 05       		.uleb128 0x5
+ 1979 0037 04       		.uleb128 0x4
+ 1980 0038 01       		.byte	0x1
+ 1981 0039 0B       		.uleb128 0xb
+ 1982 003a 0B       		.uleb128 0xb
+ 1983 003b 49       		.uleb128 0x49
+ 1984 003c 13       		.uleb128 0x13
+ 1985 003d 3A       		.uleb128 0x3a
+ 1986 003e 0B       		.uleb128 0xb
+ 1987 003f 3B       		.uleb128 0x3b
+ 1988 0040 0B       		.uleb128 0xb
+ 1989 0041 01       		.uleb128 0x1
+ 1990 0042 13       		.uleb128 0x13
+ 1991 0043 00       		.byte	0
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 45
+
+
+ 1992 0044 00       		.byte	0
+ 1993 0045 06       		.uleb128 0x6
+ 1994 0046 28       		.uleb128 0x28
+ 1995 0047 00       		.byte	0
+ 1996 0048 03       		.uleb128 0x3
+ 1997 0049 0E       		.uleb128 0xe
+ 1998 004a 1C       		.uleb128 0x1c
+ 1999 004b 0B       		.uleb128 0xb
+ 2000 004c 00       		.byte	0
+ 2001 004d 00       		.byte	0
+ 2002 004e 07       		.uleb128 0x7
+ 2003 004f 2E       		.uleb128 0x2e
+ 2004 0050 01       		.byte	0x1
+ 2005 0051 3F       		.uleb128 0x3f
+ 2006 0052 19       		.uleb128 0x19
+ 2007 0053 03       		.uleb128 0x3
+ 2008 0054 0E       		.uleb128 0xe
+ 2009 0055 3A       		.uleb128 0x3a
+ 2010 0056 0B       		.uleb128 0xb
+ 2011 0057 3B       		.uleb128 0x3b
+ 2012 0058 0B       		.uleb128 0xb
+ 2013 0059 27       		.uleb128 0x27
+ 2014 005a 19       		.uleb128 0x19
+ 2015 005b 49       		.uleb128 0x49
+ 2016 005c 13       		.uleb128 0x13
+ 2017 005d 11       		.uleb128 0x11
+ 2018 005e 01       		.uleb128 0x1
+ 2019 005f 12       		.uleb128 0x12
+ 2020 0060 06       		.uleb128 0x6
+ 2021 0061 40       		.uleb128 0x40
+ 2022 0062 18       		.uleb128 0x18
+ 2023 0063 9642     		.uleb128 0x2116
+ 2024 0065 19       		.uleb128 0x19
+ 2025 0066 01       		.uleb128 0x1
+ 2026 0067 13       		.uleb128 0x13
+ 2027 0068 00       		.byte	0
+ 2028 0069 00       		.byte	0
+ 2029 006a 08       		.uleb128 0x8
+ 2030 006b 05       		.uleb128 0x5
+ 2031 006c 00       		.byte	0
+ 2032 006d 03       		.uleb128 0x3
+ 2033 006e 08       		.uleb128 0x8
+ 2034 006f 3A       		.uleb128 0x3a
+ 2035 0070 0B       		.uleb128 0xb
+ 2036 0071 3B       		.uleb128 0x3b
+ 2037 0072 0B       		.uleb128 0xb
+ 2038 0073 49       		.uleb128 0x49
+ 2039 0074 13       		.uleb128 0x13
+ 2040 0075 02       		.uleb128 0x2
+ 2041 0076 18       		.uleb128 0x18
+ 2042 0077 00       		.byte	0
+ 2043 0078 00       		.byte	0
+ 2044 0079 09       		.uleb128 0x9
+ 2045 007a 34       		.uleb128 0x34
+ 2046 007b 00       		.byte	0
+ 2047 007c 03       		.uleb128 0x3
+ 2048 007d 08       		.uleb128 0x8
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 46
+
+
+ 2049 007e 3A       		.uleb128 0x3a
+ 2050 007f 0B       		.uleb128 0xb
+ 2051 0080 3B       		.uleb128 0x3b
+ 2052 0081 0B       		.uleb128 0xb
+ 2053 0082 49       		.uleb128 0x49
+ 2054 0083 13       		.uleb128 0x13
+ 2055 0084 02       		.uleb128 0x2
+ 2056 0085 18       		.uleb128 0x18
+ 2057 0086 00       		.byte	0
+ 2058 0087 00       		.byte	0
+ 2059 0088 0A       		.uleb128 0xa
+ 2060 0089 34       		.uleb128 0x34
+ 2061 008a 00       		.byte	0
+ 2062 008b 03       		.uleb128 0x3
+ 2063 008c 0E       		.uleb128 0xe
+ 2064 008d 3A       		.uleb128 0x3a
+ 2065 008e 0B       		.uleb128 0xb
+ 2066 008f 3B       		.uleb128 0x3b
+ 2067 0090 0B       		.uleb128 0xb
+ 2068 0091 49       		.uleb128 0x49
+ 2069 0092 13       		.uleb128 0x13
+ 2070 0093 02       		.uleb128 0x2
+ 2071 0094 18       		.uleb128 0x18
+ 2072 0095 00       		.byte	0
+ 2073 0096 00       		.byte	0
+ 2074 0097 0B       		.uleb128 0xb
+ 2075 0098 2E       		.uleb128 0x2e
+ 2076 0099 01       		.byte	0x1
+ 2077 009a 3F       		.uleb128 0x3f
+ 2078 009b 19       		.uleb128 0x19
+ 2079 009c 03       		.uleb128 0x3
+ 2080 009d 0E       		.uleb128 0xe
+ 2081 009e 3A       		.uleb128 0x3a
+ 2082 009f 0B       		.uleb128 0xb
+ 2083 00a0 3B       		.uleb128 0x3b
+ 2084 00a1 0B       		.uleb128 0xb
+ 2085 00a2 27       		.uleb128 0x27
+ 2086 00a3 19       		.uleb128 0x19
+ 2087 00a4 11       		.uleb128 0x11
+ 2088 00a5 01       		.uleb128 0x1
+ 2089 00a6 12       		.uleb128 0x12
+ 2090 00a7 06       		.uleb128 0x6
+ 2091 00a8 40       		.uleb128 0x40
+ 2092 00a9 18       		.uleb128 0x18
+ 2093 00aa 9642     		.uleb128 0x2116
+ 2094 00ac 19       		.uleb128 0x19
+ 2095 00ad 01       		.uleb128 0x1
+ 2096 00ae 13       		.uleb128 0x13
+ 2097 00af 00       		.byte	0
+ 2098 00b0 00       		.byte	0
+ 2099 00b1 0C       		.uleb128 0xc
+ 2100 00b2 0F       		.uleb128 0xf
+ 2101 00b3 00       		.byte	0
+ 2102 00b4 0B       		.uleb128 0xb
+ 2103 00b5 0B       		.uleb128 0xb
+ 2104 00b6 49       		.uleb128 0x49
+ 2105 00b7 13       		.uleb128 0x13
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 47
+
+
+ 2106 00b8 00       		.byte	0
+ 2107 00b9 00       		.byte	0
+ 2108 00ba 0D       		.uleb128 0xd
+ 2109 00bb 26       		.uleb128 0x26
+ 2110 00bc 00       		.byte	0
+ 2111 00bd 49       		.uleb128 0x49
+ 2112 00be 13       		.uleb128 0x13
+ 2113 00bf 00       		.byte	0
+ 2114 00c0 00       		.byte	0
+ 2115 00c1 0E       		.uleb128 0xe
+ 2116 00c2 01       		.uleb128 0x1
+ 2117 00c3 01       		.byte	0x1
+ 2118 00c4 49       		.uleb128 0x49
+ 2119 00c5 13       		.uleb128 0x13
+ 2120 00c6 01       		.uleb128 0x1
+ 2121 00c7 13       		.uleb128 0x13
+ 2122 00c8 00       		.byte	0
+ 2123 00c9 00       		.byte	0
+ 2124 00ca 0F       		.uleb128 0xf
+ 2125 00cb 21       		.uleb128 0x21
+ 2126 00cc 00       		.byte	0
+ 2127 00cd 49       		.uleb128 0x49
+ 2128 00ce 13       		.uleb128 0x13
+ 2129 00cf 2F       		.uleb128 0x2f
+ 2130 00d0 0B       		.uleb128 0xb
+ 2131 00d1 00       		.byte	0
+ 2132 00d2 00       		.byte	0
+ 2133 00d3 10       		.uleb128 0x10
+ 2134 00d4 05       		.uleb128 0x5
+ 2135 00d5 00       		.byte	0
+ 2136 00d6 03       		.uleb128 0x3
+ 2137 00d7 0E       		.uleb128 0xe
+ 2138 00d8 3A       		.uleb128 0x3a
+ 2139 00d9 0B       		.uleb128 0xb
+ 2140 00da 3B       		.uleb128 0x3b
+ 2141 00db 0B       		.uleb128 0xb
+ 2142 00dc 49       		.uleb128 0x49
+ 2143 00dd 13       		.uleb128 0x13
+ 2144 00de 02       		.uleb128 0x2
+ 2145 00df 18       		.uleb128 0x18
+ 2146 00e0 00       		.byte	0
+ 2147 00e1 00       		.byte	0
+ 2148 00e2 11       		.uleb128 0x11
+ 2149 00e3 0B       		.uleb128 0xb
+ 2150 00e4 01       		.byte	0x1
+ 2151 00e5 11       		.uleb128 0x11
+ 2152 00e6 01       		.uleb128 0x1
+ 2153 00e7 12       		.uleb128 0x12
+ 2154 00e8 06       		.uleb128 0x6
+ 2155 00e9 00       		.byte	0
+ 2156 00ea 00       		.byte	0
+ 2157 00eb 12       		.uleb128 0x12
+ 2158 00ec 2E       		.uleb128 0x2e
+ 2159 00ed 01       		.byte	0x1
+ 2160 00ee 3F       		.uleb128 0x3f
+ 2161 00ef 19       		.uleb128 0x19
+ 2162 00f0 03       		.uleb128 0x3
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 48
+
+
+ 2163 00f1 0E       		.uleb128 0xe
+ 2164 00f2 3A       		.uleb128 0x3a
+ 2165 00f3 0B       		.uleb128 0xb
+ 2166 00f4 3B       		.uleb128 0x3b
+ 2167 00f5 0B       		.uleb128 0xb
+ 2168 00f6 27       		.uleb128 0x27
+ 2169 00f7 19       		.uleb128 0x19
+ 2170 00f8 49       		.uleb128 0x49
+ 2171 00f9 13       		.uleb128 0x13
+ 2172 00fa 11       		.uleb128 0x11
+ 2173 00fb 01       		.uleb128 0x1
+ 2174 00fc 12       		.uleb128 0x12
+ 2175 00fd 06       		.uleb128 0x6
+ 2176 00fe 40       		.uleb128 0x40
+ 2177 00ff 18       		.uleb128 0x18
+ 2178 0100 9742     		.uleb128 0x2117
+ 2179 0102 19       		.uleb128 0x19
+ 2180 0103 01       		.uleb128 0x1
+ 2181 0104 13       		.uleb128 0x13
+ 2182 0105 00       		.byte	0
+ 2183 0106 00       		.byte	0
+ 2184 0107 13       		.uleb128 0x13
+ 2185 0108 2E       		.uleb128 0x2e
+ 2186 0109 01       		.byte	0x1
+ 2187 010a 3F       		.uleb128 0x3f
+ 2188 010b 19       		.uleb128 0x19
+ 2189 010c 03       		.uleb128 0x3
+ 2190 010d 0E       		.uleb128 0xe
+ 2191 010e 3A       		.uleb128 0x3a
+ 2192 010f 0B       		.uleb128 0xb
+ 2193 0110 3B       		.uleb128 0x3b
+ 2194 0111 05       		.uleb128 0x5
+ 2195 0112 27       		.uleb128 0x27
+ 2196 0113 19       		.uleb128 0x19
+ 2197 0114 49       		.uleb128 0x49
+ 2198 0115 13       		.uleb128 0x13
+ 2199 0116 11       		.uleb128 0x11
+ 2200 0117 01       		.uleb128 0x1
+ 2201 0118 12       		.uleb128 0x12
+ 2202 0119 06       		.uleb128 0x6
+ 2203 011a 40       		.uleb128 0x40
+ 2204 011b 18       		.uleb128 0x18
+ 2205 011c 9742     		.uleb128 0x2117
+ 2206 011e 19       		.uleb128 0x19
+ 2207 011f 01       		.uleb128 0x1
+ 2208 0120 13       		.uleb128 0x13
+ 2209 0121 00       		.byte	0
+ 2210 0122 00       		.byte	0
+ 2211 0123 14       		.uleb128 0x14
+ 2212 0124 05       		.uleb128 0x5
+ 2213 0125 00       		.byte	0
+ 2214 0126 03       		.uleb128 0x3
+ 2215 0127 0E       		.uleb128 0xe
+ 2216 0128 3A       		.uleb128 0x3a
+ 2217 0129 0B       		.uleb128 0xb
+ 2218 012a 3B       		.uleb128 0x3b
+ 2219 012b 05       		.uleb128 0x5
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 49
+
+
+ 2220 012c 49       		.uleb128 0x49
+ 2221 012d 13       		.uleb128 0x13
+ 2222 012e 02       		.uleb128 0x2
+ 2223 012f 18       		.uleb128 0x18
+ 2224 0130 00       		.byte	0
+ 2225 0131 00       		.byte	0
+ 2226 0132 15       		.uleb128 0x15
+ 2227 0133 34       		.uleb128 0x34
+ 2228 0134 00       		.byte	0
+ 2229 0135 03       		.uleb128 0x3
+ 2230 0136 08       		.uleb128 0x8
+ 2231 0137 3A       		.uleb128 0x3a
+ 2232 0138 0B       		.uleb128 0xb
+ 2233 0139 3B       		.uleb128 0x3b
+ 2234 013a 05       		.uleb128 0x5
+ 2235 013b 49       		.uleb128 0x49
+ 2236 013c 13       		.uleb128 0x13
+ 2237 013d 02       		.uleb128 0x2
+ 2238 013e 18       		.uleb128 0x18
+ 2239 013f 00       		.byte	0
+ 2240 0140 00       		.byte	0
+ 2241 0141 16       		.uleb128 0x16
+ 2242 0142 34       		.uleb128 0x34
+ 2243 0143 00       		.byte	0
+ 2244 0144 03       		.uleb128 0x3
+ 2245 0145 0E       		.uleb128 0xe
+ 2246 0146 3A       		.uleb128 0x3a
+ 2247 0147 0B       		.uleb128 0xb
+ 2248 0148 3B       		.uleb128 0x3b
+ 2249 0149 05       		.uleb128 0x5
+ 2250 014a 49       		.uleb128 0x49
+ 2251 014b 13       		.uleb128 0x13
+ 2252 014c 02       		.uleb128 0x2
+ 2253 014d 18       		.uleb128 0x18
+ 2254 014e 00       		.byte	0
+ 2255 014f 00       		.byte	0
+ 2256 0150 17       		.uleb128 0x17
+ 2257 0151 2E       		.uleb128 0x2e
+ 2258 0152 01       		.byte	0x1
+ 2259 0153 3F       		.uleb128 0x3f
+ 2260 0154 19       		.uleb128 0x19
+ 2261 0155 03       		.uleb128 0x3
+ 2262 0156 0E       		.uleb128 0xe
+ 2263 0157 3A       		.uleb128 0x3a
+ 2264 0158 0B       		.uleb128 0xb
+ 2265 0159 3B       		.uleb128 0x3b
+ 2266 015a 05       		.uleb128 0x5
+ 2267 015b 27       		.uleb128 0x27
+ 2268 015c 19       		.uleb128 0x19
+ 2269 015d 11       		.uleb128 0x11
+ 2270 015e 01       		.uleb128 0x1
+ 2271 015f 12       		.uleb128 0x12
+ 2272 0160 06       		.uleb128 0x6
+ 2273 0161 40       		.uleb128 0x40
+ 2274 0162 18       		.uleb128 0x18
+ 2275 0163 9642     		.uleb128 0x2116
+ 2276 0165 19       		.uleb128 0x19
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 50
+
+
+ 2277 0166 01       		.uleb128 0x1
+ 2278 0167 13       		.uleb128 0x13
+ 2279 0168 00       		.byte	0
+ 2280 0169 00       		.byte	0
+ 2281 016a 18       		.uleb128 0x18
+ 2282 016b 05       		.uleb128 0x5
+ 2283 016c 00       		.byte	0
+ 2284 016d 03       		.uleb128 0x3
+ 2285 016e 08       		.uleb128 0x8
+ 2286 016f 3A       		.uleb128 0x3a
+ 2287 0170 0B       		.uleb128 0xb
+ 2288 0171 3B       		.uleb128 0x3b
+ 2289 0172 05       		.uleb128 0x5
+ 2290 0173 49       		.uleb128 0x49
+ 2291 0174 13       		.uleb128 0x13
+ 2292 0175 02       		.uleb128 0x2
+ 2293 0176 18       		.uleb128 0x18
+ 2294 0177 00       		.byte	0
+ 2295 0178 00       		.byte	0
+ 2296 0179 19       		.uleb128 0x19
+ 2297 017a 2E       		.uleb128 0x2e
+ 2298 017b 01       		.byte	0x1
+ 2299 017c 3F       		.uleb128 0x3f
+ 2300 017d 19       		.uleb128 0x19
+ 2301 017e 03       		.uleb128 0x3
+ 2302 017f 0E       		.uleb128 0xe
+ 2303 0180 3A       		.uleb128 0x3a
+ 2304 0181 0B       		.uleb128 0xb
+ 2305 0182 3B       		.uleb128 0x3b
+ 2306 0183 05       		.uleb128 0x5
+ 2307 0184 27       		.uleb128 0x27
+ 2308 0185 19       		.uleb128 0x19
+ 2309 0186 49       		.uleb128 0x49
+ 2310 0187 13       		.uleb128 0x13
+ 2311 0188 11       		.uleb128 0x11
+ 2312 0189 01       		.uleb128 0x1
+ 2313 018a 12       		.uleb128 0x12
+ 2314 018b 06       		.uleb128 0x6
+ 2315 018c 40       		.uleb128 0x40
+ 2316 018d 18       		.uleb128 0x18
+ 2317 018e 9642     		.uleb128 0x2116
+ 2318 0190 19       		.uleb128 0x19
+ 2319 0191 01       		.uleb128 0x1
+ 2320 0192 13       		.uleb128 0x13
+ 2321 0193 00       		.byte	0
+ 2322 0194 00       		.byte	0
+ 2323 0195 1A       		.uleb128 0x1a
+ 2324 0196 2E       		.uleb128 0x2e
+ 2325 0197 01       		.byte	0x1
+ 2326 0198 3F       		.uleb128 0x3f
+ 2327 0199 19       		.uleb128 0x19
+ 2328 019a 03       		.uleb128 0x3
+ 2329 019b 0E       		.uleb128 0xe
+ 2330 019c 3A       		.uleb128 0x3a
+ 2331 019d 0B       		.uleb128 0xb
+ 2332 019e 3B       		.uleb128 0x3b
+ 2333 019f 05       		.uleb128 0x5
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 51
+
+
+ 2334 01a0 27       		.uleb128 0x27
+ 2335 01a1 19       		.uleb128 0x19
+ 2336 01a2 11       		.uleb128 0x11
+ 2337 01a3 01       		.uleb128 0x1
+ 2338 01a4 12       		.uleb128 0x12
+ 2339 01a5 06       		.uleb128 0x6
+ 2340 01a6 40       		.uleb128 0x40
+ 2341 01a7 18       		.uleb128 0x18
+ 2342 01a8 9642     		.uleb128 0x2116
+ 2343 01aa 19       		.uleb128 0x19
+ 2344 01ab 00       		.byte	0
+ 2345 01ac 00       		.byte	0
+ 2346 01ad 00       		.byte	0
+ 2347              		.section	.debug_aranges,"",%progbits
+ 2348 0000 94000000 		.4byte	0x94
+ 2349 0004 0200     		.2byte	0x2
+ 2350 0006 00000000 		.4byte	.Ldebug_info0
+ 2351 000a 04       		.byte	0x4
+ 2352 000b 00       		.byte	0
+ 2353 000c 0000     		.2byte	0
+ 2354 000e 0000     		.2byte	0
+ 2355 0010 00000000 		.4byte	.LFB35
+ 2356 0014 B4000000 		.4byte	.LFE35-.LFB35
+ 2357 0018 00000000 		.4byte	.LFB36
+ 2358 001c 5C000000 		.4byte	.LFE36-.LFB36
+ 2359 0020 00000000 		.4byte	.LFB37
+ 2360 0024 20000000 		.4byte	.LFE37-.LFB37
+ 2361 0028 00000000 		.4byte	.LFB38
+ 2362 002c 34000000 		.4byte	.LFE38-.LFB38
+ 2363 0030 00000000 		.4byte	.LFB39
+ 2364 0034 3A000000 		.4byte	.LFE39-.LFB39
+ 2365 0038 00000000 		.4byte	.LFB40
+ 2366 003c 96000000 		.4byte	.LFE40-.LFB40
+ 2367 0040 00000000 		.4byte	.LFB41
+ 2368 0044 32000000 		.4byte	.LFE41-.LFB41
+ 2369 0048 00000000 		.4byte	.LFB42
+ 2370 004c 58000000 		.4byte	.LFE42-.LFB42
+ 2371 0050 00000000 		.4byte	.LFB43
+ 2372 0054 C0000000 		.4byte	.LFE43-.LFB43
+ 2373 0058 00000000 		.4byte	.LFB44
+ 2374 005c 76000000 		.4byte	.LFE44-.LFB44
+ 2375 0060 00000000 		.4byte	.LFB45
+ 2376 0064 66000000 		.4byte	.LFE45-.LFB45
+ 2377 0068 00000000 		.4byte	.LFB46
+ 2378 006c 84000000 		.4byte	.LFE46-.LFB46
+ 2379 0070 00000000 		.4byte	.LFB47
+ 2380 0074 62000000 		.4byte	.LFE47-.LFB47
+ 2381 0078 00000000 		.4byte	.LFB48
+ 2382 007c 58000000 		.4byte	.LFE48-.LFB48
+ 2383 0080 00000000 		.4byte	.LFB49
+ 2384 0084 34000000 		.4byte	.LFE49-.LFB49
+ 2385 0088 00000000 		.4byte	.LFB50
+ 2386 008c 6E000000 		.4byte	.LFE50-.LFB50
+ 2387 0090 00000000 		.4byte	0
+ 2388 0094 00000000 		.4byte	0
+ 2389              		.section	.debug_ranges,"",%progbits
+ 2390              	.Ldebug_ranges0:
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 52
+
+
+ 2391 0000 00000000 		.4byte	.LFB35
+ 2392 0004 B4000000 		.4byte	.LFE35
+ 2393 0008 00000000 		.4byte	.LFB36
+ 2394 000c 5C000000 		.4byte	.LFE36
+ 2395 0010 00000000 		.4byte	.LFB37
+ 2396 0014 20000000 		.4byte	.LFE37
+ 2397 0018 00000000 		.4byte	.LFB38
+ 2398 001c 34000000 		.4byte	.LFE38
+ 2399 0020 00000000 		.4byte	.LFB39
+ 2400 0024 3A000000 		.4byte	.LFE39
+ 2401 0028 00000000 		.4byte	.LFB40
+ 2402 002c 96000000 		.4byte	.LFE40
+ 2403 0030 00000000 		.4byte	.LFB41
+ 2404 0034 32000000 		.4byte	.LFE41
+ 2405 0038 00000000 		.4byte	.LFB42
+ 2406 003c 58000000 		.4byte	.LFE42
+ 2407 0040 00000000 		.4byte	.LFB43
+ 2408 0044 C0000000 		.4byte	.LFE43
+ 2409 0048 00000000 		.4byte	.LFB44
+ 2410 004c 76000000 		.4byte	.LFE44
+ 2411 0050 00000000 		.4byte	.LFB45
+ 2412 0054 66000000 		.4byte	.LFE45
+ 2413 0058 00000000 		.4byte	.LFB46
+ 2414 005c 84000000 		.4byte	.LFE46
+ 2415 0060 00000000 		.4byte	.LFB47
+ 2416 0064 62000000 		.4byte	.LFE47
+ 2417 0068 00000000 		.4byte	.LFB48
+ 2418 006c 58000000 		.4byte	.LFE48
+ 2419 0070 00000000 		.4byte	.LFB49
+ 2420 0074 34000000 		.4byte	.LFE49
+ 2421 0078 00000000 		.4byte	.LFB50
+ 2422 007c 6E000000 		.4byte	.LFE50
+ 2423 0080 00000000 		.4byte	0
+ 2424 0084 00000000 		.4byte	0
+ 2425              		.section	.debug_line,"",%progbits
+ 2426              	.Ldebug_line0:
+ 2427 0000 64030000 		.section	.debug_str,"MS",%progbits,1
+ 2427      02002A01 
+ 2427      00000201 
+ 2427      FB0E0D00 
+ 2427      01010101 
+ 2428              	.LASF21:
+ 2429 0000 74727565 		.ascii	"true\000"
+ 2429      00
+ 2430              	.LASF37:
+ 2431 0005 54656D70 		.ascii	"Temp_Write\000"
+ 2431      5F577269 
+ 2431      746500
+ 2432              	.LASF48:
+ 2433 0010 44533138 		.ascii	"DS18B20.c\000"
+ 2433      4232302E 
+ 2433      6300
+ 2434              	.LASF2:
+ 2435 001a 5F5F7569 		.ascii	"__uint8_t\000"
+ 2435      6E74385F 
+ 2435      7400
+ 2436              	.LASF3:
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 53
+
+
+ 2437 0024 5F5F696E 		.ascii	"__int16_t\000"
+ 2437      7431365F 
+ 2437      7400
+ 2438              	.LASF15:
+ 2439 002e 666C6F61 		.ascii	"float\000"
+ 2439      7400
+ 2440              	.LASF46:
+ 2441 0034 76616C75 		.ascii	"value\000"
+ 2441      6500
+ 2442              	.LASF22:
+ 2443 003a 626F6F6C 		.ascii	"bool\000"
+ 2443      00
+ 2444              	.LASF30:
+ 2445 003f 54656D70 		.ascii	"Temp_ReadScratchPad\000"
+ 2445      5F526561 
+ 2445      64536372 
+ 2445      61746368 
+ 2445      50616400 
+ 2446              	.LASF38:
+ 2447 0053 62797465 		.ascii	"byte\000"
+ 2447      00
+ 2448              	.LASF23:
+ 2449 0058 72657472 		.ascii	"retries\000"
+ 2449      69657300 
+ 2450              	.LASF32:
+ 2451 0060 66705465 		.ascii	"fpTemperature\000"
+ 2451      6D706572 
+ 2451      61747572 
+ 2451      6500
+ 2452              	.LASF20:
+ 2453 006e 66616C73 		.ascii	"false\000"
+ 2453      6500
+ 2454              	.LASF10:
+ 2455 0074 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2455      206C6F6E 
+ 2455      6720756E 
+ 2455      7369676E 
+ 2455      65642069 
+ 2456              	.LASF43:
+ 2457 008b 54656D70 		.ascii	"Temp_SetDriveMode\000"
+ 2457      5F536574 
+ 2457      44726976 
+ 2457      654D6F64 
+ 2457      6500
+ 2458              	.LASF49:
+ 2459 009d 433A5C55 		.ascii	"C:\\Users\\megan\\Google Drive\\College\\S11 - Spri"
+ 2459      73657273 
+ 2459      5C6D6567 
+ 2459      616E5C47 
+ 2459      6F6F676C 
+ 2460 00cb 6E672032 		.ascii	"ng 2018\\ECEN 4990\\Github\\ECEN4990-CapstoneII\\Ca"
+ 2460      3031385C 
+ 2460      4543454E 
+ 2460      20343939 
+ 2460      305C4769 
+ 2461 00fa 7073746F 		.ascii	"pstoneII\\PeripheralBLE.cydsn\000"
+ 2461      6E654949 
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 54
+
+
+ 2461      5C506572 
+ 2461      69706865 
+ 2461      72616C42 
+ 2462              	.LASF1:
+ 2463 0117 756E7369 		.ascii	"unsigned char\000"
+ 2463      676E6564 
+ 2463      20636861 
+ 2463      7200
+ 2464              	.LASF28:
+ 2465 0125 54656D70 		.ascii	"Temp_GetTempF\000"
+ 2465      5F476574 
+ 2465      54656D70 
+ 2465      4600
+ 2466              	.LASF8:
+ 2467 0133 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2467      20756E73 
+ 2467      69676E65 
+ 2467      6420696E 
+ 2467      7400
+ 2468              	.LASF35:
+ 2469 0145 61646472 		.ascii	"addr\000"
+ 2469      00
+ 2470              	.LASF47:
+ 2471 014a 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2471      43313120 
+ 2471      352E342E 
+ 2471      31203230 
+ 2471      31363036 
+ 2472 017d 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2472      20726576 
+ 2472      6973696F 
+ 2472      6E203233 
+ 2472      37373135 
+ 2473 01b0 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2473      66756E63 
+ 2473      74696F6E 
+ 2473      2D736563 
+ 2473      74696F6E 
+ 2474              	.LASF50:
+ 2475 01d8 54656D70 		.ascii	"Temp_WritePin\000"
+ 2475      5F577269 
+ 2475      74655069 
+ 2475      6E00
+ 2476              	.LASF5:
+ 2477 01e6 5F5F7569 		.ascii	"__uint16_t\000"
+ 2477      6E743136 
+ 2477      5F7400
+ 2478              	.LASF16:
+ 2479 01f1 646F7562 		.ascii	"double\000"
+ 2479      6C6500
+ 2480              	.LASF29:
+ 2481 01f8 73637261 		.ascii	"scratchPad\000"
+ 2481      74636850 
+ 2481      616400
+ 2482              	.LASF34:
+ 2483 0203 54656D70 		.ascii	"Temp_CRC\000"
+ 2483      5F435243 
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 55
+
+
+ 2483      00
+ 2484              	.LASF33:
+ 2485 020c 54656D70 		.ascii	"Temp_RawToFahrenheit\000"
+ 2485      5F526177 
+ 2485      546F4661 
+ 2485      6872656E 
+ 2485      68656974 
+ 2486              	.LASF11:
+ 2487 0221 756E7369 		.ascii	"unsigned int\000"
+ 2487      676E6564 
+ 2487      20696E74 
+ 2487      00
+ 2488              	.LASF17:
+ 2489 022e 63686172 		.ascii	"char\000"
+ 2489      00
+ 2490              	.LASF12:
+ 2491 0233 75696E74 		.ascii	"uint8_t\000"
+ 2491      385F7400 
+ 2492              	.LASF41:
+ 2493 023b 54656D70 		.ascii	"Temp_WriteBit\000"
+ 2493      5F577269 
+ 2493      74654269 
+ 2493      7400
+ 2494              	.LASF25:
+ 2495 0249 54656D70 		.ascii	"Temp_ROMSkip\000"
+ 2495      5F524F4D 
+ 2495      536B6970 
+ 2495      00
+ 2496              	.LASF31:
+ 2497 0256 54656D70 		.ascii	"Temp_CalculateTemperature\000"
+ 2497      5F43616C 
+ 2497      63756C61 
+ 2497      74655465 
+ 2497      6D706572 
+ 2498              	.LASF13:
+ 2499 0270 696E7431 		.ascii	"int16_t\000"
+ 2499      365F7400 
+ 2500              	.LASF45:
+ 2501 0278 54656D70 		.ascii	"Temp_ReadPin\000"
+ 2501      5F526561 
+ 2501      6450696E 
+ 2501      00
+ 2502              	.LASF19:
+ 2503 0285 73697A65 		.ascii	"sizetype\000"
+ 2503      74797065 
+ 2503      00
+ 2504              	.LASF27:
+ 2505 028e 54656D70 		.ascii	"Temp_Reset\000"
+ 2505      5F526573 
+ 2505      657400
+ 2506              	.LASF9:
+ 2507 0299 6C6F6E67 		.ascii	"long long int\000"
+ 2507      206C6F6E 
+ 2507      6720696E 
+ 2507      7400
+ 2508              	.LASF26:
+ 2509 02a7 54656D70 		.ascii	"Temp_RequestTemp\000"
+ARM GAS  C:\Users\megan\AppData\Local\Temp\cclXT6oC.s 			page 56
+
+
+ 2509      5F526571 
+ 2509      75657374 
+ 2509      54656D70 
+ 2509      00
+ 2510              	.LASF24:
+ 2511 02b8 54656D70 		.ascii	"Temp_ROMSelect\000"
+ 2511      5F524F4D 
+ 2511      53656C65 
+ 2511      637400
+ 2512              	.LASF39:
+ 2513 02c7 6269744D 		.ascii	"bitMask\000"
+ 2513      61736B00 
+ 2514              	.LASF4:
+ 2515 02cf 73686F72 		.ascii	"short int\000"
+ 2515      7420696E 
+ 2515      7400
+ 2516              	.LASF14:
+ 2517 02d9 75696E74 		.ascii	"uint16_t\000"
+ 2517      31365F74 
+ 2517      00
+ 2518              	.LASF44:
+ 2519 02e2 6D6F6465 		.ascii	"mode\000"
+ 2519      00
+ 2520              	.LASF40:
+ 2521 02e7 54656D70 		.ascii	"Temp_Read\000"
+ 2521      5F526561 
+ 2521      6400
+ 2522              	.LASF42:
+ 2523 02f1 54656D70 		.ascii	"Temp_ReadBit\000"
+ 2523      5F526561 
+ 2523      64426974 
+ 2523      00
+ 2524              	.LASF7:
+ 2525 02fe 6C6F6E67 		.ascii	"long int\000"
+ 2525      20696E74 
+ 2525      00
+ 2526              	.LASF36:
+ 2527 0307 696E6279 		.ascii	"inbyte\000"
+ 2527      746500
+ 2528              	.LASF18:
+ 2529 030e 6C6F6E67 		.ascii	"long double\000"
+ 2529      20646F75 
+ 2529      626C6500 
+ 2530              	.LASF0:
+ 2531 031a 7369676E 		.ascii	"signed char\000"
+ 2531      65642063 
+ 2531      68617200 
+ 2532              	.LASF6:
+ 2533 0326 73686F72 		.ascii	"short unsigned int\000"
+ 2533      7420756E 
+ 2533      7369676E 
+ 2533      65642069 
+ 2533      6E7400
+ 2534              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
