@@ -10,11 +10,12 @@
  * ========================================
 */
 #include <project.h>
+#include <DS18B20.h>
 
 void StackEventHandler( uint32 eventCode, void *eventParam );
 void BLEConnect();
 void BLEStayConnected();
-void UpdateTemp(uint8_t temperature);
+void BLEUpdateTemp(uint8_t temperature);
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL 0x40030008
@@ -98,9 +99,21 @@ void BLEStayConnected() {
     
     CyBle_ProcessEvents();
     
-    //testing write
-    CyDelay(2000);
-    UpdateTemp(i++);
+//    //testing BLE write
+//    CyDelay(2000);
+//    BLEUpdateTemp(i++);
+    
+    // testing temp
+    CyDelay(500);
+//    if (Temp_Reset(1)) LED_GREEN_Write(0);
+//    Temp_WritePin(1,0);
+//    CyDelay(100);
+//    Temp_WritePin(1,1);
+    CyDelay(100);
+    Temp_RequestTemp(1);
+    while (Temp_ReadBit(1) == 0) LED_GREEN_Write(0);
+    LED_GREEN_Write(1);
+    
     
     while(1) {
         ble_state = CyBle_GetState();
@@ -120,7 +133,7 @@ void BLEStayConnected() {
     }
 }
 
-void UpdateTemp(uint8_t temperature) {
+void BLEUpdateTemp(uint8_t temperature) {
     
     CYBLE_GATT_ERR_CODE_T gattResult;
     CYBLE_GATT_HANDLE_VALUE_PAIR_T handleValuePair;

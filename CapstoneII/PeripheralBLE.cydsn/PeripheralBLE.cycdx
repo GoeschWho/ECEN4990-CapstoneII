@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
-  <block name="C_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="L_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="BLE_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="or_lfclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="cy_constant_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -9,12 +7,16 @@
     <block name="cy_m0s8_ble" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="bless_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   </block>
-  <block name="GND_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="GND_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="SW_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="GND_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="L_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWR_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="LED1_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GND_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SW_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="C_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GND_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="cy_boot" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Temp2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="cy_lfclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="DMAC" BASE="0x0" SIZE="0x0" desc="DMAC Registers" visible="true" hidden="false">
     <register name="DMAC_CH_CTL17" address="0x40000000" bitWidth="32" desc="DMA channel 17 control register" hidden="true">
       <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="Channel enable control." hidden="false">
@@ -1394,16 +1396,16 @@
       <field name="CURR_DATA_NR" from="15" to="0" access="RW" resetVal="" desc="Specifies the index of the current data transfer. This value increases from 0 to CONTROL.DATA_NR. HW sets this field: &#xA; - When a descriptor is done (RESPONSE is DONE), the field is set to '0' when PING_CTL.INV_DESCR is '0' and the field is set to PING_CTL.DATA_NR when PING_CTL.INV_DESCR is '1'.                                                                 &#xA; - When a descriptor is not done (RESPONSE is NO_ERROR), the field reflects the progress of a data transfer.                                                                 &#xA; - In case of erroneous behavior (RESPONSE is neither DONE or NO_ERROR), the field is not updated, but keeps its value to ease debugging.                                                                 &#xA; HW only modifies this field for an active descriptor (STATUS.VALID to be '1'). At descriptor initialization, SW should set this field to '0'.                                                                 &#xA; This field allows software to read the progress of the data transfer. Note that SRC.ADDR and DST.ADDR represent base addresses and are not modified during data transfer. However, STATUS.CURR_DATA_NR is modified during data transfer and provides an offset wrt. the base addresses." hidden="false" />
     </register>
   </block>
-  <block name="cy_lfclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="ADC_ONOFF" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="PWR_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="R_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="LED_RED" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="SW_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="LED1_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="R_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Temp1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="ADC_ONOFF" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GND_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="PWR_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED1_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_GREEN" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="R_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="GND_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="ADC_In" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="ADC_SAR_Seq_1" BASE="0x0" SIZE="0x0" desc="Sequencing SAR ADC" visible="true" hidden="false">
     <block name="cy_analog_noconnect_31" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="cy_analog_noconnect_32" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -1808,14 +1810,14 @@
       <field name="WOUND_RESOLUTION" from="1" to="0" access="R" resetVal="" desc="Maximum SAR resolution allowed" hidden="false" />
     </register>
   </block>
-  <block name="ADC_In" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GND_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Battery" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="LED_GREEN" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="SW_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="SW_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SW_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SW_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="SW_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="LED_BLUE" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="LED1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="PWR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_BLUE" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="R_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
 </blockRegMap>

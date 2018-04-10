@@ -57,6 +57,14 @@
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\ADC_ONOFF.h" value="HEADER;;;;;ADC_ONOFF" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\ADC_ONOFF_aliases.h" value="HEADER;;;;;ADC_ONOFF" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\ADC_ONOFF_PM.c" value="SOURCE_C;CortexM0;;;;ADC_ONOFF" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\Temp1.c" value="SOURCE_C;CortexM0;;;;Temp1" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\Temp1.h" value="HEADER;;;;;Temp1" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\Temp1_aliases.h" value="HEADER;;;;;Temp1" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\Temp1_PM.c" value="SOURCE_C;CortexM0;;;;Temp1" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\Temp2.c" value="SOURCE_C;CortexM0;;;;Temp2" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\Temp2.h" value="HEADER;;;;;Temp2" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\Temp2_aliases.h" value="HEADER;;;;;Temp2" />
+  <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\Temp2_PM.c" value="SOURCE_C;CortexM0;;;;Temp2" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\ADC_SAR_Seq_1_IRQ.c" value="SOURCE_C;CortexM0;;;;ADC_SAR_Seq_1_IRQ" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\ADC_SAR_Seq_1_IRQ.h" value="HEADER;;;;;ADC_SAR_Seq_1_IRQ" />
   <file name="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\codegentemp\ADC_SAR_Seq_1_intClock.c" value="SOURCE_C;CortexM0;;;;ADC_SAR_Seq_1_intClock" />

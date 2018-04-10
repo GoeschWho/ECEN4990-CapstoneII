@@ -1,6 +1,6 @@
 (DELAYFILE
  (SDFVERSION "IEEE 1497 4.0")
- (DATE "2018-04-08T16:37:49Z")
+ (DATE "2018-04-10T01:08:39Z")
  (DESIGN "PeripheralBLE")
  (VENDOR "Cypress Semiconductor")
  (PROGRAM "PSoC Creator")
@@ -22,6 +22,8 @@
     (INTERCONNECT LED_BLUE\(0\)_PAD LED_BLUE\(0\).pad_in (0.000:0.000:0.000))
     (INTERCONNECT LED_RED\(0\)_PAD LED_RED\(0\).pad_in (0.000:0.000:0.000))
     (INTERCONNECT ADC_ONOFF\(0\)_PAD ADC_ONOFF\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Temp1\(0\)_PAD Temp1\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Temp2\(0\)_PAD Temp2\(0\).pad_in (0.000:0.000:0.000))
    )
   )
  )
