@@ -40,6 +40,7 @@ void LCDInitDemo();
 void LCDTouchscreenDemo();
 void GUISplashscreen();
 void GUIInit();
+void GUIUpdateBin1ActualTemp();
 void GUITest();
 void TempReceive(Bin * bin, uint8_t * fl_bytes);
 void PrintInt(uint8_t n);
@@ -62,8 +63,14 @@ uint8_t                                 fl_temp_bytes[4];
 uint8_t                                 byte = 0;
 Bin                                     bin1;
 
+
+
 int main()
 {
+    // Defaults
+    bin1.actual_temp = 0;
+    
+    
     CyGlobalIntEnable;   /* Enable global interrupts */
     
     /*  LCD Setup   */
@@ -74,7 +81,8 @@ int main()
     //LCDTouchscreenDemo();
     //RegReadTest();
     //GUITest();
-    GUISplashscreen();
+    
+    //GUISplashscreen();
     GUIInit();
     
     /* BLE Setup    */
@@ -428,30 +436,80 @@ void GUIInit() {
     
     //------ Declarations ------//
     // LCD Strings
-    char welcome1[] = "Seed Bin Climate";
-    char welcome2[] = "Control System";
-    char welcome3[] = "Goesch Agronomy Services, Inc.";
-    char welcome4[] = "v1";
+    char banner[] = "Seed Bin Climate Control System";
+    char modes[] = "Modes";
+    char info[] = "Info";
+    char outside[] = "Outside";
+    char binno1[] = "Bin #1";
+    
+    int scr_width = 800;
+    int scr_height = 480;
     
     //------ Procedure ------//
     
-    // Screen Fade-In
-    PWM1out(0);
+    // Background
+    PWM1out(255);
     fillScreen(RA8875_WHITE);
-    for (int i = 0; i < 256; i++) {
-        PWM1out(i);
-        CyDelay(1);
-    }
-    
-    // Company Info
     textMode();
-    fillRect(75,85,650,175,RA8875_BLUE);
     
+    // Banner
+    fillRect(20,20,
+            scr_width-40,50,
+            RA8875_CYAN);
+    textEnlarge(2);
+    textTransparent(RA8875_WHITE);
+    textSetCursor(25,18);
+    textWrite(banner,strlen(banner));
+    
+    // Modes
+    fillRect(20,70,
+            scr_width/3-40,scr_height/2+50,
+            RA8875_BLACK);
     textEnlarge(3);
     textTransparent(RA8875_WHITE);
-    // Seed Bin Climate
-    textSetCursor(100, 100);
-    textWrite(welcome1,strlen(welcome1));
+    textSetCursor(50,70);
+    textWrite(modes,strlen(modes));
+    
+    // Info
+    fillRect(20,scr_height/2+120,
+            scr_width/3-40,scr_height/2-140,
+            RA8875_BLUE);
+    textEnlarge(3);
+    textTransparent(RA8875_WHITE);
+    textSetCursor(60,scr_height/2+135);
+    textWrite(info,strlen(info));
+    
+    // Outside
+    fillRect(scr_width/3-20,70,
+            scr_width/3,scr_height-90,
+            RA8875_GREEN);
+    textEnlarge(3);
+    textTransparent(RA8875_WHITE);
+    textSetCursor(scr_width/3,70);
+    textWrite(outside,strlen(outside));
+    
+    // Bin1
+    fillRect(2*scr_width/3-20,70,
+            scr_width/3,scr_height-90,
+            RA8875_RED);
+    textEnlarge(3);
+    textTransparent(RA8875_WHITE);
+    textSetCursor(2*scr_width/3+20,70);
+    textWrite(binno1,strlen(binno1));
+    
+    // Bin1 Temp
+    GUIUpdateBin1ActualTemp();
+//    
+}
+
+void GUIUpdateBin1ActualTemp() {
+    
+    int scr_width = 800;
+
+    textEnlarge(4);
+    textColor(RA8875_WHITE,RA8875_RED);
+    textSetCursor(2*scr_width/3+50,170);
+    PrintFloat(bin1.actual_temp);
 }
 
 void GUITest() {
@@ -487,7 +545,7 @@ void TempReceive(Bin * bin, uint8_t * fl_bytes) {
     bin->actual_temp = *(float32*)(fl_bytes);
     
     // Update interface
-    
+    GUIUpdateBin1ActualTemp();
     //PrintFloat(bin->actual_temp);
     //textWrite(space,strlen(space));
 }
