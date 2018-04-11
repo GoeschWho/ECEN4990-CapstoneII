@@ -1,14 +1,15 @@
 /* ========================================
  *
- * Copyright YOUR COMPANY, THE YEAR
+ * Copyright Megan Bird, 2018
  * All Rights Reserved
  * UNPUBLISHED, LICENSED SOFTWARE.
  *
  * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
+ * WHICH IS THE PROPERTY OF Megan Bird.
  *
  * ========================================
 */
+
 #include <project.h>
 #include <RA8875.h>
 #include <math.h>
@@ -28,13 +29,15 @@ void FanTest();
  CYBLE_CONN_HANDLE_T                     connHandle;
 
 /* define the test register to switch the PA/LNA hardware control pins */
-#define CYREG_SRSS_TST_DDFT_CTRL 0x40030008
+#define CYREG_SRSS_TST_DDFT_CTRL        0x40030008
 
 /* Global Variables */
-#define CYBLE_MAX_ADV_DEVICES 255
+#define CYBLE_MAX_ADV_DEVICES           255
 
-CYBLE_GAP_BD_ADDR_T peerAddr[CYBLE_MAX_ADV_DEVICES];
-uint8 DevicesNearBy = 0;
+CYBLE_GAP_BD_ADDR_T                     peerAddr[CYBLE_MAX_ADV_DEVICES];
+uint8                                   DevicesNearBy = 0;
+uint8_t                                 fl_temp_bytes[4];
+uint8_t                                 byte = 0;
 
 int main()
 {
@@ -80,12 +83,13 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
     CYBLE_GAPC_ADV_REPORT_T                 advReport;
     CYBLE_GATTC_READ_BY_TYPE_REQ_T          readByTypeReqParam;
     CYBLE_GATTC_READ_BY_TYPE_RSP_PARAM_T    readResponse;
+    CYBLE_GATTC_HANDLE_VALUE_NTF_PARAM_T    notificationData;
     CYBLE_GATT_ATTR_HANDLE_RANGE_T          range;
     CYBLE_UUID_T                            uuid;
     CYBLE_API_RESULT_T                      apiResult;
    
     uint8                                   i;
-    uint8_t fl_bytes[4];
+    uint8_t                                 fl_bytes[4];
     
     
     switch( eventCode )
@@ -162,33 +166,37 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
             
             readResponse = *(CYBLE_GATTC_READ_BY_TYPE_RSP_PARAM_T *) eventParam;
             
-            textWrite(dataLength,strlen(dataLength));
-            PrintInt(readResponse.attrData.length - 2);
+            //textWrite(dataLength,strlen(dataLength));
+            //PrintInt(readResponse.attrData.length - 2);
             
-            textSetCursor(100,200);
-            textEnlarge(10);
-               
             for( i=2 ; i < readResponse.attrData.length; i++)
             {
                 PrintInt(readResponse.attrData.attrValue[i]);
                 textWrite(space,strlen(space));
                 
                 fl_bytes[i-2] = readResponse.attrData.attrValue[i];
-                
-                //PrintInt(readResponse.attrData.attrValue[2]);
-                //PrintFloat(readResponse.attrData.attrValue[2]);
             }
             
             // convert 4 bytes to float
-            PrintFloat( *(float32*)(fl_bytes) );
+            //PrintFloat( *(float32*)(fl_bytes) );
             
         break;
                 
         case CYBLE_EVT_GATTC_HANDLE_VALUE_NTF:
                 
-            textWrite(notification,strlen(notification));
-                
-            apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
+            //textWrite(notification,strlen(notification));
+            
+            notificationData = *(CYBLE_GATTC_HANDLE_VALUE_NTF_PARAM_T *) eventParam;
+            
+            fl_temp_bytes[byte++] = * notificationData.handleValPair.value.val;
+
+            // convert 4 bytes to float
+            if (byte == 4) {
+                PrintFloat( *(float32*)(fl_temp_bytes) );
+                textWrite(space,strlen(space));  
+                byte = 0;
+            }
+            //apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
                 
         break;
             

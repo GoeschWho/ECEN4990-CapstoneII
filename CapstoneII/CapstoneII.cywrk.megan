@@ -233,6 +233,52 @@
 <VisibleNodeIds>
 <v>CapstoneII</v>
 <v>CapstoneII\CentralBLE</v>
+<v>CapstoneII\CentralBLE\CortexM0</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_bless_isr.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_custom.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_eventHandler.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_gatt.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_HAL_INT.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_HAL_PVT.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\FAN1.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\FAN1_PM.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\FAN2.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\FAN2_PM.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\FAN3.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\FAN3_PM.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCD_int.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCD_int_PM.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_BOOT.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_miso_m.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_miso_m_PM.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_mosi_m.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_mosi_m_PM.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_PM.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_SCB_IRQ.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_SCBCLK.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_sclk_m.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_sclk_m_PM.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_SPI.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_SPI_BOOT.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_SPI_UART.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_SPI_UART_INT.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_ss0_m.lst</v>
+<v>CapstoneII\CentralBLE\CortexM0\ARM_GCC_541\Debug\Listing Files\LCDSPI_ss0_m_PM.lst</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>
@@ -356,13 +402,10 @@
 <Unloaded />
 <OpenDocs>
 <name v=".\PeripheralBLE.cydsn\main.c" />
+<name v=".\PeripheralBLE.cydsn\DS18B20.c" />
+<name v=".\PeripheralBLE.cydsn\DS18B20.h" />
 <name v=".\PeripheralBLE.cydsn\TopDesign\TopDesign.cysch" />
-<name v=".\CentralBLE.cydsn\TopDesign\TopDesign.cysch" />
-<name v=".\CentralBLE.cydsn\CentralBLE.cydwr" />
 <name v=".\CentralBLE.cydsn\main.c" />
-<name v=".\CentralBLE.cydsn\Generated_Source\PSoC4\BLE_1_gatt.c" />
-<name v=".\PeripheralBLE.cydsn\Generated_Source\PSoC4\BLE_1_custom.h" />
-<name v=".\PeripheralBLE.cydsn\Generated_Source\PSoC4\BLE_1_StackGatt.h" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -370,7 +413,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1570, 682" SelectedTabbedMdiWindow="ac93f38e-bbd5-4494-b872-d396c760f516"><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\main.c" Guid="ac93f38e-bbd5-4494-b872-d396c760f516" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\TopDesign\TopDesign.cysch" Guid="4e391a92-dae5-43da-b29b-28c5cc67248f" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\TopDesign\TopDesign.cysch" Guid="3b94fb9c-d565-4c00-906e-0c1cc6872146" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\CentralBLE.cydwr" Guid="faf51931-02c0-490e-a526-8f89938daa1d" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\main.c" Guid="9466d1ed-67a3-41da-9aba-66021c339406" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\Generated_Source\PSoC4\BLE_1_gatt.c" Guid="ec75d120-a6ac-42f1-b225-3088b2d78707" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\Generated_Source\PSoC4\BLE_1_custom.h" Guid="9f46946e-25ca-4d4a-af9b-8d6fa02f5100" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\Generated_Source\PSoC4\BLE_1_StackGatt.h" Guid="3525a0ca-9540-4b85-bd1e-c4016f0005fd" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="7426ed57-6c80-436e-ac6f-d2ceb0a319c3" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1570, 682" SelectedTabbedMdiWindow="ac93f38e-bbd5-4494-b872-d396c760f516"><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\main.c" Guid="ac93f38e-bbd5-4494-b872-d396c760f516" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\DS18B20.c" Guid="4726fd4e-2ff9-4751-a66d-03f0d63bda0d" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\DS18B20.h" Guid="e5747aa1-635c-4d8d-b460-9b32480644c5" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\TopDesign\TopDesign.cysch" Guid="f7fa6017-bd3f-4a86-b90c-c42e83234f2f" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\main.c" Guid="7455a8ac-e809-427d-8f04-508d933cc5d3" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

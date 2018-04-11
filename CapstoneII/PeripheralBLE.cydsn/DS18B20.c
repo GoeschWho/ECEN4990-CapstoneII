@@ -1,11 +1,11 @@
 /* ========================================
  *
- * Copyright YOUR COMPANY, THE YEAR
+ * Copyright Megan Bird, 2018
  * All Rights Reserved
  * UNPUBLISHED, LICENSED SOFTWARE.
  *
  * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
+ * WHICH IS THE PROPERTY OF Megan Bird.
  *
  * ========================================
 */
@@ -137,7 +137,8 @@ void Temp_RequestTemp(uint8_t n) {
 /* ------------------------------------------------------------
  * Function: Temp_GetTempF
  * ------------------------------------------------------------
- * Description: Returns the current temperature in Fahrenheit
+ * Description: Returns the current temperature in Fahrenheit.
+ *              Rereads the scratchpad until the CRC passes.
  * 
  * Parameters:  Sensor number
  * 
@@ -146,10 +147,15 @@ void Temp_RequestTemp(uint8_t n) {
 */
 float32 Temp_GetTempF(uint8_t n) {
     
-    uint8_t scratchPad[8];
+    uint8_t scratchPad[9];
+    uint8_t crc;
+    bool crc_passes = false;
     
-    
-    Temp_ReadScratchPad(n,scratchPad);
+    while (!crc_passes) {
+        Temp_ReadScratchPad(n,scratchPad);
+        crc = Temp_CRC(scratchPad);
+        crc_passes = (Temp_CRC(scratchPad) == scratchPad[8]) ? true : false;
+    }
     return Temp_RawToFahrenheit(Temp_CalculateTemperature(scratchPad));
 }
 
@@ -250,9 +256,18 @@ int16_t Temp_CalculateTemperature(uint8_t* scratchPad) {
 float32 Temp_RawToFahrenheit(uint16_t raw) {
     
     return ((float) raw * 0.0140625) + 32;
-    //return (float) (raw * 0.0078125 * 1.8) + 32;
 }
 
+/* ------------------------------------------------------------
+ * Function: Temp_CRC
+ * ------------------------------------------------------------
+ * Description: Computes the scratchpad CRC
+ * 
+ * Parameters:  Scratchpad
+ * 
+ * Returns:     CRC value
+ * ------------------------------------------------------------
+*/
 uint8_t Temp_CRC(uint8_t* scratchPad) {
 
 	uint8_t crc = 0;

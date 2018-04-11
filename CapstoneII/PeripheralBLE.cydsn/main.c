@@ -1,14 +1,15 @@
 /* ========================================
  *
- * Copyright YOUR COMPANY, THE YEAR
+ * Copyright Megan Bird, 2018
  * All Rights Reserved
  * UNPUBLISHED, LICENSED SOFTWARE.
  *
  * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
+ * WHICH IS THE PROPERTY OF Megan Bird.
  *
  * ========================================
 */
+
 #include <project.h>
 #include <DS18B20.h>
 #include <math.h>
@@ -16,31 +17,38 @@
 void StackEventHandler( uint32 eventCode, void *eventParam );
 void BLEConnect();
 void BLEStayConnected();
-void BLEUpdateTemp(float32 temperature);
+void BLEUpdateDBTemp(float32 temperature);
+void UpdateTemp(uint8_t n);
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL 0x40030008
 
 int main()
 {
+    uint16_t i = 0;
      CyGlobalIntEnable;   /* Enable global interrupts */
 
     /*  BLE SETUP   */
     CyBle_Start( StackEventHandler );
-    //BLEConnect();
     
     for(;;)
     {
-        /* Place your application code here */
         CyBle_ProcessEvents();
         
+        // Advertise if disconnected
         BLEStayConnected();
+        
+        // Update temperature value
+        if (i++ == 0) {
+            UpdateTemp(1);
+        }
+        else if (i > 20000) {
+            i = 0;
+        }
     }
 }
 
-
-void StackEventHandler( uint32 eventCode, void *eventParam )
-{
+void StackEventHandler( uint32 eventCode, void *eventParam ) {
     
     switch( eventCode )
     {
@@ -96,98 +104,56 @@ void BLEStayConnected() {
    
     CYBLE_API_RESULT_T apiResult;
     CYBLE_STATE_T ble_state;
-    uint8_t i = 0;
-    
-    //temp
-    uint8_t scratchPad[9];
-    int16_t raw;
-    float32 fltemp;
-    uint8_t temp;
-    bool crc_passed = false;
-    uint8_t crc;
-    
     
     CyBle_ProcessEvents();
     
-//    //testing BLE write
-//    CyDelay(2000);
-//    BLEUpdateTemp(i++);
-    
-    // testing temp
-//    if (Temp_Reset(1)) LED_GREEN_Write(0);
-    CyDelay(1000);
-    while (!crc_passed) {
-        Temp_RequestTemp(1);
-        while (Temp_ReadBit(1) == 0) LED_GREEN_Write(0);
-        LED_GREEN_Write(1);    
-    
-        Temp_ReadScratchPad(1,scratchPad);
-        crc = Temp_CRC(scratchPad);
-        crc_passed = (Temp_CRC(scratchPad) == scratchPad[8]) ? true : false;
+    ble_state = CyBle_GetState();
+    if (ble_state == CYBLE_STATE_CONNECTED ) {
+        LED_BLUE_Write(0);  
+        //LED_GREEN_Write(1);
     }
-    LED_GREEN_Write(0);    
-    
-    raw = Temp_CalculateTemperature(scratchPad);
-    fltemp = Temp_RawToFahrenheit(raw);
-    
-//    fltemp = Temp_GetTempF(1);
-    //temp = (uint8_t) fltemp;
-    //temp = (uint8_t) roundf(fltemp);
-    //raw = (uint8_t) fltemp;
-    BLEUpdateTemp(fltemp);
-    
-    while(1) {
-        ble_state = CyBle_GetState();
-        if (ble_state == CYBLE_STATE_CONNECTED ) {
-            LED_BLUE_Write(0);  
-            LED_GREEN_Write(1);
-        }
-        else {
-            LED_BLUE_Write(1);
-            apiResult = CyBle_GappStartAdvertisement( CYBLE_ADVERTISING_FAST );
-            CyBle_ProcessEvents();
-//            if (apiResult == CYBLE_ERROR_OK ) {
-//                LED_GREEN_Write(0);   
-//            }
-        }
+    else {
+        LED_BLUE_Write(1);
+        apiResult = CyBle_GappStartAdvertisement( CYBLE_ADVERTISING_FAST );
         CyBle_ProcessEvents();
+        if (apiResult == CYBLE_ERROR_OK ) {
+            //LED_GREEN_Write(0);   
+        }
     }
+    CyBle_ProcessEvents();
 }
 
-void BLEUpdateTemp(float32 temperature) {
+void BLEUpdateDBTemp(float32 temperature) {
     
-    CYBLE_GATT_ERR_CODE_T gattResult;
     CYBLE_GATT_HANDLE_VALUE_PAIR_T handleValuePair;
     CYBLE_GATT_VALUE_T value;
     CYBLE_GATT_DB_ATTR_HANDLE_T attrHandle;
-    //uint8_t *temp;
-    
     uint8_t bytes[sizeof(float32)];
     
     // Temp Characteristic Settings
-//    temp = &temperature;
-//    gattResult = 0;
-//    value.val = temp;
-//    value.len = sizeof(*temp);
-    
     *(float*)(bytes) = temperature;
-    
     value.len = 1;
-    
     attrHandle = 0x0012;
     handleValuePair.attrHandle = attrHandle;
     handleValuePair.value = value;
     
-    
     for (uint8_t i = 0; i < 4; i++) {
         handleValuePair.value.val = &bytes[i];
-        gattResult = CyBle_GattsWriteAttributeValue(&handleValuePair,i,NULL,CYBLE_GATT_DB_LOCALLY_INITIATED);
+        CyBle_GattsWriteAttributeValue(&handleValuePair,i,NULL,CYBLE_GATT_DB_LOCALLY_INITIATED);
+        CyBle_GattsNotification(cyBle_connHandle,&handleValuePair);
     }
-//    LED_GREEN_Write(1);
-//    if (gattResult == 13u) {
-//        LED_GREEN_Write(0);
-//    }  
+}
+
+void UpdateTemp(uint8_t n) {
     
+    float32 fltemp;
+    
+    
+    Temp_RequestTemp(n);
+    while (Temp_ReadBit(1) == 0) LED_GREEN_Write(0);
+    LED_GREEN_Write(1);    
+    fltemp = Temp_GetTempF(1);
+    BLEUpdateDBTemp(fltemp);
 }
             
 /* [] END OF FILE */
