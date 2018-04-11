@@ -15,18 +15,40 @@
 #include <math.h>
 
 /*  Declarations    */
+typedef struct Bin {
+    float32 actual_temp;
+    uint8_t set_temp;
+    bool    fan_on;
+} Bin;
+
+struct Outside {
+    float32 temp;
+} outside;
+
+typedef enum Mode {
+    manual,
+    automatic
+} Mode;
+
+struct Settings {
+    Mode   mode;
+} settings;
+
 void StackEventHandler( uint32 eventCode, void *eventParam );
 void LCDInit(void);
 void LCDInitDemo();
 void LCDTouchscreenDemo();
+void GUISplashscreen();
 void GUIInit();
+void GUITest();
+void TempReceive(Bin * bin, uint8_t * fl_bytes);
 void PrintInt(uint8_t n);
 void PrintFloat(float n);
 void RegReadTest();
 void BLEConnect();
 void FanTest();
 
- CYBLE_CONN_HANDLE_T                     connHandle;
+ //CYBLE_CONN_HANDLE_T                     connHandle;
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL        0x40030008
@@ -38,6 +60,7 @@ CYBLE_GAP_BD_ADDR_T                     peerAddr[CYBLE_MAX_ADV_DEVICES];
 uint8                                   DevicesNearBy = 0;
 uint8_t                                 fl_temp_bytes[4];
 uint8_t                                 byte = 0;
+Bin                                     bin1;
 
 int main()
 {
@@ -50,6 +73,8 @@ int main()
     //LCDInitDemo();
     //LCDTouchscreenDemo();
     //RegReadTest();
+    //GUITest();
+    GUISplashscreen();
     GUIInit();
     
     /* BLE Setup    */
@@ -127,7 +152,7 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
         case CYBLE_EVT_GATT_CONNECT_IND:
   
              /* Retrieve BLE connection handle */
-             connHandle = *(CYBLE_CONN_HANDLE_T *) eventParam;
+             //connHandle = *(CYBLE_CONN_HANDLE_T *) eventParam;
             
          break;
             
@@ -156,10 +181,7 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
             
 //            if ( apiResult == CYBLE_ERROR_OK )
 //                textWrite(ok,strlen(ok));
-//            else if ( apiResult == CYBLE_ERROR_INVALID_PARAMETER )
-//                textWrite(param,strlen(param));
-//            else if ( apiResult == CYBLE_ERROR_INVALID_OPERATION )
-//                textWrite(operation,strlen(operation));
+
         break;
         
         case CYBLE_EVT_GATTC_READ_BY_TYPE_RSP:
@@ -171,14 +193,17 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
             
             for( i=2 ; i < readResponse.attrData.length; i++)
             {
-                PrintInt(readResponse.attrData.attrValue[i]);
-                textWrite(space,strlen(space));
+                //PrintInt(readResponse.attrData.attrValue[i]);
+                //textWrite(space,strlen(space));
                 
                 fl_bytes[i-2] = readResponse.attrData.attrValue[i];
             }
             
             // convert 4 bytes to float
-            //PrintFloat( *(float32*)(fl_bytes) );
+           // PrintFloat( *(float32*)(fl_bytes) );
+            //if (readResponse.connHandle.bdHandle == 0x0012) {
+            TempReceive(&bin1,fl_bytes);
+            //}
             
         break;
                 
@@ -192,16 +217,19 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
 
             // convert 4 bytes to float
             if (byte == 4) {
-                PrintFloat( *(float32*)(fl_temp_bytes) );
-                textWrite(space,strlen(space));  
+                //PrintFloat( *(float32*)(fl_temp_bytes) );
+                //textWrite(space,strlen(space));  
+                
+                //if (readResponse.connHandle.bdHandle == 0x0012) {
+                    TempReceive(&bin1,fl_temp_bytes);
+                //}
+                
                 byte = 0;
             }
-            //apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
                 
         break;
             
         /* default catch-all case */
-
         default:
         break;    
     }
@@ -351,7 +379,82 @@ void LCDTouchscreenDemo() {
     }
 }
 
+void GUISplashscreen() {
+    
+    //------ Declarations ------//
+    // LCD Strings
+    char welcome1[] = "Seed Bin Climate";
+    char welcome2[] = "Control System";
+    char welcome3[] = "Goesch Agronomy Services, Inc.";
+    char welcome4[] = "v1";
+    
+    //------ Procedure ------//
+    
+    // Screen Fade-In
+    PWM1out(0);
+    fillScreen(RA8875_WHITE);
+    for (int i = 0; i < 256; i++) {
+        PWM1out(i);
+        CyDelay(1);
+    }
+    
+    // Company Info
+    textMode();
+    fillRect(75,85,650,175,RA8875_BLUE);
+    
+    textEnlarge(3);
+    textTransparent(RA8875_WHITE);
+    // Seed Bin Climate
+    textSetCursor(100, 100);
+    textWrite(welcome1,strlen(welcome1));
+    // Control System
+    textSetCursor(100, 175);
+    textWrite(welcome2,strlen(welcome2));
+    // Goesch Agronomy Services, Inc
+    textEnlarge(2);
+    textTransparent(RA8875_GREEN);
+    textSetCursor(75, 325);
+    textWrite(welcome3,strlen(welcome3));
+    // v1
+    textEnlarge(1);
+    textTransparent(RA8875_BLACK);
+    textSetCursor(750, 430);
+    textWrite(welcome4,strlen(welcome4));
+    
+    CyDelay(3000);
+}
+
 void GUIInit() {
+    
+    //------ Declarations ------//
+    // LCD Strings
+    char welcome1[] = "Seed Bin Climate";
+    char welcome2[] = "Control System";
+    char welcome3[] = "Goesch Agronomy Services, Inc.";
+    char welcome4[] = "v1";
+    
+    //------ Procedure ------//
+    
+    // Screen Fade-In
+    PWM1out(0);
+    fillScreen(RA8875_WHITE);
+    for (int i = 0; i < 256; i++) {
+        PWM1out(i);
+        CyDelay(1);
+    }
+    
+    // Company Info
+    textMode();
+    fillRect(75,85,650,175,RA8875_BLUE);
+    
+    textEnlarge(3);
+    textTransparent(RA8875_WHITE);
+    // Seed Bin Climate
+    textSetCursor(100, 100);
+    textWrite(welcome1,strlen(welcome1));
+}
+
+void GUITest() {
     
     //------ Declarations ------/
     // LCD Strings
@@ -373,6 +476,20 @@ void GUIInit() {
     textTransparent(RA8875_BLUE); 
 //    PrintInt(255);
 //    textSetCursor(100, 200);
+}
+
+void TempReceive(Bin * bin, uint8_t * fl_bytes) {
+    
+    char space[] = " ";
+    
+    
+    // Store value
+    bin->actual_temp = *(float32*)(fl_bytes);
+    
+    // Update interface
+    
+    //PrintFloat(bin->actual_temp);
+    //textWrite(space,strlen(space));
 }
 
 void PrintInt(uint8_t n) {
@@ -397,7 +514,9 @@ void PrintInt(uint8_t n) {
 
 void PrintFloat(float n) {
     
+    char negative[] = "-";
     char dot[] = ".";
+    
     
     // Extract integer part
     int ipart = (int) n;
@@ -406,6 +525,10 @@ void PrintFloat(float n) {
     float fpart = n - (float) ipart;
     
     // Convert integer part to string
+    if (ipart < 0) {
+        textWrite(negative,strlen(negative));
+        ipart *= -1;
+    }
     PrintInt(ipart);
     
     // Display 1 digit after decimal point
