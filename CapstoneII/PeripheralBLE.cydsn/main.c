@@ -41,6 +41,7 @@ int main()
         // Update temperature value
         if (i++ == 0) {
             UpdateTemp(1);
+            UpdateTemp(2);
         }
         else if (i > 20000) {
             i = 0;
@@ -154,9 +155,9 @@ void UpdateTemp(uint8_t n) {
     
     
     Temp_RequestTemp(n);
-    while (Temp_ReadBit(1) == 0) LED_GREEN_Write(0);
+    while (Temp_ReadBit(n) == 0) LED_GREEN_Write(0);
     LED_GREEN_Write(1);    
-    fltemp = Temp_GetTempF(1);
+    fltemp = Temp_GetTempF(n);
     BLEUpdateDBTemp(n,fltemp);
 }
             

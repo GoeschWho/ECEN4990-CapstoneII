@@ -403,6 +403,7 @@
 <Unloaded />
 <OpenDocs>
 <name v=".\CentralBLE.cydsn\main.c" />
+<name v=".\PeripheralBLE.cydsn\main.c" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -410,7 +411,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1570, 682" SelectedTabbedMdiWindow="7455a8ac-e809-427d-8f04-508d933cc5d3"><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\main.c" Guid="7455a8ac-e809-427d-8f04-508d933cc5d3" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1570, 682" SelectedTabbedMdiWindow="7455a8ac-e809-427d-8f04-508d933cc5d3"><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\CentralBLE.cydsn\main.c" Guid="7455a8ac-e809-427d-8f04-508d933cc5d3" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="7426ed57-6c80-436e-ac6f-d2ceb0a319c3" /><DocumentWindow Key="C:\Users\megan\Google Drive\College\S11 - Spring 2018\ECEN 4990\Github\ECEN4990-CapstoneII\CapstoneII\PeripheralBLE.cydsn\main.c" Guid="631ea332-53ca-48d6-b3a2-ed9d264e4c50" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

@@ -55,6 +55,7 @@ void PrintFloat(float n);
 void RegReadTest();
 void BLEStayConnected();
 void FanTest();
+void FanUpdate();
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL        0x40030008
@@ -100,6 +101,7 @@ int main()
     {
         BLEStayConnected();
         LCDCheckTouch();
+        FanUpdate();
         CyBle_ProcessEvents();
     }
 }
@@ -550,10 +552,10 @@ void GUIInit() {
     textMode();
     
     // Controls
-//    fillRect(scr_width/3-20,scr_height/2+120,
-//            2*scr_width/3,scr_height/2-140,
-//            RA8875_YELLOW);
-    
+    fillRect(scr_width/3-20,scr_height/2+120,
+            2*scr_width/3,scr_height/2-140,
+            RA8875_YELLOW);    
+
     GUIUpdateControls();
     
     // Enable touch
@@ -649,9 +651,9 @@ void GUIUpdateOutsideTemp() {
 void GUIUpdateControls() {
     
     // LCD Strings
-    char fans[] = "Fans";
     char on[] = "ON";
     char off[] = "OFF";
+    char fans[] = "Fans";
     
     int scr_width = 800;
     int scr_height = 480;
@@ -662,7 +664,7 @@ void GUIUpdateControls() {
     // Controls
     fillRect(scr_width/3-20,scr_height/2+120,
             2*scr_width/3,scr_height/2-140,
-            RA8875_YELLOW);    
+            RA8875_YELLOW); 
     
     if (settings.mode == MANUAL) {
         textEnlarge(3);
@@ -717,6 +719,9 @@ void GUITouchHandler(uint16_t *tx, uint16_t *ty) {
     uint16_t x = *tx/xScale;
     uint16_t y = *ty/yScale;
     
+    int scr_width = 800;
+    int scr_height = 480;
+    
     
     // MODES
     // Manual button
@@ -734,7 +739,21 @@ void GUITouchHandler(uint16_t *tx, uint16_t *ty) {
         }
     }    
     
-    // Manual Fan
+    // FAN
+    // Off
+    else if (x > scr_width/3+180 && x < scr_width/3+300 && y > scr_height/2+135 && y < scr_height/2+205 && settings.mode == MANUAL) {
+        if (bin1.fan_on != false) {
+            bin1.fan_on = false;
+            GUIUpdateControls();
+        }
+    }
+    // On
+    else if (x > 2*scr_width/3+80 && x < 2*scr_width/3+200 && y > scr_height/2+135 && y < scr_height/2+205 && settings.mode == MANUAL) {
+        if (bin1.fan_on != true) {
+            bin1.fan_on = true;
+            GUIUpdateControls();
+        }
+    }
 }
 
 void GUITest() {
@@ -901,6 +920,15 @@ void FanTest() {
         FAN2_Write(0);
         FAN3_Write(0);
         CyDelay(1000);
+    }
+}
+
+void FanUpdate() {
+    
+    if (bin1.fan_on == true) {
+        FAN1_Write(1);
+    } else {
+        FAN1_Write(0);
     }
 }
             
