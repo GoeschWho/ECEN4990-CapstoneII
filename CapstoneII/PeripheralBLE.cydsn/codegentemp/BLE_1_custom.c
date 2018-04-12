@@ -30,14 +30,25 @@ const CYBLE_CUSTOMS_T cyBle_customs[0x01u] = {
         0x0010u, /* Handle of the My Service service */ 
         {
 
-            /* Temperature characteristic */
+            /* Temp1 characteristic */
             {
-                0x0012u, /* Handle of the Temperature characteristic */ 
+                0x0012u, /* Handle of the Temp1 characteristic */ 
                 
                 /* Array of Descriptors handles */
                 {
                     0x0013u, /* Handle of the Custom Descriptor descriptor */ 
                     0x0014u, /* Handle of the Client Characteristic Configuration descriptor */ 
+                }, 
+            },
+
+            /* Temp2 characteristic */
+            {
+                0x0016u, /* Handle of the Temp2 characteristic */ 
+                
+                /* Array of Descriptors handles */
+                {
+                    0x0017u, /* Handle of the Custom Descriptor descriptor */ 
+                    0x0018u, /* Handle of the Client Characteristic Configuration descriptor */ 
                 }, 
             },
         }, 

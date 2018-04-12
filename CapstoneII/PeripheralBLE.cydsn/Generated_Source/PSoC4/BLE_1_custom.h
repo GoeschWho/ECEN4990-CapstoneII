@@ -26,21 +26,28 @@
 /* Maximum supported Custom Services */
 #define CYBLE_CUSTOMS_SERVICE_COUNT                  (0x01u)
 #define CYBLE_CUSTOMC_SERVICE_COUNT                  (0x00u)
-#define CYBLE_CUSTOM_SERVICE_CHAR_COUNT              (0x01u)
+#define CYBLE_CUSTOM_SERVICE_CHAR_COUNT              (0x02u)
 #define CYBLE_CUSTOM_SERVICE_CHAR_DESCRIPTORS_COUNT  (0x02u)
 
 /* Below are the indexes and handles of the defined Custom Services and their characteristics */
 #define CYBLE_MY_SERVICE_SERVICE_INDEX   (0x00u) /* Index of My Service service in the cyBle_customs array */
-#define CYBLE_MY_SERVICE_TEMPERATURE_CHAR_INDEX   (0x00u) /* Index of Temperature characteristic */
-#define CYBLE_MY_SERVICE_TEMPERATURE_CUSTOM_DESCRIPTOR_DESC_INDEX   (0x00u) /* Index of Custom Descriptor descriptor */
-#define CYBLE_MY_SERVICE_TEMPERATURE_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX   (0x01u) /* Index of Client Characteristic Configuration descriptor */
+#define CYBLE_MY_SERVICE_TEMP1_CHAR_INDEX   (0x00u) /* Index of Temp1 characteristic */
+#define CYBLE_MY_SERVICE_TEMP1_CUSTOM_DESCRIPTOR_DESC_INDEX   (0x00u) /* Index of Custom Descriptor descriptor */
+#define CYBLE_MY_SERVICE_TEMP1_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX   (0x01u) /* Index of Client Characteristic Configuration descriptor */
+#define CYBLE_MY_SERVICE_TEMP2_CHAR_INDEX   (0x01u) /* Index of Temp2 characteristic */
+#define CYBLE_MY_SERVICE_TEMP2_CUSTOM_DESCRIPTOR_DESC_INDEX   (0x00u) /* Index of Custom Descriptor descriptor */
+#define CYBLE_MY_SERVICE_TEMP2_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX   (0x01u) /* Index of Client Characteristic Configuration descriptor */
 
 
 #define CYBLE_MY_SERVICE_SERVICE_HANDLE   (0x0010u) /* Handle of My Service service */
-#define CYBLE_MY_SERVICE_TEMPERATURE_DECL_HANDLE   (0x0011u) /* Handle of Temperature characteristic declaration */
-#define CYBLE_MY_SERVICE_TEMPERATURE_CHAR_HANDLE   (0x0012u) /* Handle of Temperature characteristic */
-#define CYBLE_MY_SERVICE_TEMPERATURE_CUSTOM_DESCRIPTOR_DESC_HANDLE   (0x0013u) /* Handle of Custom Descriptor descriptor */
-#define CYBLE_MY_SERVICE_TEMPERATURE_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_HANDLE   (0x0014u) /* Handle of Client Characteristic Configuration descriptor */
+#define CYBLE_MY_SERVICE_TEMP1_DECL_HANDLE   (0x0011u) /* Handle of Temp1 characteristic declaration */
+#define CYBLE_MY_SERVICE_TEMP1_CHAR_HANDLE   (0x0012u) /* Handle of Temp1 characteristic */
+#define CYBLE_MY_SERVICE_TEMP1_CUSTOM_DESCRIPTOR_DESC_HANDLE   (0x0013u) /* Handle of Custom Descriptor descriptor */
+#define CYBLE_MY_SERVICE_TEMP1_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_HANDLE   (0x0014u) /* Handle of Client Characteristic Configuration descriptor */
+#define CYBLE_MY_SERVICE_TEMP2_DECL_HANDLE   (0x0015u) /* Handle of Temp2 characteristic declaration */
+#define CYBLE_MY_SERVICE_TEMP2_CHAR_HANDLE   (0x0016u) /* Handle of Temp2 characteristic */
+#define CYBLE_MY_SERVICE_TEMP2_CUSTOM_DESCRIPTOR_DESC_HANDLE   (0x0017u) /* Handle of Custom Descriptor descriptor */
+#define CYBLE_MY_SERVICE_TEMP2_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_HANDLE   (0x0018u) /* Handle of Client Characteristic Configuration descriptor */
 
 
 

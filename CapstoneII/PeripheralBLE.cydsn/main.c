@@ -17,7 +17,7 @@
 void StackEventHandler( uint32 eventCode, void *eventParam );
 void BLEConnect();
 void BLEStayConnected();
-void BLEUpdateDBTemp(float32 temperature);
+void BLEUpdateDBTemp(uint8_t n, float32 temperature);
 void UpdateTemp(uint8_t n);
 
 /* define the test register to switch the PA/LNA hardware control pins */
@@ -123,7 +123,7 @@ void BLEStayConnected() {
     CyBle_ProcessEvents();
 }
 
-void BLEUpdateDBTemp(float32 temperature) {
+void BLEUpdateDBTemp(uint8_t n, float32 temperature) {
     
     CYBLE_GATT_HANDLE_VALUE_PAIR_T handleValuePair;
     CYBLE_GATT_VALUE_T value;
@@ -133,7 +133,11 @@ void BLEUpdateDBTemp(float32 temperature) {
     // Temp Characteristic Settings
     *(float*)(bytes) = temperature;
     value.len = 1;
-    attrHandle = 0x0012;
+    if (n == 1) {
+        attrHandle = 0x0012;
+    } else if (n == 2){
+        attrHandle = 0x0016;
+    }
     handleValuePair.attrHandle = attrHandle;
     handleValuePair.value = value;
     
@@ -153,7 +157,7 @@ void UpdateTemp(uint8_t n) {
     while (Temp_ReadBit(1) == 0) LED_GREEN_Write(0);
     LED_GREEN_Write(1);    
     fltemp = Temp_GetTempF(1);
-    BLEUpdateDBTemp(fltemp);
+    BLEUpdateDBTemp(n,fltemp);
 }
             
 /* [] END OF FILE */
