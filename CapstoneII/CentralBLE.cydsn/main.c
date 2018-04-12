@@ -39,12 +39,14 @@ void StackEventHandler( uint32 eventCode, void *eventParam );
 void LCDInit(void);
 void LCDInitDemo();
 void LCDTouchscreenDemo();
+void LCDCheckTouch();
 void GUISplashscreen();
 void GUIInit();
 void GUIUpdateBin1ActualTemp();
 void GUIUpdateOutsideTemp();
 void GUIUpdateMode();
 void GUIUpdateControls();
+void GUITouchHandler(uint16_t *tx, uint16_t *ty);
 void GUITest();
 void TempReceive(Bin * bin, uint8_t * fl_bytes);
 void TempOutsideReceive(uint8_t * fl_bytes);
@@ -83,8 +85,9 @@ int main()
     //RegReadTest();
     //GUITest();
     
-    //GUISplashscreen();
+    GUISplashscreen();
     GUIInit();
+    //LCDTouchscreenDemo();
     
     /* BLE Setup    */
     CyBle_Start( StackEventHandler );
@@ -96,6 +99,7 @@ int main()
     for(;;)
     {
         BLEStayConnected();
+        LCDCheckTouch();
         CyBle_ProcessEvents();
     }
 }
@@ -274,6 +278,8 @@ void LCDInit() {
     PWM1out(255);
     
     LCD_int_Write(1u); 
+    
+    touchEnable(true);
 }
 
 void LCDInitDemo() {
@@ -372,7 +378,8 @@ void LCDTouchscreenDemo() {
     yScale = 1024.0F/height();
     
     touchRead(&tx, &ty);
-
+    //textMode();
+    //graphicsMode();
     
     //------ Wait for touch ------//
     //CyDelay(10);
@@ -399,6 +406,25 @@ void LCDTouchscreenDemo() {
 //            //tx = 0x0000;
 //            //ty = 0x0000;
 //        }
+    }
+}
+
+void LCDCheckTouch() {
+    
+    uint16_t tx;
+    uint16_t ty;
+    float xScale = 1024.0F/width();
+    float yScale = 1024.0F/height();
+    
+
+    //touchEnable(true);
+    //touchRead(&tx, &ty);
+    if (!LCD_int_Read()) {
+        if (touched()) {
+            touchRead(&tx,&ty);
+            //fillCircle((uint16_t)(tx/xScale), (uint16_t)(ty/yScale), 4, RA8875_WHITE);
+            GUITouchHandler(&tx,&ty);
+        }
     }
 }
 
@@ -488,6 +514,7 @@ void GUIInit() {
     textWrite(modes,strlen(modes));
     
     GUIUpdateMode();
+    textMode();
     
     // Info
     fillRect(20,scr_height/2+120,
@@ -508,6 +535,7 @@ void GUIInit() {
     textWrite(outside,strlen(outside));
     
     GUIUpdateOutsideTemp();
+    textMode();
     
     // Bin1
     fillRect(2*scr_width/3-20,70,
@@ -519,6 +547,7 @@ void GUIInit() {
     textWrite(binno1,strlen(binno1));
     
     GUIUpdateBin1ActualTemp();
+    textMode();
     
     // Controls
 //    fillRect(scr_width/3-20,scr_height/2+120,
@@ -526,14 +555,33 @@ void GUIInit() {
 //            RA8875_YELLOW);
     
     GUIUpdateControls();
+    
+    // Enable touch
+    graphicsMode();
 }
 
 void GUIUpdateMode() {
     
     // LCD Strings
+    char modes[] = "Modes";
     char manual[] = "Manual";
     char automatic[] = "Auto";
     
+    int scr_width = 800;
+    int scr_height = 480;
+    
+    textMode();
+//    fillRect(20,70,
+//            scr_width/3-40,scr_height/2+50,
+//            RA8875_BLACK);
+//    textEnlarge(3);
+//    textTransparent(RA8875_WHITE);
+//    textSetCursor(50,70);
+//    textWrite(modes,strlen(modes));
+    
+    fillRect(20,150,
+            scr_width/3-40,200,
+            RA8875_BLACK);
     
     if (settings.mode == MANUAL) {
         fillRect(40,170,
@@ -565,18 +613,22 @@ void GUIUpdateMode() {
         textSetCursor(80,275);
         textWrite(automatic,strlen(automatic));
     }
+    GUIUpdateControls();
+    graphicsMode();
 }
 
 void GUIUpdateBin1ActualTemp() {
     
     char space[] = " ";
     int scr_width = 800;
-
+    
+    textMode();
     textEnlarge(4);
     textColor(RA8875_WHITE,RA8875_RED);
     textSetCursor(2*scr_width/3+50,170);
     PrintFloat(bin1.actual_temp);
     textWrite(space,strlen(space));
+    graphicsMode();
 }
 
 void GUIUpdateOutsideTemp() {
@@ -584,11 +636,14 @@ void GUIUpdateOutsideTemp() {
     char space[] = " ";
     int scr_width = 800;
 
+    
+    textMode();
     textEnlarge(4);
     textColor(RA8875_WHITE,RA8875_CYAN);
     textSetCursor(scr_width/3+50,170);
     PrintFloat(outside.temp);
     textWrite(space,strlen(space));
+    graphicsMode();
 }
 
 void GUIUpdateControls() {
@@ -600,6 +655,9 @@ void GUIUpdateControls() {
     
     int scr_width = 800;
     int scr_height = 480;
+    
+    
+    textMode();
     
     // Controls
     fillRect(scr_width/3-20,scr_height/2+120,
@@ -648,6 +706,35 @@ void GUIUpdateControls() {
     else if (settings.mode == AUTOMATIC) {
           
     }
+    graphicsMode();
+}
+
+void GUITouchHandler(uint16_t *tx, uint16_t *ty) {
+    
+    float xScale = 1024.0F/width();
+    float yScale = 1024.0F/height();
+    
+    uint16_t x = *tx/xScale;
+    uint16_t y = *ty/yScale;
+    
+    
+    // MODES
+    // Manual button
+    if (x > 40 && x < 170 && y > 170 && y < 230) {
+        if (settings.mode != MANUAL) {
+            settings.mode = MANUAL;
+            GUIUpdateMode();
+        }
+    }
+    // Auto button
+    else if (x > 40 && x < 270 && y > 170 && y < 330) {
+        if (settings.mode != AUTOMATIC) {
+            settings.mode = AUTOMATIC;
+            GUIUpdateMode();
+        }
+    }    
+    
+    // Manual Fan
 }
 
 void GUITest() {
