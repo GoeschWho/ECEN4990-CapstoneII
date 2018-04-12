@@ -26,14 +26,15 @@ struct Outside {
 } outside;
 
 typedef enum Mode {
-    manual,
-    automatic
+    MANUAL,
+    AUTOMATIC
 } Mode;
 
 struct Settings {
     Mode   mode;
 } settings;
 
+void DefaultValues();
 void StackEventHandler( uint32 eventCode, void *eventParam );
 void LCDInit(void);
 void LCDInitDemo();
@@ -41,8 +42,12 @@ void LCDTouchscreenDemo();
 void GUISplashscreen();
 void GUIInit();
 void GUIUpdateBin1ActualTemp();
+void GUIUpdateOutsideTemp();
+void GUIUpdateMode();
+void GUIUpdateControls();
 void GUITest();
 void TempReceive(Bin * bin, uint8_t * fl_bytes);
+void TempOutsideReceive(uint8_t * fl_bytes);
 void PrintInt(uint8_t n);
 void PrintFloat(float n);
 void RegReadTest();
@@ -95,6 +100,19 @@ int main()
     }
 }
 
+void DefaultValues() {
+    
+    // Settings
+    settings.mode = MANUAL;
+    
+    // Outside
+    outside.temp = 0;
+    
+    // Bin1
+    bin1.actual_temp = 0;
+    bin1.set_temp = 0;
+    bin1.fan_on = false;
+}
 
 void StackEventHandler( uint32 eventCode, void *eventParam ) {
     
@@ -168,20 +186,20 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
         case CYBLE_EVT_GATTC_DISCOVERY_COMPLETE:
            // printf("\r\nDiscovery complete.\r\n");
             
-            range.startHandle   = 0x0001;
-            range.endHandle     = 0xFFFF;
-            uuid.uuid16         = 0x14BF; 
-   
-            readByTypeReqParam.range = range;
-            readByTypeReqParam.uuid = uuid;
-            readByTypeReqParam.uuidFormat = 0x01;
+//            range.startHandle   = 0x0001;
+//            range.endHandle     = 0xFFFF;
+//            uuid.uuid16         = 0x14BF; 
+//   
+//            readByTypeReqParam.range = range;
+//            readByTypeReqParam.uuid = uuid;
+//            readByTypeReqParam.uuidFormat = 0x01;
             
             //textWrite(serviceCount,strlen(serviceCount));
             //PrintInt(CYBLE_SRVI_COUNT);
             
             //apiResult = CyBle_GattcDiscoverAllCharacteristics(connHandle, range);
    
-            apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
+            //apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
             
 //            if ( apiResult == CYBLE_ERROR_OK )
 //                textWrite(ok,strlen(ok));
@@ -203,10 +221,11 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
                 fl_bytes[i-2] = readResponse.attrData.attrValue[i];
             }
             
-            // convert 4 bytes to float
-           // PrintFloat( *(float32*)(fl_bytes) );
             if (notificationData.handleValPair.attrHandle == 0x0012) {
-                    TempReceive(&bin1,fl_temp_bytes);
+                    TempReceive(&bin1,fl_bytes);
+            }
+            else if (notificationData.handleValPair.attrHandle == 0x0016) {
+                TempOutsideReceive(fl_bytes);
             }
             
         break;
@@ -434,6 +453,8 @@ void GUIInit() {
     // LCD Strings
     char banner[] = "Seed Bin Climate Control System";
     char modes[] = "Modes";
+    char manual[] = "Manual";
+    char automatic[] = "Auto";
     char info[] = "Info";
     char outside[] = "Outside";
     char binno1[] = "Bin #1";
@@ -451,7 +472,7 @@ void GUIInit() {
     // Banner
     fillRect(20,20,
             scr_width-40,50,
-            RA8875_CYAN);
+            RA8875_GREEN);
     textEnlarge(2);
     textTransparent(RA8875_WHITE);
     textSetCursor(25,18);
@@ -466,6 +487,8 @@ void GUIInit() {
     textSetCursor(50,70);
     textWrite(modes,strlen(modes));
     
+    GUIUpdateMode();
+    
     // Info
     fillRect(20,scr_height/2+120,
             scr_width/3-40,scr_height/2-140,
@@ -478,11 +501,13 @@ void GUIInit() {
     // Outside
     fillRect(scr_width/3-20,70,
             scr_width/3,scr_height/2+50,
-            RA8875_GREEN);
+            RA8875_CYAN);
     textEnlarge(3);
     textTransparent(RA8875_WHITE);
     textSetCursor(scr_width/3,70);
     textWrite(outside,strlen(outside));
+    
+    GUIUpdateOutsideTemp();
     
     // Bin1
     fillRect(2*scr_width/3-20,70,
@@ -493,12 +518,53 @@ void GUIInit() {
     textSetCursor(2*scr_width/3+20,70);
     textWrite(binno1,strlen(binno1));
     
-    // Bin1 Temp
     GUIUpdateBin1ActualTemp();
     
-    // Settings
-    //scr_height/2+120
-//    
+    // Controls
+//    fillRect(scr_width/3-20,scr_height/2+120,
+//            2*scr_width/3,scr_height/2-140,
+//            RA8875_YELLOW);
+    
+    GUIUpdateControls();
+}
+
+void GUIUpdateMode() {
+    
+    // LCD Strings
+    char manual[] = "Manual";
+    char automatic[] = "Auto";
+    
+    
+    if (settings.mode == MANUAL) {
+        fillRect(40,170,
+            180,60,
+            RA8875_WHITE);
+        textEnlarge(2);
+        textTransparent(RA8875_BLACK);
+        textSetCursor(60,175);
+        textWrite(manual,strlen(manual));
+        drawRect(40,270,
+                180,60,
+                RA8875_WHITE);
+        textTransparent(RA8875_WHITE);
+        textSetCursor(80,275);
+        textWrite(automatic,strlen(automatic));
+    }  
+    else if (settings.mode == AUTOMATIC) {
+        drawRect(40,170,
+            180,60,
+            RA8875_WHITE);
+        textEnlarge(2);
+        textTransparent(RA8875_WHITE);
+        textSetCursor(60,175);
+        textWrite(manual,strlen(manual));
+        fillRect(40,270,
+                180,60,
+                RA8875_WHITE);
+        textTransparent(RA8875_BLACK);
+        textSetCursor(80,275);
+        textWrite(automatic,strlen(automatic));
+    }
 }
 
 void GUIUpdateBin1ActualTemp() {
@@ -511,6 +577,77 @@ void GUIUpdateBin1ActualTemp() {
     textSetCursor(2*scr_width/3+50,170);
     PrintFloat(bin1.actual_temp);
     textWrite(space,strlen(space));
+}
+
+void GUIUpdateOutsideTemp() {
+    
+    char space[] = " ";
+    int scr_width = 800;
+
+    textEnlarge(4);
+    textColor(RA8875_WHITE,RA8875_CYAN);
+    textSetCursor(scr_width/3+50,170);
+    PrintFloat(outside.temp);
+    textWrite(space,strlen(space));
+}
+
+void GUIUpdateControls() {
+    
+    // LCD Strings
+    char fans[] = "Fans";
+    char on[] = "ON";
+    char off[] = "OFF";
+    
+    int scr_width = 800;
+    int scr_height = 480;
+    
+    // Controls
+    fillRect(scr_width/3-20,scr_height/2+120,
+            2*scr_width/3,scr_height/2-140,
+            RA8875_YELLOW);    
+    
+    if (settings.mode == MANUAL) {
+        textEnlarge(3);
+        textTransparent(RA8875_WHITE);
+        textSetCursor(scr_width/3+10,scr_height/2+135);
+        textWrite(fans,strlen(fans));
+        if (bin1.fan_on == false) {
+            fillRect(scr_width/3+180,scr_height/2+135,
+                    120,70,
+                    RA8875_WHITE);
+            textEnlarge(3);
+            textTransparent(RA8875_YELLOW);
+            textSetCursor(scr_width/3+195,scr_height/2+135);
+            textWrite(off,strlen(off));
+            
+            drawRect(2*scr_width/3+80,scr_height/2+135,
+                    120,70,
+                    RA8875_WHITE);
+            textEnlarge(3);
+            textTransparent(RA8875_WHITE);
+            textSetCursor(2*scr_width/3+110,scr_height/2+135);
+            textWrite(on,strlen(on));
+        } else {
+            drawRect(scr_width/3+180,scr_height/2+135,
+                    120,70,
+                    RA8875_WHITE);
+            textEnlarge(3);
+            textTransparent(RA8875_WHITE);
+            textSetCursor(scr_width/3+195,scr_height/2+135);
+            textWrite(off,strlen(off));
+            
+            fillRect(2*scr_width/3+80,scr_height/2+135,
+                    120,70,
+                    RA8875_WHITE);
+            textEnlarge(3);
+            textTransparent(RA8875_YELLOW);
+            textSetCursor(2*scr_width/3+110,scr_height/2+135);
+            textWrite(on,strlen(on));
+        }        
+    }
+    else if (settings.mode == AUTOMATIC) {
+          
+    }
 }
 
 void GUITest() {
@@ -547,8 +684,18 @@ void TempReceive(Bin * bin, uint8_t * fl_bytes) {
     
     // Update interface
     GUIUpdateBin1ActualTemp();
-    //PrintFloat(bin->actual_temp);
-    //textWrite(space,strlen(space));
+}
+
+void TempOutsideReceive(uint8_t * fl_bytes) {
+    
+    char space[] = " ";
+    
+    
+    // Store value
+    outside.temp = *(float32*)(fl_bytes);
+    
+    // Update interface
+    GUIUpdateOutsideTemp();
 }
 
 void PrintInt(uint8_t n) {
