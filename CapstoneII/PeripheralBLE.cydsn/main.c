@@ -116,8 +116,8 @@ void BLEStayConnected() {
         LED_BLUE_Write(0);  
         //LED_GREEN_Write(1);
     }
-    //else if (ble_state == CYBLE_STATE_DISCONNECTED) {
-    else {
+    else if (ble_state == CYBLE_STATE_DISCONNECTED) {
+    //else {
         LED_BLUE_Write(1);
         apiResult = CyBle_GappStartAdvertisement( CYBLE_ADVERTISING_FAST );
         CyBle_ProcessEvents();
@@ -159,7 +159,10 @@ void UpdateTemp(uint8_t n) {
     
     
     Temp_RequestTemp(n);
-    while (Temp_ReadBit(n) == 0) LED_GREEN_Write(0);
+    while (Temp_ReadBit(n) == 0) {
+        LED_GREEN_Write(0);
+        CyBle_ProcessEvents();
+    }
     LED_GREEN_Write(1);    
     fltemp = Temp_GetTempF(n);
     BLEUpdateDBTemp(n,fltemp);

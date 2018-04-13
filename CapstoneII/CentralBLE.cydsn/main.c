@@ -64,6 +64,7 @@ void FanUpdate();
 /* Global Variables */
 #define CYBLE_MAX_ADV_DEVICES           255
 
+CYBLE_STATE_T                           ble_state;
 CYBLE_GAP_BD_ADDR_T                     peerAddr[CYBLE_MAX_ADV_DEVICES];
 uint8                                   DevicesNearBy = 0;
 uint8_t                                 fl_temp_bytes[4];
@@ -100,6 +101,10 @@ int main()
     
     for(;;)
     {
+        ble_state = CyBle_GetState();
+        if (ble_state == CYBLE_STATE_DISCONNECTED ) {
+            BLEConnect();
+        }
         LCDCheckTouch();
         FanUpdate();
         BLEIndicator();
@@ -228,12 +233,12 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
                 fl_bytes[i-2] = readResponse.attrData.attrValue[i];
             }
             
-            if (notificationData.handleValPair.attrHandle == 0x0012) {
-                TempReceive(&bin1,fl_bytes);
-            }
-            else if (notificationData.handleValPair.attrHandle == 0x0016) {
-                TempOutsideReceive(fl_bytes);
-            }
+//            if (notificationData.handleValPair.attrHandle == 0x0012) {
+//                TempReceive(&bin1,fl_bytes);
+//            }
+//            else if (notificationData.handleValPair.attrHandle == 0x0016) {
+//                TempOutsideReceive(fl_bytes);
+//            }
             
         break;
                 
@@ -505,7 +510,7 @@ void GUIInit() {
             scr_width-40,50,
             RA8875_GREEN);
     textEnlarge(2);
-    textTransparent(RA8875_WHITE);
+    textTransparent(RA8875_BLACK);
     textSetCursor(25,18);
     textWrite(banner,strlen(banner));
     
@@ -535,7 +540,7 @@ void GUIInit() {
             scr_width/3,scr_height/2+50,
             RA8875_CYAN);
     textEnlarge(3);
-    textTransparent(RA8875_WHITE);
+    textTransparent(RA8875_BLACK);
     textSetCursor(scr_width/3,70);
     textWrite(outside,strlen(outside));
     
@@ -547,7 +552,7 @@ void GUIInit() {
             scr_width/3,scr_height/2+50,
             RA8875_RED);
     textEnlarge(3);
-    textTransparent(RA8875_WHITE);
+    textTransparent(RA8875_BLACK);
     textSetCursor(2*scr_width/3+20,70);
     textWrite(binno1,strlen(binno1));
     
@@ -629,7 +634,7 @@ void GUIUpdateBin1ActualTemp() {
     
     textMode();
     textEnlarge(4);
-    textColor(RA8875_WHITE,RA8875_RED);
+    textColor(RA8875_BLACK,RA8875_RED);
     textSetCursor(2*scr_width/3+50,170);
     PrintFloat(bin1.actual_temp);
     textWrite(space,strlen(space));
@@ -644,7 +649,7 @@ void GUIUpdateOutsideTemp() {
     
     textMode();
     textEnlarge(4);
-    textColor(RA8875_WHITE,RA8875_CYAN);
+    textColor(RA8875_BLACK,RA8875_CYAN);
     textSetCursor(scr_width/3+50,170);
     PrintFloat(outside.temp);
     textWrite(space,strlen(space));
@@ -671,13 +676,13 @@ void GUIUpdateControls() {
     
     if (settings.mode == MANUAL) {
         textEnlarge(3);
-        textTransparent(RA8875_WHITE);
+        textTransparent(RA8875_BLACK);
         textSetCursor(scr_width/3+10,scr_height/2+135);
         textWrite(fans,strlen(fans));
         if (bin1.fan_on == false) {
             fillRect(scr_width/3+180,scr_height/2+135,
                     120,70,
-                    RA8875_WHITE);
+                    RA8875_BLACK);
             textEnlarge(3);
             textTransparent(RA8875_YELLOW);
             textSetCursor(scr_width/3+195,scr_height/2+135);
@@ -685,23 +690,23 @@ void GUIUpdateControls() {
             
             drawRect(2*scr_width/3+80,scr_height/2+135,
                     120,70,
-                    RA8875_WHITE);
+                    RA8875_BLACK);
             textEnlarge(3);
-            textTransparent(RA8875_WHITE);
+            textTransparent(RA8875_BLACK);
             textSetCursor(2*scr_width/3+110,scr_height/2+135);
             textWrite(on,strlen(on));
         } else {
             drawRect(scr_width/3+180,scr_height/2+135,
                     120,70,
-                    RA8875_WHITE);
+                    RA8875_BLACK);
             textEnlarge(3);
-            textTransparent(RA8875_WHITE);
+            textTransparent(RA8875_BLACK);
             textSetCursor(scr_width/3+195,scr_height/2+135);
             textWrite(off,strlen(off));
             
             fillRect(2*scr_width/3+80,scr_height/2+135,
                     120,70,
-                    RA8875_WHITE);
+                    RA8875_BLACK);
             textEnlarge(3);
             textTransparent(RA8875_YELLOW);
             textSetCursor(2*scr_width/3+110,scr_height/2+135);
