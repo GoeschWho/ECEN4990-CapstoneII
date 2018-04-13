@@ -1,5 +1,5 @@
 -- Project:   PeripheralBLE
--- Generated: 04/12/2018 07:24:43
+-- Generated: 04/12/2018 17:18:39
 -- PSoC Creator  4.1 Update 1
 
 ENTITY PeripheralBLE IS
@@ -90,7 +90,7 @@ ARCHITECTURE __DEFAULT__ OF PeripheralBLE IS
     ATTRIBUTE lib_model OF ADC_ONOFF(0) : LABEL IS "iocell5";
     ATTRIBUTE Location OF ADC_ONOFF(0) : LABEL IS "P0[5]";
     ATTRIBUTE lib_model OF Temp1(0) : LABEL IS "iocell6";
-    ATTRIBUTE Location OF Temp1(0) : LABEL IS "P2[0]";
+    ATTRIBUTE Location OF Temp1(0) : LABEL IS "P2[6]";
     ATTRIBUTE lib_model OF Temp2(0) : LABEL IS "iocell7";
     ATTRIBUTE Location OF Temp2(0) : LABEL IS "P4[0]";
     ATTRIBUTE Location OF \ADC_SAR_Seq_1:IRQ\ : LABEL IS "[IntrContainer=(0)][IntrId=(15)]";

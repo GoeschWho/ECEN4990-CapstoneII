@@ -2,7 +2,7 @@
 --	Conversion of PeripheralBLE.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Thu Apr 12 07:24:42 2018
+--	Thu Apr 12 17:18:37 2018
 --
 
 USE cypress.cypress.all;

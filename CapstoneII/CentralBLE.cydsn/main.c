@@ -53,7 +53,8 @@ void TempOutsideReceive(uint8_t * fl_bytes);
 void PrintInt(uint8_t n);
 void PrintFloat(float n);
 void RegReadTest();
-void BLEStayConnected();
+void BLEConnect();
+void BLEIndicator();
 void FanTest();
 void FanUpdate();
 
@@ -71,11 +72,10 @@ Bin                                     bin1;
 
 int main()
 {
-    // Defaults
-    bin1.actual_temp = 0;
-    
-    
     CyGlobalIntEnable;   /* Enable global interrupts */
+    
+    // Power LED
+    LED_RED_Write(0);
     
     /*  LCD Setup   */
     LCDInit();
@@ -96,12 +96,13 @@ int main()
     
     /* Fan Test     */
     //FanTest();
+    BLEConnect();
     
     for(;;)
     {
-        BLEStayConnected();
         LCDCheckTouch();
         FanUpdate();
+        BLEIndicator();
         CyBle_ProcessEvents();
     }
 }
@@ -228,7 +229,7 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
             }
             
             if (notificationData.handleValPair.attrHandle == 0x0012) {
-                    TempReceive(&bin1,fl_bytes);
+                TempReceive(&bin1,fl_bytes);
             }
             else if (notificationData.handleValPair.attrHandle == 0x0016) {
                 TempOutsideReceive(fl_bytes);
@@ -252,7 +253,9 @@ void StackEventHandler( uint32 eventCode, void *eventParam ) {
                 if (notificationData.handleValPair.attrHandle == 0x0012) {
                     TempReceive(&bin1,fl_temp_bytes);
                 }
-                
+                else if (notificationData.handleValPair.attrHandle == 0x0016) {
+                    TempOutsideReceive(fl_temp_bytes);
+                }
                 byte = 0;
             }
                 
@@ -869,11 +872,20 @@ void RegReadTest() {
     }  
 }
 
-void BLEStayConnected() {
+void BLEConnect() {
     
      //------ Declarations ------/
+    // LCD Strings
+    char ok[] = "CYBLE_ERROR_OK";
+    char error[] = "CYBLE_ERROR_OCCURED";
+    char param[] = "CYBLE_ERROR_INVALID_PARAMETER";
+    char operation[] = "CYBLE_ERROR_INVALID_OPERATION";
+    char mem[] = "CYBLE_ERROR_MEMORY_ALLOCATION_FAILED";
+    char state[] = "CYBLE_ERROR_INVALID_STATE";
     
     CYBLE_API_RESULT_T                      apiResult;
+    
+//    CYBLE_CONN_HANDLE_T                     connHandle;
     CYBLE_GATT_ATTR_HANDLE_RANGE_T          range;
     CYBLE_UUID_T                            uuid;
     CYBLE_GATTC_READ_BY_TYPE_REQ_T          readByTypeReqParam;
@@ -882,32 +894,105 @@ void BLEStayConnected() {
     CYBLE_API_RESULT_T connect_result;
     CYBLE_STATE_T ble_state;
     
+    //uint8 peripheral_address[6] = "000001";
+    //uint8 peripheral_add_type = 0;
+   // CYBLE_GAP_BD_ADDR_T peripheral_addr = {{0x00,0xA0,0x50,0x00,0x00,0x01}, 0};
     CYBLE_GAP_BD_ADDR_T peripheral_addr = {{0x01,0x00,0x00,0x50,0xA0,0x00}, 0};
-
-    ble_state = CyBle_GetState();
-    if (ble_state == CYBLE_STATE_CONNECTED ) {
-        LED_BLUE_Write(0);   
+    
+    //------ GAP -------//
+    
+    CyBle_ProcessEvents();
+    
+    scan_result = CyBle_GapcStartScan( CYBLE_SCANNING_FAST );
+    if (scan_result == CYBLE_ERROR_OK) {
+          LED_GREEN_Write(0);  
     }
-    else if (ble_state == CYBLE_STATE_DISCONNECTED) {
+    CyBle_ProcessEvents();
+    CyBle_GapcStopScan();
+    CyBle_ProcessEvents();
+//    if (DevicesNearBy == 0) {
+//        LED_BLUE_Write(0);   
+//    }
+//    CyDelay(1000);
+    connect_result = CyBle_GapcConnectDevice( &peripheral_addr );
+    
+    CyBle_ProcessEvents();
+    if (connect_result == CYBLE_ERROR_OK) {
+        LED_BLUE_Write(0); 
+        CyDelay(500);
         LED_BLUE_Write(1);
-        CyBle_ProcessEvents();
-        scan_result = CyBle_GapcStartScan( CYBLE_SCANNING_FAST );
-        if (scan_result == CYBLE_ERROR_OK) {
-              LED_GREEN_Write(0);  
+        CyDelay(500);
+    }
+    
+    //------ GATT ------//
+//    
+//            range.startHandle   = 0x0001;
+//            range.endHandle     = 0xFFFF;
+//            uuid.uuid16         = 0x14BF; 
+//   
+//            readByTypeReqParam.range = range;
+//            readByTypeReqParam.uuid = uuid;
+//            readByTypeReqParam.uuidFormat = 0x01;
+    
+//    connHandle.bdHandle = CYBLE_GAP_MAX_BONDED_DEVICE;
+//    connHandle.attId = 0;
+    
+//    apiResult = CyBle_GattcStartDiscovery(cyBle_connHandle);
+//    
+//     if ( apiResult == CYBLE_ERROR_OK )
+//                textWrite(ok,strlen(ok));
+//    else if ( apiResult == CYBLE_ERROR_INVALID_PARAMETER)
+//        textWrite(param,strlen(param));                                             
+//    else if ( apiResult == CYBLE_ERROR_INVALID_OPERATION) 
+//        textWrite(operation,strlen(operation));
+//    else if ( apiResult == CYBLE_ERROR_MEMORY_ALLOCATION_FAILED) 
+//        textWrite(mem,strlen(mem)); 
+//    else if ( apiResult == CYBLE_ERROR_INVALID_STATE)                       // ERRORING HERE!
+//        textWrite(state,strlen(state)); 
+
+    
+    //while(1) {
+        ble_state = CyBle_GetState();
+        if (ble_state == CYBLE_STATE_CONNECTED ) {
+            LED_BLUE_Write(0);   
+//                        apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
+//                    if ( apiResult == CYBLE_ERROR_OK )
+//                textWrite(ok,strlen(ok));
+//            else if ( apiResult == CYBLE_ERROR_INVALID_PARAMETER )
+//                textWrite(param,strlen(param));
+//            else if ( apiResult == CYBLE_ERROR_INVALID_OPERATION )
+//                textWrite(operation,strlen(operation));
         }
-        CyBle_ProcessEvents();
-        CyBle_GapcStopScan();
-        CyBle_ProcessEvents();
-        connect_result = CyBle_GapcConnectDevice( &peripheral_addr );
-        CyBle_ProcessEvents();
-        if (connect_result == CYBLE_ERROR_OK) {
-            LED_BLUE_Write(0); 
-            CyDelay(500);
+        else {
             LED_BLUE_Write(1);
-            CyDelay(500);
-        }   
+        }
+            
+            
+            //textWrite(serviceCount,strlen(serviceCount));
+            //PrintInt(CYBLE_SRVI_COUNT);
+            
+            //apiResult = CyBle_GattcDiscoverAllCharacteristics(connHandle, range);
+   
+
         CyBle_ProcessEvents();
-    }  
+//        CyDelay(1000);
+    //}
+    
+    
+}
+
+void BLEIndicator() {
+    
+    CYBLE_STATE_T ble_state;
+    
+    
+    ble_state = CyBle_GetState();
+        if (ble_state == CYBLE_STATE_CONNECTED ) {
+            LED_BLUE_Write(0);
+        }
+        else {
+            LED_BLUE_Write(1);
+        }
 }
 
 void FanTest() {

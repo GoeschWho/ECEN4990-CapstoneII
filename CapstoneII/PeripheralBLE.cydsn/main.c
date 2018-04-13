@@ -27,6 +27,9 @@ int main()
 {
     uint16_t i = 0;
      CyGlobalIntEnable;   /* Enable global interrupts */
+    
+    // Power LED
+    LED_RED_Write(0);
 
     /*  BLE SETUP   */
     CyBle_Start( StackEventHandler );
@@ -43,7 +46,7 @@ int main()
             UpdateTemp(1);
             UpdateTemp(2);
         }
-        else if (i > 20000) {
+        else if (i > 50000) {
             i = 0;
         }
     }
@@ -113,6 +116,7 @@ void BLEStayConnected() {
         LED_BLUE_Write(0);  
         //LED_GREEN_Write(1);
     }
+    //else if (ble_state == CYBLE_STATE_DISCONNECTED) {
     else {
         LED_BLUE_Write(1);
         apiResult = CyBle_GappStartAdvertisement( CYBLE_ADVERTISING_FAST );

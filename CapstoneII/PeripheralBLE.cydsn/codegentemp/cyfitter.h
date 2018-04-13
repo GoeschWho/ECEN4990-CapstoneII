@@ -697,13 +697,13 @@
 #define Temp1__0__DR_INV CYREG_GPIO_PRT2_DR_INV
 #define Temp1__0__DR_SET CYREG_GPIO_PRT2_DR_SET
 #define Temp1__0__HSIOM CYREG_HSIOM_PORT_SEL2
-#define Temp1__0__HSIOM_MASK 0x0000000Fu
-#define Temp1__0__HSIOM_SHIFT 0u
+#define Temp1__0__HSIOM_MASK 0x0F000000u
+#define Temp1__0__HSIOM_SHIFT 24u
 #define Temp1__0__INTCFG CYREG_GPIO_PRT2_INTR_CFG
 #define Temp1__0__INTR CYREG_GPIO_PRT2_INTR
 #define Temp1__0__INTR_CFG CYREG_GPIO_PRT2_INTR_CFG
 #define Temp1__0__INTSTAT CYREG_GPIO_PRT2_INTR
-#define Temp1__0__MASK 0x01u
+#define Temp1__0__MASK 0x40u
 #define Temp1__0__PA__CFG0 CYREG_UDB_PA2_CFG0
 #define Temp1__0__PA__CFG1 CYREG_UDB_PA2_CFG1
 #define Temp1__0__PA__CFG10 CYREG_UDB_PA2_CFG10
@@ -723,7 +723,7 @@
 #define Temp1__0__PC2 CYREG_GPIO_PRT2_PC2
 #define Temp1__0__PORT 2u
 #define Temp1__0__PS CYREG_GPIO_PRT2_PS
-#define Temp1__0__SHIFT 0u
+#define Temp1__0__SHIFT 6u
 #define Temp1__DR CYREG_GPIO_PRT2_DR
 #define Temp1__DR_CLR CYREG_GPIO_PRT2_DR_CLR
 #define Temp1__DR_INV CYREG_GPIO_PRT2_DR_INV
@@ -732,7 +732,7 @@
 #define Temp1__INTR CYREG_GPIO_PRT2_INTR
 #define Temp1__INTR_CFG CYREG_GPIO_PRT2_INTR_CFG
 #define Temp1__INTSTAT CYREG_GPIO_PRT2_INTR
-#define Temp1__MASK 0x01u
+#define Temp1__MASK 0x40u
 #define Temp1__PA__CFG0 CYREG_UDB_PA2_CFG0
 #define Temp1__PA__CFG1 CYREG_UDB_PA2_CFG1
 #define Temp1__PA__CFG10 CYREG_UDB_PA2_CFG10
@@ -752,7 +752,7 @@
 #define Temp1__PC2 CYREG_GPIO_PRT2_PC2
 #define Temp1__PORT 2u
 #define Temp1__PS CYREG_GPIO_PRT2_PS
-#define Temp1__SHIFT 0u
+#define Temp1__SHIFT 6u
 
 /* Temp2 */
 #define Temp2__0__DR CYREG_GPIO_PRT4_DR

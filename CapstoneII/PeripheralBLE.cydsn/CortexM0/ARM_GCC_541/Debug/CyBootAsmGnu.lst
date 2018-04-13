@@ -11686,13 +11686,13 @@ ARM GAS  Generated_Source\PSoC4\CyBootAsmGnu.s 			page 1
  697              	.set Temp1__0__DR_INV, CYREG_GPIO_PRT2_DR_INV
  698              	.set Temp1__0__DR_SET, CYREG_GPIO_PRT2_DR_SET
  699              	.set Temp1__0__HSIOM, CYREG_HSIOM_PORT_SEL2
- 700              	.set Temp1__0__HSIOM_MASK, 0x0000000F
- 701              	.set Temp1__0__HSIOM_SHIFT, 0
+ 700              	.set Temp1__0__HSIOM_MASK, 0x0F000000
+ 701              	.set Temp1__0__HSIOM_SHIFT, 24
  702              	.set Temp1__0__INTCFG, CYREG_GPIO_PRT2_INTR_CFG
  703              	.set Temp1__0__INTR, CYREG_GPIO_PRT2_INTR
  704              	.set Temp1__0__INTR_CFG, CYREG_GPIO_PRT2_INTR_CFG
  705              	.set Temp1__0__INTSTAT, CYREG_GPIO_PRT2_INTR
- 706              	.set Temp1__0__MASK, 0x01
+ 706              	.set Temp1__0__MASK, 0x40
  707              	.set Temp1__0__PA__CFG0, CYREG_UDB_PA2_CFG0
  708              	.set Temp1__0__PA__CFG1, CYREG_UDB_PA2_CFG1
  709              	.set Temp1__0__PA__CFG10, CYREG_UDB_PA2_CFG10
@@ -11715,7 +11715,7 @@ ARM GAS  Generated_Source\PSoC4\CyBootAsmGnu.s 			page 1
  723              	.set Temp1__0__PC2, CYREG_GPIO_PRT2_PC2
  724              	.set Temp1__0__PORT, 2
  725              	.set Temp1__0__PS, CYREG_GPIO_PRT2_PS
- 726              	.set Temp1__0__SHIFT, 0
+ 726              	.set Temp1__0__SHIFT, 6
  727              	.set Temp1__DR, CYREG_GPIO_PRT2_DR
  728              	.set Temp1__DR_CLR, CYREG_GPIO_PRT2_DR_CLR
  729              	.set Temp1__DR_INV, CYREG_GPIO_PRT2_DR_INV
@@ -11724,7 +11724,7 @@ ARM GAS  Generated_Source\PSoC4\CyBootAsmGnu.s 			page 1
  732              	.set Temp1__INTR, CYREG_GPIO_PRT2_INTR
  733              	.set Temp1__INTR_CFG, CYREG_GPIO_PRT2_INTR_CFG
  734              	.set Temp1__INTSTAT, CYREG_GPIO_PRT2_INTR
- 735              	.set Temp1__MASK, 0x01
+ 735              	.set Temp1__MASK, 0x40
  736              	.set Temp1__PA__CFG0, CYREG_UDB_PA2_CFG0
  737              	.set Temp1__PA__CFG1, CYREG_UDB_PA2_CFG1
  738              	.set Temp1__PA__CFG10, CYREG_UDB_PA2_CFG10
@@ -11744,7 +11744,7 @@ ARM GAS  Generated_Source\PSoC4\CyBootAsmGnu.s 			page 1
  752              	.set Temp1__PC2, CYREG_GPIO_PRT2_PC2
  753              	.set Temp1__PORT, 2
  754              	.set Temp1__PS, CYREG_GPIO_PRT2_PS
- 755              	.set Temp1__SHIFT, 0
+ 755              	.set Temp1__SHIFT, 6
  756              	
  757              	/* Temp2 */
  758              	.set Temp2__0__DR, CYREG_GPIO_PRT4_DR

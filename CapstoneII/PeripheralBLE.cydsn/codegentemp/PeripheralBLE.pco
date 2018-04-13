@@ -1,5 +1,5 @@
 # PeripheralBLE
-# 2018-04-12 12:24:43Z
+# 2018-04-12 22:18:39Z
 
 # IO_6@[IOP=(0)][IoId=(6)] is reserved: SWDDebugEnabled
 dont_use_io iocell 0 6
@@ -25,7 +25,7 @@ set_io "LED_GREEN(0)" iocell 2 3
 set_io "LED_BLUE(0)" iocell 2 2
 set_io "LED_RED(0)" iocell 2 4
 set_io "ADC_ONOFF(0)" iocell 0 5
-set_io "Temp1(0)" iocell 2 0
+set_io "Temp1(0)" iocell 2 6
 set_io "Temp2(0)" iocell 4 0
 set_location "\ADC_SAR_Seq_1:IRQ\" interrupt -1 -1 15
 set_location "\ADC_SAR_Seq_1:cy_psoc4_sar\" p4sarcell -1 -1 0
