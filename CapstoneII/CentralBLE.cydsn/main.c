@@ -19,6 +19,7 @@ typedef struct Bin {
     float32 actual_temp;
     uint8_t set_temp;
     bool    fan_on;
+    bool    ble_connected;
 } Bin;
 
 struct Outside {
@@ -116,6 +117,7 @@ void DefaultValues() {
     bin1.actual_temp = 0;
     bin1.set_temp = 70;
     bin1.fan_on = false;
+    bin1.ble_connected = false;
 }
 
 void StackEventHandler( uint32 eventCode, void *eventParam ) {
@@ -1021,16 +1023,50 @@ void BLEConnect() {
 
 void BLEIndicator() {
     
+    // LCD Strings
+    char connected[] = "Connected";
+    char disconnected[] = "Disconnected";
+    
+    int scr_width = 800;
+    int scr_height = 480;
+    
     CYBLE_STATE_T ble_state;
     
     
+    textMode();
+    
     ble_state = CyBle_GetState();
-        if (ble_state == CYBLE_STATE_CONNECTED ) {
-            LED_BLUE_Write(0);
+    if (ble_state == CYBLE_STATE_CONNECTED ) {
+        LED_BLUE_Write(0);
+        
+        if (!bin1.ble_connected) {
+            fillRect(2*scr_width/3,260,
+                    scr_width/3-50,80,
+                    RA8875_RED);
+            
+            textEnlarge(1);
+            textTransparent(RA8875_BLACK);
+            textSetCursor(2*scr_width/3+40,260);
+            textWrite(connected,strlen(connected));
+            bin1.ble_connected = true;
         }
-        else {
-            LED_BLUE_Write(1);
+    }
+    else {
+        LED_BLUE_Write(1);
+        
+        if (bin1.ble_connected) {
+            fillRect(2*scr_width/3,260,
+                    scr_width/3-50,80,
+                    RA8875_RED);
+            
+            textEnlarge(1);
+            textTransparent(RA8875_BLACK);
+            textSetCursor(2*scr_width/3+20,260);
+            textWrite(disconnected,strlen(disconnected));
+            bin1.ble_connected = false;
         }
+    }
+    graphicsMode();
 }
 
 void FanTest() {
