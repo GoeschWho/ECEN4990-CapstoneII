@@ -736,13 +736,16 @@ void GUIUpdateBin1ActualTemp() {
     char space[] = " ";
     int scr_width = 800;
     
-    textMode();
-    textEnlarge(4);
-    textColor(RA8875_BLACK,RA8875_RED);
-    textSetCursor(2*scr_width/3+50,170);
-    PrintFloat(bin1.actual_temp);
-    textWrite(space,strlen(space));
-    graphicsMode();
+    
+    if (settings.page == HOME) {
+        textMode();
+        textEnlarge(4);
+        textColor(RA8875_BLACK,RA8875_RED);
+        textSetCursor(2*scr_width/3+50,170);
+        PrintFloat(bin1.actual_temp);
+        textWrite(space,strlen(space));
+        graphicsMode();
+    }
 }
 
 void GUIUpdateOutsideTemp() {
@@ -750,14 +753,15 @@ void GUIUpdateOutsideTemp() {
     char space[] = " ";
     int scr_width = 800;
 
-    
-    textMode();
-    textEnlarge(4);
-    textColor(RA8875_BLACK,RA8875_CYAN);
-    textSetCursor(scr_width/3+50,170);
-    PrintFloat(outside.temp);
-    textWrite(space,strlen(space));
-    graphicsMode();
+    if (settings.page == HOME) {
+        textMode();
+        textEnlarge(4);
+        textColor(RA8875_BLACK,RA8875_CYAN);
+        textSetCursor(scr_width/3+50,170);
+        PrintFloat(outside.temp);
+        textWrite(space,strlen(space));
+        graphicsMode();
+    }
 }
 
 void GUIUpdateControls() {
@@ -1143,40 +1147,41 @@ void BLEIndicator() {
     CYBLE_STATE_T ble_state;
     
     
-    textMode();
-    
     ble_state = CyBle_GetState();
-    if (ble_state == CYBLE_STATE_CONNECTED ) {
-        LED_BLUE_Write(0);
-        
-        if (!bin1.ble_connected) {
-            fillRect(2*scr_width/3,260,
-                    scr_width/3-50,80,
-                    RA8875_RED);
+    if (settings.page == HOME) {
+        textMode();
+        if (ble_state == CYBLE_STATE_CONNECTED ) {
+            LED_BLUE_Write(0);
             
-            textEnlarge(1);
-            textTransparent(RA8875_BLACK);
-            textSetCursor(2*scr_width/3+40,260);
-            textWrite(connected,strlen(connected));
-            bin1.ble_connected = true;
+            if (!bin1.ble_connected) {
+                fillRect(2*scr_width/3,260,
+                        scr_width/3-50,80,
+                        RA8875_RED);
+                
+                textEnlarge(1);
+                textTransparent(RA8875_BLACK);
+                textSetCursor(2*scr_width/3+40,260);
+                textWrite(connected,strlen(connected));
+                bin1.ble_connected = true;
+            }
         }
-    }
-    else {
-        LED_BLUE_Write(1);
-        
-        if (bin1.ble_connected) {
-            fillRect(2*scr_width/3,260,
-                    scr_width/3-50,80,
-                    RA8875_RED);
+        else {
+            LED_BLUE_Write(1);
             
-            textEnlarge(1);
-            textTransparent(RA8875_BLACK);
-            textSetCursor(2*scr_width/3+20,260);
-            textWrite(disconnected,strlen(disconnected));
-            bin1.ble_connected = false;
+            if (bin1.ble_connected) {
+                fillRect(2*scr_width/3,260,
+                        scr_width/3-50,80,
+                        RA8875_RED);
+                
+                textEnlarge(1);
+                textTransparent(RA8875_BLACK);
+                textSetCursor(2*scr_width/3+20,260);
+                textWrite(disconnected,strlen(disconnected));
+                bin1.ble_connected = false;
+            }
         }
+        graphicsMode();
     }
-    graphicsMode();
 }
 
 void FanTest() {
