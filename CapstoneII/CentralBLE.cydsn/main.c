@@ -31,8 +31,14 @@ typedef enum Mode {
     AUTOMATIC
 } Mode;
 
+typedef enum Page {
+    HOME,
+    INFO
+} Page;
+
 struct Settings {
-    Mode   mode;
+    Mode    mode;
+    Page    page;
 } settings;
 
 void DefaultValues();
@@ -42,7 +48,9 @@ void LCDInitDemo();
 void LCDTouchscreenDemo();
 void LCDCheckTouch();
 void GUISplashscreen();
-void GUIInit();
+void GUIHomeInit();
+void GUIInfo();
+void GUIUpdatePage();
 void GUIUpdateBin1ActualTemp();
 void GUIUpdateOutsideTemp();
 void GUIUpdateMode();
@@ -85,8 +93,8 @@ int main()
     
     /*  LCD Setup   */
     LCDInit();
-    //GUISplashscreen();
-    GUIInit();
+    GUISplashscreen();
+    GUIHomeInit();
     
     /* BLE Setup    */
     CyBle_Start( StackEventHandler );
@@ -109,6 +117,7 @@ void DefaultValues() {
     
     // Settings
     settings.mode = MANUAL;
+    settings.page = HOME;
     
     // Outside
     outside.temp = 0;
@@ -482,7 +491,7 @@ void GUISplashscreen() {
     CyDelay(3000);
 }
 
-void GUIInit() {
+void GUIHomeInit() {
     
     //------ Declarations ------//
     // LCD Strings
@@ -567,6 +576,102 @@ void GUIInit() {
     
     // Enable touch
     graphicsMode();
+}
+
+void GUIInfo() {
+    
+    //------ Declarations ------//
+    // LCD Strings
+    char banner[] = "Seed Bin Climate Control System";
+    char designed[] = "Designed for GAS by:";
+    char team9[] = "UNL ECE Capstone Team 9, 2018";
+    char names1[] = "Megan Bird, Kyle Brozek";
+    char names2[] = "Nick Jaton & Thallon Pitchure";
+    char manual[] = "Manual Mode:";
+    char manual1[] = "This mode displays the bin and outdoor";
+    char manual2[] = "temperatures, but allows the user to control";
+    char manual3[] = "the fan by pressing the ON and OFF buttons.";
+    char automatic[] = "Auto Mode:";
+    char automatic1[] = "This mode controls the fans based on the";
+    char automatic2[] = "set temperature, with a 5 degree buffer";
+    char automatic3[] = "before the fans are triggered on.";
+    char home[] = "Home";
+    
+    int scr_width = 800;
+    int scr_height = 480;
+    
+    //------ Procedure ------//
+    
+    // Background
+    PWM1out(255);
+    fillScreen(RA8875_BLUE);
+    textMode();
+    
+    // Banner
+    textEnlarge(2);
+    textTransparent(RA8875_WHITE);
+    textSetCursor(25,18);
+    textWrite(banner,strlen(banner));
+    
+    // About
+    textEnlarge(1);
+    textSetCursor(25,100);
+    textWrite(designed,strlen(designed));
+    textEnlarge(0);
+    textSetCursor(50,160);
+    textWrite(team9,strlen(team9));
+    textSetCursor(50,200);
+    textWrite(names1,strlen(names1));
+    textSetCursor(50,240);
+    textWrite(names2,strlen(names2));    
+    
+    // Manual Mode
+    textEnlarge(1);
+    textSetCursor(400,100);
+    textWrite(manual,strlen(manual));
+    textEnlarge(0);
+    textSetCursor(425,160);
+    textWrite(manual1,strlen(manual1));
+    textSetCursor(425,200);
+    textWrite(manual2,strlen(manual2));
+    textSetCursor(425,240);
+    textWrite(manual3,strlen(manual3));   
+    
+    // Auto Mode
+    textEnlarge(1);
+    textSetCursor(400,280);
+    textWrite(automatic,strlen(automatic));
+    textEnlarge(0);
+    textSetCursor(425,340);
+    textWrite(automatic1,strlen(automatic1));
+    textSetCursor(425,380);
+    textWrite(automatic2,strlen(automatic2));
+    textSetCursor(425,420);
+    textWrite(automatic3,strlen(automatic3));
+    
+    // Home
+    fillRect(20,scr_height/2+120,
+            scr_width/3-40,scr_height/2-140,
+            RA8875_WHITE);
+    textEnlarge(3);
+    textTransparent(RA8875_BLUE);
+    textSetCursor(60,scr_height/2+135);
+    textWrite(home,strlen(home));
+    
+    // Enable touch
+    graphicsMode();
+}
+
+void GUIUpdatePage() {
+    
+    if (settings.page == HOME) {
+        GUIInfo();
+        settings.page = INFO;
+    }
+    else if (settings.page == INFO) {
+        GUIHomeInit();
+        settings.page = HOME;
+    }
 }
 
 void GUIUpdateMode() {
@@ -795,6 +900,11 @@ void GUITouchHandler(uint16_t *tx, uint16_t *ty) {
     else if (settings.mode == AUTOMATIC && x > scr_width/3+400 && x < scr_width/3+470 && y > scr_height/2+135 && y < scr_height/2+205) {
         bin1.set_temp++;
         GUIUpdateControls();
+    }
+    
+    // Info/Home
+    else if (x > 20 && x < scr_width/3-20 && y > scr_height/2+120 && y < scr_height-20) {
+        GUIUpdatePage();
     }
 }
 
