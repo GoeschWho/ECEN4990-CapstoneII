@@ -57,6 +57,7 @@ void BLEConnect();
 void BLEIndicator();
 void FanTest();
 void FanUpdate();
+bool FanValidCondition();
 
 /* define the test register to switch the PA/LNA hardware control pins */
 #define CYREG_SRSS_TST_DDFT_CTRL        0x40030008
@@ -989,6 +990,7 @@ void BLEConnect() {
     
     //while(1) {
         ble_state = CyBle_GetState();
+        CyBle_ProcessEvents();
         if (ble_state == CYBLE_STATE_CONNECTED ) {
             LED_BLUE_Write(0);   
 //                        apiResult = CyBle_GattcReadUsingCharacteristicUuid(cyBle_connHandle,&readByTypeReqParam);
@@ -1046,11 +1048,34 @@ void FanTest() {
 
 void FanUpdate() {
     
+    uint8_t buffer = 5;
+    
+    // Auto Mode:  Update fan state
+    if (settings.mode == AUTOMATIC) {
+        if (!bin1.fan_on) {
+            // Must be outside buffer zone to turn on
+            if (bin1.actual_temp < bin1.set_temp-buffer || bin1.actual_temp > bin1.set_temp+buffer) {
+                // Then must meet valid fan running conditions
+                bin1.fan_on = FanValidCondition();
+            }
+        }
+        else {
+            bin1.fan_on = FanValidCondition();
+        }
+    }
+    
     if (bin1.fan_on == true) {
         FAN1_Write(1);
     } else {
         FAN1_Write(0);
     }
+}
+
+bool FanValidCondition() {
+    
+    if (bin1.set_temp < bin1.actual_temp && outside.temp < bin1.actual_temp) return true;
+    else if (bin1.set_temp > bin1.actual_temp && outside.temp > bin1.actual_temp) return true;
+    else return false;
 }
             
 /* [] END OF FILE */
