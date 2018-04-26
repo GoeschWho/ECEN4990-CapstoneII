@@ -165,7 +165,9 @@ void UpdateTemp(uint8_t n) {
     }
     LED_GREEN_Write(1);    
     fltemp = Temp_GetTempF(n);
-    BLEUpdateDBTemp(n,fltemp);
+    if (fltemp != 255.0) {          // hoping to remove errors in disconnects
+        BLEUpdateDBTemp(n,fltemp);
+    }
 }
             
 /* [] END OF FILE */
