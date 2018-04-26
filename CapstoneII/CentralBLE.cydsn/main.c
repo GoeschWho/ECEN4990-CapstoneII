@@ -75,28 +75,19 @@ int main()
 {
     CyGlobalIntEnable;   /* Enable global interrupts */
     
+    // Initialize Variables
+    DefaultValues();
+    
     // Power LED
     LED_RED_Write(0);
     
     /*  LCD Setup   */
     LCDInit();
-    //RegReadTest();
-    //CyDelay(10000);
-    //LCDInitDemo();
-    //LCDTouchscreenDemo();
-    //RegReadTest();
-    //GUITest();
-    
-    GUISplashscreen();
+    //GUISplashscreen();
     GUIInit();
-    //LCDTouchscreenDemo();
     
     /* BLE Setup    */
     CyBle_Start( StackEventHandler );
-    
-    
-    /* Fan Test     */
-    //FanTest();
     BLEConnect();
     
     for(;;)
@@ -122,7 +113,7 @@ void DefaultValues() {
     
     // Bin1
     bin1.actual_temp = 0;
-    bin1.set_temp = 0;
+    bin1.set_temp = 70;
     bin1.fan_on = false;
 }
 
@@ -434,6 +425,11 @@ void LCDCheckTouch() {
             touchRead(&tx,&ty);
             //fillCircle((uint16_t)(tx/xScale), (uint16_t)(ty/yScale), 4, RA8875_WHITE);
             GUITouchHandler(&tx,&ty);
+            while (!LCD_int_Read()) {
+                // Sensing multiple touches
+                // Most cases this doesn't matter, except for the set temp up/down buttons
+                touchRead(&tx,&ty); 
+            }
         }
     }
 }
@@ -662,6 +658,7 @@ void GUIUpdateControls() {
     char on[] = "ON";
     char off[] = "OFF";
     char fans[] = "Fans";
+    char set[] = "Set";
     
     int scr_width = 800;
     int scr_height = 480;
@@ -714,7 +711,29 @@ void GUIUpdateControls() {
         }        
     }
     else if (settings.mode == AUTOMATIC) {
-          
+        textEnlarge(3);
+        textTransparent(RA8875_BLACK);
+        textSetCursor(scr_width/3+10,scr_height/2+135);
+        textWrite(set,strlen(set));
+        
+        textSetCursor(scr_width/3+250,scr_height/2+135);
+        PrintFloat(bin1.set_temp);
+        
+        drawRect(scr_width/3+160,scr_height/2+135,
+                    70,70,
+                    RA8875_BLACK);
+        fillTriangle(scr_width/3+195,scr_height/2+185,
+                    scr_width/3+215,scr_height/2+155,
+                    scr_width/3+175,scr_height/2+155,
+                    RA8875_BLACK);
+        
+        drawRect(scr_width/3+400,scr_height/2+135,
+                    70,70,
+                    RA8875_BLACK);
+        fillTriangle(scr_width/3+435,scr_height/2+155,
+                    scr_width/3+455,scr_height/2+185,
+                    scr_width/3+415,scr_height/2+185,
+                    RA8875_BLACK);
     }
     graphicsMode();
 }
@@ -749,18 +768,30 @@ void GUITouchHandler(uint16_t *tx, uint16_t *ty) {
     
     // FAN
     // Off
-    else if (x > scr_width/3+180 && x < scr_width/3+300 && y > scr_height/2+135 && y < scr_height/2+205 && settings.mode == MANUAL) {
+    else if (settings.mode == MANUAL && x > scr_width/3+180 && x < scr_width/3+300 && y > scr_height/2+135 && y < scr_height/2+205) {
         if (bin1.fan_on != false) {
             bin1.fan_on = false;
             GUIUpdateControls();
         }
     }
     // On
-    else if (x > 2*scr_width/3+80 && x < 2*scr_width/3+200 && y > scr_height/2+135 && y < scr_height/2+205 && settings.mode == MANUAL) {
+    else if (settings.mode == MANUAL && x > 2*scr_width/3+80 && x < 2*scr_width/3+200 && y > scr_height/2+135 && y < scr_height/2+205) {
         if (bin1.fan_on != true) {
             bin1.fan_on = true;
             GUIUpdateControls();
         }
+    }
+    
+    // SET TEMP
+    // Down
+    else if (settings.mode == AUTOMATIC && x > scr_width/3+160 && x < scr_width/3+230 && y > scr_height/2+135 && y < scr_height/2+205) {
+        bin1.set_temp--;
+        GUIUpdateControls();
+    }
+    // Up
+    else if (settings.mode == AUTOMATIC && x > scr_width/3+400 && x < scr_width/3+470 && y > scr_height/2+135 && y < scr_height/2+205) {
+        bin1.set_temp++;
+        GUIUpdateControls();
     }
 }
 
